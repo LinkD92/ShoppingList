@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bnvFragmentManageCategories"
+        android:title="Categories"
+        android:icon="@drawable/ic_temp"
+        />
+    <item
+        android:id="@+id/bnvFragmentManageBundles"
+        android:title="Bundles"
+        android:icon="@drawable/ic_temp"
+        />
+
+</menu>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuAddNewList"
+        android:title="Add New List" />
+    <item
+        android:id="@+id/menuEditList"
+        android:title="Edit List" />
+
+    <item
+        android:id="@+id/menuRemoveList"
+        android:title="Remove List"
+        />
+    <item
+        android:id="@+id/menuSortByInfo"
+        android:title="Sort by:"
+        >
+        <menu>
+            <item
+                android:id="@+id/menuItemSortName"
+                android:title="Product Name"
+                />
+            <item
+                android:id="@+id/menuItemSortCategory"
+                android:title="Category"
+                />
+
+            <item
+                android:id="@+id/menuItemSortCustom"
+                android:title="Custom Order" />
+        </menu>
+    </item>
+</menu>

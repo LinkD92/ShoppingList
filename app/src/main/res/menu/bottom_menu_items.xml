@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/bnvMenuLists"
+        android:title="Lists"
+        android:icon="@drawable/ic_temp"
+        />
+    <item
+        android:id="@+id/bnvMenuManagement"
+        android:title="Management"
+        android:icon="@drawable/ic_temp"
+        />
+    <item
+        android:id="@+id/bnvMenuSettings"
+        android:title="Settings"
+        android:icon="@drawable/ic_temp"
+        />
+
+</menu>
