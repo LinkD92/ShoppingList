@@ -70,9 +70,6 @@ public class FragmentMyLists extends Fragment {
         executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer));
-        //executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
-
-
         return v;
     }
 

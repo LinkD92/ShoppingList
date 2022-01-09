@@ -41,8 +41,6 @@ public class CommandManageLists implements Command{
         // Method to remove currently chosen list - in spinner
         menuItemClickListeners();
         //Method to open new fragemnt (FragmentMymanageLists) - where list can be edited
-
-
         return false;
     }
 
