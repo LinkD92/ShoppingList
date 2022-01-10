@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.symbol.shoppinglistv2.Activities.FragmentMyManageLists;
 import com.symbol.shoppinglistv2.Activities.MainActivity;
@@ -68,12 +69,19 @@ public class CommandEditList implements Command {
                 String newName = fragmentMyManageLists.etListName.getText().toString();
                 listOfProducts.setName(fragmentMyManageLists.etListName.getText().toString());
                 listOfProducts.setShared(fragmentMyManageLists.rbSharedList.isChecked());
+                listOfProducts.setListPath(FireBaseUtil.userPath + "/" +listOfProducts.getName());
 
                 String path = "lists/" + listOfProducts.getName();
-                FireBaseUtil.addList(path, listOfProducts);
-
+                if(listOfProducts.getName().equals(null) || listOfProducts.getName().equals("")){
+                    Toast.makeText(MainActivity.appContext, "Nazwa nie moze byc pusta", Toast.LENGTH_LONG).show();
+                }else{
+                    FireBaseUtil.addList(path, listOfProducts);
+                    FireBaseUtil.sendShare(listOfProducts);
+                }
                 if(currentName != null && !currentName.equals(newName)){
                     String removePath = "lists/" + currentName;
+                    listOfProducts.setName(currentName);
+                    FireBaseUtil.removeShare(listOfProducts);
                     FireBaseUtil.removeValue(removePath);
                 }
             }
@@ -130,15 +138,13 @@ public class CommandEditList implements Command {
                     public void readUsers(HashMap<String, String> userEmails) {
                         String findUser = fragmentMyManageLists.etListSharedWith.getText().toString();
                         boolean test = userEmails.containsValue(findUser);
-                        Log.d(TAG, "readUsers: " + test);
                         if(test){
                             for (Map.Entry<String, String > entry :
                                     userEmails.entrySet()) {
                                     if(entry.getValue().equals(findUser)){
                                         String uid = entry.getKey();
                                         String email = entry.getValue();
-                                        String sharePath = FireBaseUtil.reference.child("lists").child(FireBaseUtil.currentList).toString();
-                                        SharedMember sharedMember = new SharedMember(uid, email, sharePath);
+                                        SharedMember sharedMember = new SharedMember(uid, email);
                                         listOfProducts.getSharedWith().put(sharedMember.getUid(), sharedMember);
                                         sharedMembersListener.setValue(listOfProducts.getSharedWith());
                                     }

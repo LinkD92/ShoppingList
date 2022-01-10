@@ -24,6 +24,7 @@ import com.symbol.shoppinglistv2.Components.SharedMember;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 
@@ -144,6 +145,39 @@ public class FireBaseUtil {
 
     public static void removeCategory(Category category){
         FireBaseUtil.reference.child("categories/" + category.getName()).removeValue();
+    }
+
+    public static void sendShare(ListOfProducts listOfProducts){
+        HashMap<String, SharedMember> hashShared = listOfProducts.getSharedWith();
+            for (Map.Entry<String, SharedMember> entry:
+                    hashShared.entrySet()) {
+                SharedMember sharedMember = entry.getValue();
+                if(listOfProducts.isShared()){
+                    FirebaseDatabase.getInstance(source).getReference().child("users")
+                        .child(sharedMember.getUid()).child("sharedLists")
+                        .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                        .setValue(listOfProducts.getListPath());
+                }else {
+                    FirebaseDatabase.getInstance(source).getReference().child("users")
+                        .child(sharedMember.getUid()).child("sharedLists")
+                        .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                        .removeValue();
+                }
+        }
+    }
+
+
+
+    public static void removeShare(ListOfProducts listOfProducts){
+        HashMap<String, SharedMember> hashShared = listOfProducts.getSharedWith();
+        for (Map.Entry<String, SharedMember> entry:
+                hashShared.entrySet()) {
+            SharedMember sharedMember = entry.getValue();
+            FirebaseDatabase.getInstance(source).getReference().child("users")
+                    .child(sharedMember.getUid()).child("sharedLists")
+                    .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                    .removeValue();
+            }
     }
 
     public static void addBundle(String path, MyBundle bundle){
@@ -289,7 +323,6 @@ public class FireBaseUtil {
                     for (DataSnapshot ds :
                             snapshot.getChildren()) {
                         String list = ds.child("name").getValue(String.class);
-                        Log.d(TAG, "LTEST: " + ds.toString());
                         lists.add(list);
                     }
                     myCallback.onListCallback(lists);
@@ -300,7 +333,6 @@ public class FireBaseUtil {
                 Log.d(TAG, "onCancelled: " + error);
             }
         };
-        //reference.child("sharedLists").addValueEventListener(listener);
         reference.child("lists").addValueEventListener(listener);
     }
 

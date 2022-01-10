@@ -1,5 +1,6 @@
 package com.symbol.shoppinglistv2.Command;
 
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -20,7 +21,6 @@ public class CommandMASpinnerAdapter implements Command{
     private final String TAG = "CommandMASpinnerItemClick";
     private Spinner spinList;
     private ArrayAdapter adapter;
-    private int spinnerCurrentPos;
     private MutableLiveData<ArrayList<String>> listLoaded;
 
 
@@ -43,10 +43,11 @@ public class CommandMASpinnerAdapter implements Command{
             public void onChanged(ArrayList<String> strings) {
                 adapter = new ArrayAdapter(MainActivity.appContext, R.layout.support_simple_spinner_dropdown_item, strings);
                 adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-                spinList.setSelection(FireBaseUtil.spinnerPositionERROR);
                 spinList.setAdapter(adapter);
+                spinList.setSelection(FireBaseUtil.spinnerPositionERROR);
             }
         });
+
 
 
 

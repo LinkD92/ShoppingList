@@ -15,6 +15,8 @@ import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
+import androidx.lifecycle.MutableLiveData;
+
 //Button action for FragmentMyLists
 public class CommandManageLists implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandManageLists";
@@ -25,12 +27,14 @@ public class CommandManageLists implements Command{
     private FragmentMyOpener fragmentMyOpener;
     private FragmentListDetails fragmentListDetails = new FragmentListDetails();
     private FragmentMyManageLists fragmentMyManageLists;
+    private MutableLiveData<ListOfProducts> currentList;
 
 
-    public CommandManageLists(ImageButton ibtnListDetails, ImageButton ibtnListOptions, View container) {
+    public CommandManageLists(ImageButton ibtnListDetails, ImageButton ibtnListOptions, View container, MutableLiveData<ListOfProducts> currentList) {
         this.ibtnListDetails = ibtnListDetails;
         this.ibtnListOptions = ibtnListOptions;
         this.container = container;
+        this.currentList = currentList;
     }
 
     @Override
@@ -41,8 +45,6 @@ public class CommandManageLists implements Command{
         // Method to remove currently chosen list - in spinner
         menuItemClickListeners();
         //Method to open new fragemnt (FragmentMymanageLists) - where list can be edited
-
-
         return false;
     }
 
@@ -55,7 +57,7 @@ public class CommandManageLists implements Command{
 
                 PopupMenu popupMenu = new PopupMenu(MainActivity.appContext, view);
                 popupMenu.getMenuInflater().inflate(R.menu.list_actions, popupMenu.getMenu());
-                popupMenu.getMenu().getItem(3).setTitle("Sort By: " + FireBaseUtil.sortMethod);
+                popupMenu.getMenu().getItem(3).setTitle("Sort By: " + currentList.getValue().getSortType());
                 Log.d(TAG, "onClick: " +popupMenu.toString());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
@@ -78,8 +80,6 @@ public class CommandManageLists implements Command{
                             case R.id.menuItemSortCustom:
                                 menuItemSortType("customID");
                                 break;
-
-
                         }
                         return false;
                     }
@@ -93,30 +93,17 @@ public class CommandManageLists implements Command{
         fragmentMyManageLists = new FragmentMyManageLists();
         fragmentMyOpener.open(fragmentMyManageLists);
         fragmentMyOpener.close(fragmentMyManageLists);
-
-//                fragmentMyOpener.open(fragmentAddList);
-//                fragmentMyOpener.close(fragmentAddList);
     }
 
     private void menuItemClickEditList(){
-        String path = "lists/" + FireBaseUtil.currentList;
-        Log.d(TAG, "MyTest: " + path);
-        FireBaseUtil.readFullList(path, new MyCallback() {
-            @Override
-            public void readFullList(ListOfProducts listOfProducts) {
-                //super.readFullList(listOfProducts);
-                fragmentMyManageLists = new FragmentMyManageLists(listOfProducts);
-                Log.d(TAG, "getList: " + listOfProducts.getName());
-                fragmentMyOpener.close(fragmentMyManageLists);
-                fragmentMyOpener.open(fragmentMyManageLists);
-            }
-        });
-
-
+        fragmentMyManageLists = new FragmentMyManageLists(currentList.getValue());
+        fragmentMyOpener.close(fragmentMyManageLists);
+        fragmentMyOpener.open(fragmentMyManageLists);
     }
 
     private void menuItemClickRemoveList(){
-        FireBaseUtil.removeList(FireBaseUtil.currentList);
+        FireBaseUtil.removeShare(currentList.getValue());
+        FireBaseUtil.removeList(currentList.getValue().getName());
     }
 
     private void menuItemSortType(String sortType){

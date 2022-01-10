@@ -1,5 +1,7 @@
 package com.symbol.shoppinglistv2.Components;
 
+import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,8 +14,11 @@ public class ListOfProducts {
     private HashMap<String, Product> products = new HashMap<>();
     private HashMap<String, MyBundle> bundles = new HashMap<>();
     private String sortType = "name";
+    private String listPath;
 
-    public ListOfProducts(){};
+    public ListOfProducts(){
+
+    };
 
 
     public ListOfProducts(String name, HashMap<String,Product> products){ //, boolean shared, String sharedWith, ArrayList<Product> products
@@ -26,11 +31,13 @@ public class ListOfProducts {
 
     public ListOfProducts(String name) {
         this.name = name;
+        this.listPath = FireBaseUtil.reference.child(name).toString();
     }
 
     public ListOfProducts(String name, boolean shared) {
         this.name = name;
         this.shared = shared;
+        this.listPath = FireBaseUtil.reference.child(name).toString();
     }
 
     public String getName() {
@@ -80,5 +87,13 @@ public class ListOfProducts {
 
     public void setSharedWith(HashMap<String, SharedMember> sharedWith) {
         this.sharedWith = sharedWith;
+    }
+
+    public String getListPath() {
+        return listPath;
+    }
+
+    public void setListPath(String listPath) {
+        this.listPath = listPath;
     }
 }

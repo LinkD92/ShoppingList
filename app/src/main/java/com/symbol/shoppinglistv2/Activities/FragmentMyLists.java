@@ -3,6 +3,7 @@ package com.symbol.shoppinglistv2.Activities;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.symbol.shoppinglistv2.Command.CommandMABundleDisplay;
 import com.symbol.shoppinglistv2.Command.CommandMAProductDisplay;
 import com.symbol.shoppinglistv2.Command.CommandMASpinnerAdapter;
 import com.symbol.shoppinglistv2.Command.CommandManageLists;
+import com.symbol.shoppinglistv2.Command.CommandTestCommand;
 import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Other.BundleDetailsFiller;
@@ -40,9 +42,11 @@ public class FragmentMyLists extends Fragment {
     private ImageButton ibtnListDetails;
     private ImageButton ibtnListOptions;
     private RecyclerView rvBundles;
+    private MutableLiveData<ListOfProducts> currentList;
 
 
     public FragmentMyLists() {
+        currentList = new MutableLiveData<>();
         // Required empty public constructor
     }
 
@@ -67,10 +71,11 @@ public class FragmentMyLists extends Fragment {
         ibtnListDetails = v.findViewById(R.id.ibtnListDetails);
 
         executeCommand(new CommandMASpinnerAdapter(spinList));
-        executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
+        //executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
-        executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer));
+        executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));
         //executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
+        executeCommand(new CommandTestCommand(this, currentList));
 
 
         return v;

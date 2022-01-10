@@ -132,18 +132,11 @@ public class CommandMAProductDisplay implements Command {
                                         rvBundlesDisplay.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
                                         new ItemTouchHelper(simpleCallback).attachToRecyclerView(rvBundlesDisplay);
                                         rvBundlesDisplay.setAdapter(adapterBundleOnList);
-
-
-
-
                                     }
                                 });
 
                             }
                         });
-
-
-
 
             }
             @Override
