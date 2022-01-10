@@ -8,6 +8,7 @@ import com.symbol.shoppinglistv2.Activities.FragmentMyLists;
 import com.symbol.shoppinglistv2.Activities.MainActivity;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
+import com.symbol.shoppinglistv2.Components.SharedList;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.Other.ProductAdapter;
@@ -27,10 +28,12 @@ public class CommandTestCommand implements Command{
     private FragmentMyLists fragmentMyLists;
     private MutableLiveData <ListOfProducts> currentList;
     private ProductAdapter productAdapter;
+    private MutableLiveData<ArrayList<SharedList>> sharedListLoaded;
 
-    public CommandTestCommand(FragmentMyLists fragmentMyLists, MutableLiveData<ListOfProducts> currentList) {
+    public CommandTestCommand(FragmentMyLists fragmentMyLists, MutableLiveData<ListOfProducts> currentList, MutableLiveData<ArrayList<SharedList>> sharedListLoaded) {
         this.fragmentMyLists = fragmentMyLists;
         this.currentList = currentList;
+        this.sharedListLoaded = sharedListLoaded;
     }
 
     @Override
@@ -48,6 +51,15 @@ public class CommandTestCommand implements Command{
                 FireBaseUtil.spinnerPositionERROR = i;
                 FireBaseUtil.currentList = listName;
                 String path = "lists/" + listName;
+//                if(!listName.contains("(")){
+//                    path = "lists/" + listName;
+//                }else{
+//                    for (SharedList sharedList:
+//                            sharedListLoaded.getValue()) {
+//
+//
+//                    }
+//                }
                 FireBaseUtil.readFullList(path, new MyCallback() {
                     @Override
                     public void readFullList(ListOfProducts listOfProducts) {

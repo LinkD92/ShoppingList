@@ -20,7 +20,6 @@ import java.util.ArrayList;
 public class CommandCategorySpnAdapter implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandCategorySpnAdapter";
     private Spinner spnProductCategory;
-    private ArrayAdapter<Category> adapter;
     private CategorySpinnerAdapter categoryAdapter;
     private Product product;
 
@@ -34,6 +33,13 @@ public class CommandCategorySpnAdapter implements Command{
         FireBaseUtil.readCategory(new MyCallback() {
             @Override
             public void onCategoryCallback(ArrayList<Category> categoryArrayList) {
+                if(categoryArrayList.size() == 0){
+                    String categoryName = "Default";
+                    int categoryColor = -11184811;
+                    Category defaultCategory = new Category(categoryName, categoryColor);
+                    categoryArrayList.add(defaultCategory);
+
+                }
                 categoryAdapter = new CategorySpinnerAdapter(MainActivity.appContext, R.layout.test_spinner_cat, categoryArrayList);
                 categoryAdapter.setDropDownViewResource(R.layout.test_spinner_cat);
                 spnProductCategory.setAdapter(categoryAdapter);

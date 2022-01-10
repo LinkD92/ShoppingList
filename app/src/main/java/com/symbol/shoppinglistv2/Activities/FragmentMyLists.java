@@ -23,6 +23,7 @@ import com.symbol.shoppinglistv2.Command.CommandManageLists;
 import com.symbol.shoppinglistv2.Command.CommandTestCommand;
 import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
+import com.symbol.shoppinglistv2.Components.SharedList;
 import com.symbol.shoppinglistv2.Other.BundleDetailsFiller;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
@@ -43,6 +44,7 @@ public class FragmentMyLists extends Fragment {
     private ImageButton ibtnListOptions;
     private RecyclerView rvBundles;
     private MutableLiveData<ListOfProducts> currentList;
+    private MutableLiveData<ArrayList<SharedList>> sharedListLoaded;
 
 
     public FragmentMyLists() {
@@ -70,13 +72,12 @@ public class FragmentMyLists extends Fragment {
         ibtnListOptions = v.findViewById(R.id.ibtnListOptions);
         ibtnListDetails = v.findViewById(R.id.ibtnListDetails);
 
-        executeCommand(new CommandMASpinnerAdapter(spinList));
+        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded));
         //executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));
         //executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
-        executeCommand(new CommandTestCommand(this, currentList));
-
+        executeCommand(new CommandTestCommand(this, currentList, sharedListLoaded));
 
         return v;
     }

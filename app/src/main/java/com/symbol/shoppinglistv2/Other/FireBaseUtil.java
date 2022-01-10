@@ -19,6 +19,7 @@ import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
+import com.symbol.shoppinglistv2.Components.SharedList;
 import com.symbol.shoppinglistv2.Components.SharedMember;
 
 import java.util.ArrayList;
@@ -153,10 +154,14 @@ public class FireBaseUtil {
                     hashShared.entrySet()) {
                 SharedMember sharedMember = entry.getValue();
                 if(listOfProducts.isShared()){
+                    String email = FireBaseUtil.user.getEmail();
+                    String uid = FireBaseUtil.user.getUid();
+                    String name = listOfProducts.getName();
+                    SharedList sharedList = new SharedList(email, uid, name);
                     FirebaseDatabase.getInstance(source).getReference().child("users")
                         .child(sharedMember.getUid()).child("sharedLists")
                         .child(FireBaseUtil.userPath).child(listOfProducts.getName())
-                        .setValue(listOfProducts.getListPath());
+                        .setValue(sharedList);
                 }else {
                     FirebaseDatabase.getInstance(source).getReference().child("users")
                         .child(sharedMember.getUid()).child("sharedLists")
@@ -165,9 +170,7 @@ public class FireBaseUtil {
                 }
         }
     }
-
-
-
+    
     public static void removeShare(ListOfProducts listOfProducts){
         HashMap<String, SharedMember> hashShared = listOfProducts.getSharedWith();
         for (Map.Entry<String, SharedMember> entry:
@@ -337,10 +340,33 @@ public class FireBaseUtil {
     }
 
     public static void readSharedList(final MyCallback myCallback){
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(reference != null) {
+                    ArrayList<SharedList> lists = new ArrayList<>();
+                    for (DataSnapshot ds :
+                            snapshot.getChildren()) {
+                        for (DataSnapshot snap :
+                                ds.getChildren()) {
+                            SharedList sharedList = snap.getValue(SharedList.class);
+                            lists.add(sharedList);
+                        }
+                    }
+                    myCallback.readSharedLists(lists);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        reference.child("sharedLists").addValueEventListener(listener);
     }
 
     public static void readFullList(String listName, final MyCallback myCallback){
+       // if(!listName.contains("("))
         DatabaseReference currentRef = FireBaseUtil.reference.child(listName);
         Log.d(TAG, "PrintPath: " + currentRef);
         currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
