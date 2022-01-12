@@ -37,6 +37,7 @@ public class FragmentMyLists extends Fragment {
 
     private final String TAG = "com.symbol.shoppinglistv2.Activities.FragmentMyLists";
     public Spinner spinList;
+    public Spinner spinPrivShared;
     public RecyclerView rvProducts;
     public FloatingActionButton floatingActionButton;
     public View fragmentContainer;
@@ -49,6 +50,7 @@ public class FragmentMyLists extends Fragment {
 
     public FragmentMyLists() {
         currentList = new MutableLiveData<>();
+        sharedListLoaded = new MutableLiveData<>();
         // Required empty public constructor
     }
 
@@ -65,6 +67,7 @@ public class FragmentMyLists extends Fragment {
         View v2 = inflater.inflate(R.layout.fragment_manager, container, false);
 
         spinList = v.findViewById(R.id.spinLists);
+        spinPrivShared = v.findViewById(R.id.spinPrivShared);
         rvProducts = v.findViewById(R.id.rvProducts);
         rvBundles = v.findViewById(R.id.rvBundles);
         floatingActionButton = v.findViewById(R.id.fab);
@@ -72,7 +75,7 @@ public class FragmentMyLists extends Fragment {
         ibtnListOptions = v.findViewById(R.id.ibtnListOptions);
         ibtnListDetails = v.findViewById(R.id.ibtnListDetails);
 
-        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded));
+        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded, spinPrivShared));
         //executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));

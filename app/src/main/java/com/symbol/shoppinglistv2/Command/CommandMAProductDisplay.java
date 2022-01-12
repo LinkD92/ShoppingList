@@ -87,12 +87,13 @@ public class CommandMAProductDisplay implements Command {
                                         //adapter assignem for Recycler View
                                         FireBaseUtil.currentListProducts = productArrayList;
                                         BundleDetailsFiller test = new BundleDetailsFiller();
-                                        adapter = new ProductAdapter(productArrayList, container);
+                                        //TU UWAGA - WYWALIC NULLA.
+                                        adapter = new ProductAdapter(productArrayList, container, null);
                                         rvProductDisplay.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
-                                        ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapter, productArrayList);
-                                        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-                                        adapter.setTouchHelper(itemTouchHelper);
-                                        itemTouchHelper.attachToRecyclerView(rvProductDisplay);
+                                        //ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapter, productArrayList);
+                                        //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                                        //adapter.setTouchHelper(itemTouchHelper);
+                                        //itemTouchHelper.attachToRecyclerView(rvProductDisplay);
                                         rvProductDisplay.setAdapter(adapter);
                                     }
 

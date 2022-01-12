@@ -3,6 +3,7 @@ package com.symbol.shoppinglistv2.Other;
 import android.graphics.Color;
 import android.util.Log;
 
+import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
@@ -36,47 +37,51 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
         return true;
     }
 
+
+
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
+        Product product = productArrayList.get(viewHolder.getAdapterPosition());
         viewHolder.itemView.setBackgroundColor(
-                productArrayList.get(viewHolder.getAdapterPosition()).getCategory().getColor());
-        int iter=0;
-        for (Product pr :
-                productArrayList) {
-            pr.setCustomID(iter);
-            iter++;
-        }
+                product.getCategory().getColor());
+        String test  = FireBaseUtil.mutableList.getValue().getSortType();
+        Log.d(TAG, "clearView: test " + test );
         HashMap<String, Product> tempHash = new HashMap<>();
-        for (Product pr :
-                productArrayList) {
-            tempHash.put(pr.getName(), pr);
-        }
+        if(FireBaseUtil.mutableList.getValue().getSortType() == "customID"){
+                int iter=0;
+                for (Product pr :
+                        productArrayList) {
+                    pr.setCustomID(iter);
+                    Log.d(TAG, "clearView: " + pr.getName() + " " + pr.getCustomID());
+                    iter++;
+                }
 
-        String buildPath = "lists/" + FireBaseUtil.currentList + "/products";
-        FireBaseUtil.addAddArrayProducts(buildPath, tempHash);
+                for (Product pr :
+                        productArrayList) {
+                    tempHash.put(pr.getName(), pr);
+                }
+        }else{
+            tempHash = FireBaseUtil.mutableList.getValue().getProducts();
+        }
+        //String buildPath = "lists/" + FireBaseUtil.currentList + "/products";
+        ListOfProducts tempList = FireBaseUtil.mutableList.getValue();
+        tempList.setProducts(tempHash);
+        FireBaseUtil.mutableList.setValue(tempList);
+        FireBaseUtil.addAddArrayProducts(FireBaseUtil.mutableList.getValue(), tempHash);
+
+
 
     }
 
     @Override
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
+        Log.d(TAG, "onSelectedChanged: " + actionState);
         if(actionState == ItemTouchHelper.ACTION_STATE_DRAG){
-            Log.d(TAG, "onSelectedChanged: " + viewHolder.itemView.getDrawingCacheBackgroundColor());
             viewHolder.itemView.getContext().getResources();
             viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
-
-            int iter = 0;
-            for (Product pr :
-                    productArrayList) {
-                pr.setCustomID(iter);
-                iter++;
-            }
-
-            for (Product pr :
-                    productArrayList) {
-                Log.d(TAG, "ProductControl custom ID - Reset  : Name " + pr.getName() +  ":: " + pr.getCustomID());
-            }
+            
         }
     }
 
@@ -95,8 +100,6 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        itemTouchHelperAdapter.onItemSwiped(viewHolder.getAdapterPosition(), direction);
-
     }
 
 }

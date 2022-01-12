@@ -32,6 +32,7 @@ public abstract class MyCallback {
     public void readSharedLists(ArrayList<SharedList> sharedLists){}
     public void readListsInHash(HashMap<String, ListOfProducts> listHashMap) {}
     public void readFullList (ListOfProducts listOfProducts){}
+    public void readFullSharedList (ListOfProducts listOfProducts){}
     public void readAllList(ArrayList<String> listNames){}
     public void readUsers(HashMap<String,String> userEmails){}
 

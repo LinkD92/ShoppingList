@@ -69,13 +69,14 @@ public class CommandEditList implements Command {
                 String newName = fragmentMyManageLists.etListName.getText().toString();
                 listOfProducts.setName(fragmentMyManageLists.etListName.getText().toString());
                 listOfProducts.setShared(fragmentMyManageLists.rbSharedList.isChecked());
-                listOfProducts.setListPath(FireBaseUtil.userPath + "/" +listOfProducts.getName());
+                if(listOfProducts.getListPath() == null){
+                    listOfProducts.setListPath(FireBaseUtil.userPath + "/lists/" +listOfProducts.getName());
+                }
 
-                String path = "lists/" + listOfProducts.getName();
                 if(listOfProducts.getName().equals(null) || listOfProducts.getName().equals("")){
                     Toast.makeText(MainActivity.appContext, "Nazwa nie moze byc pusta", Toast.LENGTH_LONG).show();
                 }else{
-                    FireBaseUtil.addList(path, listOfProducts);
+                    FireBaseUtil.addList(listOfProducts);
                     FireBaseUtil.sendShare(listOfProducts);
                 }
                 if(currentName != null && !currentName.equals(newName)){

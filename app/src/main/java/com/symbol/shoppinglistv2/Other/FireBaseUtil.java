@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 //Class created to manage Firebase access
 public class FireBaseUtil {
@@ -38,11 +39,15 @@ public class FireBaseUtil {
 
     public static final String TAG = "FirebaseUtil";
     public static DatabaseReference reference;
+    public static DatabaseReference globalRef;
     //This will be managed in app according to the current location
     public static String databaseLocation;
     //Current list selected
     public static String currentList;
     //Current Bundle selection
+    public static MutableLiveData<ListOfProducts> mutableList;
+    public static MutableLiveData<Integer> swipeError;
+
     public static String currentBundle;
     //Current fragment opened;
     public static int currentSelection;
@@ -74,9 +79,11 @@ public class FireBaseUtil {
             userPath = user.getUid();
             reference = FirebaseDatabase.getInstance(source).getReference().child("users").child(userPath);
             reference.child("email").setValue(user.getEmail());
+            globalRef = FirebaseDatabase.getInstance(source).getReference().child("users");
         }else{
             reference = FirebaseDatabase.getInstance(source).getReference().child("users");
         }
+        FireBaseUtil.swipeError = new MutableLiveData<>();
     }
 
     //method to read data from firebase supported by Abstractclass MyCallback - see more class: MyCallback.readData
@@ -106,6 +113,11 @@ public class FireBaseUtil {
         reference.child(buildPath).child(product.getName()).setValue(product);
     }
 
+    public static void addProduct(ListOfProducts listOfProducts, Product product){
+        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName())
+                .setValue(product);
+    }
+
     public static void addBundleProduct(String path, Product product){
         String buildPath = "bundles/" + path  + "/products";
         reference.child(buildPath).child(product.getName()).setValue(product);
@@ -116,16 +128,24 @@ public class FireBaseUtil {
         reference.child(buildPath).child(product.getName()).removeValue();
     }
 
-    public static void addAddArrayProducts(String path, HashMap<String, Product> productHashMap){
-        reference.child(path).setValue(productHashMap);
+    public static void addAddArrayProducts(ListOfProducts listOfProducts, HashMap<String, Product> productHashMap){
+        globalRef.child(listOfProducts.getListPath()).child("products").setValue(productHashMap);
     }
 
     public static void removeProduct(String path, Product product){
         reference.child(path).child(product.getName()).removeValue();
     }
 
+    public static void removeProduct(ListOfProducts listOfProducts, Product product){
+        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()).removeValue();
+    }
+
     public static void addList(String path, ListOfProducts list){
         reference.child(path).setValue(list);
+    }
+
+    public static void addList(ListOfProducts list){
+        globalRef.child(list.getListPath()).setValue(list);
     }
 
     public static void removeList(String listName){
@@ -354,6 +374,7 @@ public class FireBaseUtil {
                         }
                     }
                     myCallback.readSharedLists(lists);
+                    Log.d(TAG, "MyTest: " + lists.size());
                 }
             }
 
@@ -366,16 +387,40 @@ public class FireBaseUtil {
     }
 
     public static void readFullList(String listName, final MyCallback myCallback){
-       // if(!listName.contains("("))
-        DatabaseReference currentRef = FireBaseUtil.reference.child(listName);
-        Log.d(TAG, "PrintPath: " + currentRef);
-        currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
-                myCallback.readFullList(listOfProducts);
-            }
-        });
+        if(!listName.contains("(")) {
+            DatabaseReference currentRef = FireBaseUtil.reference.child(listName);
+            Log.d(TAG, "PrintPath: " + currentRef);
+            currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
+                    myCallback.readFullList(listOfProducts);
+                }
+            });
+        }
+//            DatabaseReference currentRef = FireBaseUtil.reference.child(listName);
+//            Log.d(TAG, "PrintPath: " + currentRef);
+//            currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//                @Override
+//                public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                    ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
+//                    myCallback.readFullList(listOfProducts);
+//                }
+//            });
+
+    }
+
+    public static void readFullSharedList(SharedList listName, final MyCallback myCallback){
+            DatabaseReference currentRef = FirebaseDatabase.getInstance(source).getReference()
+                    .child("users/").child(listName.getUid()).child("/lists/").child(listName.getName());
+            Log.d(TAG, "PrintPath: " + currentRef);
+            currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
+                    myCallback.readFullSharedList(listOfProducts);
+                }
+            });
     }
 
     public static void readAllLists(String path, final MyCallback myCallback){
@@ -459,7 +504,7 @@ public class FireBaseUtil {
 
     //Method to check if path is already taken - This will prevent users from doubling the data. Supported by MyCallback.ifPathExists
     public static void ifPathExists(String path, final MyCallback myCallback){
-        reference.child(path).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        globalRef.child(path).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             boolean pathExists;
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
