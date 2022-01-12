@@ -5,6 +5,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import com.symbol.shoppinglistv2.Activities.FragmentListDetails;
 import com.symbol.shoppinglistv2.Activities.FragmentMyManageLists;
@@ -118,6 +119,7 @@ public class CommandManageLists implements Command{
     }
 
     private void ibtnListDetailsListener(){
+
         ibtnListDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

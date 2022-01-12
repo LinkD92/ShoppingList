@@ -6,6 +6,9 @@ public class MyDetail {
     private int amount;
     private double price;
 
+    public MyDetail() {
+    }
+
     public MyDetail(String name, int amount, double price) {
         this.name = name;
         this.amount = amount;

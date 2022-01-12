@@ -1,5 +1,7 @@
 package com.symbol.shoppinglistv2.Components;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,7 @@ public class Product {
     private int avgExpirationDays;
     private int customID = 0;
     private int bundleAmount =0;
+    private long lastCheckDate =0;
 
 
 
@@ -138,5 +141,13 @@ public class Product {
 
     public void setBundleAmount(int bundleAmount) {
         this.bundleAmount = bundleAmount;
+    }
+
+    public long getLastCheckDate() {
+        return lastCheckDate;
+    }
+
+    public void setLastCheckDate(long lastCheckDate) {
+        this.lastCheckDate = lastCheckDate;
     }
 }

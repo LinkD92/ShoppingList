@@ -75,7 +75,7 @@ public class FragmentMyLists extends Fragment {
         ibtnListOptions = v.findViewById(R.id.ibtnListOptions);
         ibtnListDetails = v.findViewById(R.id.ibtnListDetails);
 
-        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded, spinPrivShared));
+        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded, spinPrivShared, ibtnListDetails));
         //executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));

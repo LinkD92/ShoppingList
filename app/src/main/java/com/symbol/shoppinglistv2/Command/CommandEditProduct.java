@@ -24,7 +24,7 @@ public class CommandEditProduct implements Command{
     @Override
     public boolean execute() {
         if(product != null){
-            String avgDaysConvert = String.valueOf(product.getAmount());
+            String avgDaysConvert = String.valueOf(product.getAvgExpirationDays());
             fragmentAddProduct.etAvgProductDays.setText(avgDaysConvert);
 
             fragmentAddProduct.etFABAddProductName.setText(product.getName());

@@ -22,7 +22,10 @@ import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
 import java.lang.reflect.Array;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -89,21 +92,29 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkBox.isChecked()){
+                //if(checkBox.isChecked()){
                     product.setChecked(checkBox.isChecked());
-                    notifyDataSetChanged();
-                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
-                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
-                    FireBaseUtil.mutableList.setValue(list);
-                    FireBaseUtil.addProduct(mutableList.getValue(), product);
-                }else{
-                    product.setChecked(checkBox.isChecked());
-                    notifyDataSetChanged();
-                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
-                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
-                    FireBaseUtil.mutableList.setValue(list);
-                    FireBaseUtil.addProduct(mutableList.getValue(), product);
-                }
+                    Date date = new Date();
+                    if(product.isChecked()){
+                        product.setLastCheckDate(date.getTime());
+                    }
+
+                    FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
+                //}
+//                    product.setChecked(checkBox.isChecked());
+//                    notifyDataSetChanged();
+////                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
+////                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+////                    FireBaseUtil.mutableList.setValue(list);
+//                    FireBaseUtil.addProduct(mutableList.getValue(), product);
+//                }else{
+//                    product.setChecked(checkBox.isChecked());
+//                    notifyDataSetChanged();
+////                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
+////                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+////                    FireBaseUtil.mutableList.setValue(list);
+//                    FireBaseUtil.addProduct(mutableList.getValue(), product);
+//                }
             }
         });
     }

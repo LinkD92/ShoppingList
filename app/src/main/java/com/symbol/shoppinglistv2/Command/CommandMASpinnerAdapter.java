@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import com.symbol.shoppinglistv2.Activities.MainActivity;
@@ -29,13 +30,15 @@ public class CommandMASpinnerAdapter implements Command{
     private MutableLiveData<ArrayList<String>> listLoaded;
     private MutableLiveData<ArrayList<SharedList>> sharedListLoaded;
     private MutableLiveData<String> currentListType;
+    private ImageButton ibtnListDetails;
 
 
 
-    public CommandMASpinnerAdapter(Spinner spinList, MutableLiveData<ArrayList<SharedList>> sharedListLoaded, Spinner spinPrivShared){
+    public CommandMASpinnerAdapter(Spinner spinList, MutableLiveData<ArrayList<SharedList>> sharedListLoaded, Spinner spinPrivShared, ImageButton ibtnListDetails){
         this.spinList = spinList;
         this.sharedListLoaded = sharedListLoaded;
         this.spinPrivShared = spinPrivShared;
+        this.ibtnListDetails = ibtnListDetails;
         currentListType = new MutableLiveData<>();
     }
     @Override
@@ -119,9 +122,11 @@ public class CommandMASpinnerAdapter implements Command{
                 switch (adapterView.getSelectedItemPosition()){
                     case 0:
                         currentListType.setValue(adapterView.getItemAtPosition(0).toString());
+                        ibtnListDetails.setEnabled(true);
                         break;
                     case 1:
                         currentListType.setValue(adapterView.getItemAtPosition(1).toString());
+                        ibtnListDetails.setEnabled(false);
                         break;
                 }
             }
