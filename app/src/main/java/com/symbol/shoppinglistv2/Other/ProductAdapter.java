@@ -4,11 +4,13 @@ import android.graphics.Color;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.symbol.shoppinglistv2.R;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -89,10 +92,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 if(checkBox.isChecked()){
                     product.setChecked(checkBox.isChecked());
                     notifyDataSetChanged();
+                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
+                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+                    FireBaseUtil.mutableList.setValue(list);
                     FireBaseUtil.addProduct(mutableList.getValue(), product);
                 }else{
                     product.setChecked(checkBox.isChecked());
                     notifyDataSetChanged();
+                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
+                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+                    FireBaseUtil.mutableList.setValue(list);
                     FireBaseUtil.addProduct(mutableList.getValue(), product);
                 }
             }
@@ -129,12 +138,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         private TextView tvItemProductPrice;
         private TextView tvCurrentAmountProduct, tvCurrentBundleAmount;
         private CheckBox cbCheckedProduct;
-        private ImageButton ibtnAddAmountProduct, ibtnReduceAmountProduct;
+        private ImageButton ibtnAddAmountProduct, ibtnReduceAmountProduct, ibtnOptions;
         private ConstraintLayout clContainerWholeProduct;
         private GestureDetector gestureDetector;
+        private FragmentMyOpener fragmentMyOpener;
+        private FragmentAddProduct fragmentAddProduct;
 
         public ViewHolder(View view) {
             super(view);
+            ibtnOptions = view.findViewById(R.id.ibtnProductOptions);
             tvItemProductName = view.findViewById(R.id.tvItemProductName);
             tvItemProductPrice = view.findViewById(R.id.tvItemProductPrice);
             tvCurrentAmountProduct = view.findViewById(R.id.tvCurrentAmountProduct);
@@ -189,6 +201,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         private void onClicklisteners(){
             btnIncreaseListener();
             ibtnReduceAmountProductListener();
+            ibtnOptionsListener();
         }
 
         private void btnIncreaseListener(){
@@ -216,6 +229,39 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 }
             });
 
+        }
+
+        private void ibtnOptionsListener(){
+            ibtnOptions.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Product product = productList.get(getAdapterPosition());
+                    PopupMenu popupMenu = new PopupMenu(MainActivity.appContext, view);
+                    popupMenu.getMenuInflater().inflate(R.menu.product_options, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+
+                            switch (menuItem.getItemId()){
+                                case R.id.menuOptionsRemove:
+                                    FireBaseUtil.removeProduct(FireBaseUtil.mutableList.getValue(), product);
+                                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
+                                    list.getProducts().remove(product.getName());
+                                    FireBaseUtil.mutableList.setValue(list);
+                                    break;
+                                case R.id.menuOptionsEdit:
+                                    fragmentAddProduct = new FragmentAddProduct(product);
+                                    fragmentMyOpener = new FragmentMyOpener(container);
+                                    fragmentMyOpener.open(fragmentAddProduct);
+                                    fragmentMyOpener.close(fragmentAddProduct);
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         }
 
 

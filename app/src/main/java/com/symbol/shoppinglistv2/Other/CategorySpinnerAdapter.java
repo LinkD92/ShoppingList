@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.symbol.shoppinglistv2.Activities.MainActivity;
 import com.symbol.shoppinglistv2.Components.Category;
+import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
@@ -46,8 +47,13 @@ public class CategorySpinnerAdapter extends ArrayAdapter{
         TextView tv = layout.findViewById(R.id.tvSpinnerCategoryName);
         ConstraintLayout cl = layout.findViewById(R.id.clSpinnerItem);
 
-        tv.setText(categoryArrayList.get(position).getName());
-        cl.setBackgroundColor(categoryArrayList.get(position).getColor());
+        try{
+            tv.setText(categoryArrayList.get(position).getName());
+            cl.setBackgroundColor(categoryArrayList.get(position).getColor());
+        }catch (IndexOutOfBoundsException e){
+            tv.setText(categoryArrayList.get(0).getName());
+            cl.setBackgroundColor(categoryArrayList.get(0).getColor());
+        }
 
 
 

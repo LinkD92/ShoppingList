@@ -34,7 +34,7 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
 
     @Override
     public boolean isItemViewSwipeEnabled() {
-        return true;
+        return false;
     }
 
 
@@ -78,6 +78,8 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
         Log.d(TAG, "onSelectedChanged: " + actionState);
+
+
         if(actionState == ItemTouchHelper.ACTION_STATE_DRAG){
             viewHolder.itemView.getContext().getResources();
             viewHolder.itemView.setBackgroundColor(Color.LTGRAY);

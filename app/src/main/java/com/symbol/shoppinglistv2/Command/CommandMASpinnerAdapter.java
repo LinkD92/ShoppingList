@@ -71,6 +71,7 @@ public class CommandMASpinnerAdapter implements Command{
                 sharedListLoaded.setValue(sharedLists);
             }
         });
+
         sharedListLoaded.observeForever(new Observer<ArrayList<SharedList>>() {
             @Override
             public void onChanged(ArrayList<SharedList> sharedLists) {

@@ -4,14 +4,16 @@ public class SharedList {
     private String email;
     private String uid;
     private String name;
+    private long update;
 
     public SharedList() {
     }
 
-    public SharedList(String email, String uid, String name) {
+    public SharedList(String email, String uid, String name, long update) {
         this.email = email;
         this.uid = uid;
         this.name = name;
+        this.update = update;
     }
 
     public String getEmail() {
@@ -36,5 +38,13 @@ public class SharedList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(long update) {
+        this.update = update;
     }
 }

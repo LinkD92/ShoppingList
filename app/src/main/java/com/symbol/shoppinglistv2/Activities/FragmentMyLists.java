@@ -82,6 +82,7 @@ public class FragmentMyLists extends Fragment {
         //executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
         executeCommand(new CommandTestCommand(this, currentList, sharedListLoaded));
 
+
         return v;
     }
 

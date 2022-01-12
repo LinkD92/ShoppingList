@@ -89,7 +89,7 @@ public class CommandAddNewProduct implements Command {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        FireBaseUtil.addProduct(product);
+                        FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
                         Log.d(MainActivity.TAG, "Dialog Positive: ");
                         break;
 
@@ -119,7 +119,12 @@ public class CommandAddNewProduct implements Command {
             }else{
                 price = Double.parseDouble(fragmentAddProduct.etFABAddProductPrice.getText().toString());
             }
-            Category category = (Category) fragmentAddProduct.spnProductCategory.getSelectedItem();
+            Category category;
+            try{
+                category = (Category) fragmentAddProduct.spnProductCategory.getSelectedItem();
+            }catch (IndexOutOfBoundsException e){
+                category = (Category) fragmentAddProduct.spnProductCategory.getItemAtPosition(0);
+            }
             if(fragmentAddProduct.etBarcodeValue.getText().toString().length() > 0){
                 barcodeVal = Integer.parseInt(fragmentAddProduct.etBarcodeValue.getText().toString());
             }else{

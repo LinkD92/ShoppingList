@@ -5,6 +5,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.google.api.LogDescriptor;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.symbol.shoppinglistv2.Activities.FragmentMyLists;
 import com.symbol.shoppinglistv2.Activities.MainActivity;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
@@ -63,6 +67,7 @@ public class CommandTestCommand implements Command{
                     FireBaseUtil.readFullList(path, new MyCallback() {
                         @Override
                         public void readFullList(ListOfProducts listOfProducts) {
+                            FireBaseUtil.mutableList.setValue(listOfProducts);
                             currentList.setValue(listOfProducts);
                         }
                     });
@@ -75,6 +80,7 @@ public class CommandTestCommand implements Command{
                             FireBaseUtil.readFullSharedList(sharedList, new MyCallback() {
                                 @Override
                                 public void readFullSharedList(ListOfProducts listOfProducts) {
+                                    FireBaseUtil.mutableList.setValue(listOfProducts);
                                     currentList.setValue(listOfProducts);
                                 }
                             });
@@ -103,13 +109,12 @@ public class CommandTestCommand implements Command{
                 sortProducts(productArrayList);
                 fragmentMyLists.rvProducts.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
                 productAdapter = new ProductAdapter(productArrayList, fragmentMyLists.fragmentContainer, currentList);
-
                 ItemTouchHelper.Callback callback = new MyItemTouchHelper(productAdapter, productArrayList);
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                 itemTouchHelper.attachToRecyclerView(fragmentMyLists.rvProducts);
                 productAdapter.setTouchHelper(itemTouchHelper);
                 fragmentMyLists.rvProducts.setAdapter(productAdapter);
-
+                productAdapter.notifyDataSetChanged();
 
             }
         });
