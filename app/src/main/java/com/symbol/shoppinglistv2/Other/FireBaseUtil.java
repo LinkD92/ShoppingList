@@ -19,13 +19,18 @@ import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
+import com.symbol.shoppinglistv2.Components.SharedList;
 import com.symbol.shoppinglistv2.Components.SharedMember;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 //Class created to manage Firebase access
 public class FireBaseUtil {
@@ -36,11 +41,15 @@ public class FireBaseUtil {
 
     public static final String TAG = "FirebaseUtil";
     public static DatabaseReference reference;
+    public static DatabaseReference globalRef;
     //This will be managed in app according to the current location
     public static String databaseLocation;
     //Current list selected
     public static String currentList;
     //Current Bundle selection
+    public static MutableLiveData<ListOfProducts> mutableList;
+    public static MutableLiveData<Integer> changeDetector = new MutableLiveData<>();
+
     public static String currentBundle;
     //Current fragment opened;
     public static int currentSelection;
@@ -72,6 +81,7 @@ public class FireBaseUtil {
             userPath = user.getUid();
             reference = FirebaseDatabase.getInstance(source).getReference().child("users").child(userPath);
             reference.child("email").setValue(user.getEmail());
+            globalRef = FirebaseDatabase.getInstance(source).getReference().child("users");
         }else{
             reference = FirebaseDatabase.getInstance(source).getReference().child("users");
         }
@@ -104,6 +114,11 @@ public class FireBaseUtil {
         reference.child(buildPath).child(product.getName()).setValue(product);
     }
 
+    public static void addProduct(ListOfProducts listOfProducts, Product product){
+        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName())
+                .setValue(product);
+    }
+
     public static void addBundleProduct(String path, Product product){
         String buildPath = "bundles/" + path  + "/products";
         reference.child(buildPath).child(product.getName()).setValue(product);
@@ -114,16 +129,24 @@ public class FireBaseUtil {
         reference.child(buildPath).child(product.getName()).removeValue();
     }
 
-    public static void addAddArrayProducts(String path, HashMap<String, Product> productHashMap){
-        reference.child(path).setValue(productHashMap);
+    public static void addAddArrayProducts(ListOfProducts listOfProducts, HashMap<String, Product> productHashMap){
+        globalRef.child(listOfProducts.getListPath()).child("products").setValue(productHashMap);
     }
 
     public static void removeProduct(String path, Product product){
         reference.child(path).child(product.getName()).removeValue();
     }
 
+    public static void removeProduct(ListOfProducts listOfProducts, Product product){
+        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()).removeValue();
+    }
+
     public static void addList(String path, ListOfProducts list){
         reference.child(path).setValue(list);
+    }
+
+    public static void addList(ListOfProducts list){
+        globalRef.child(list.getListPath()).setValue(list);
     }
 
     public static void removeList(String listName){
@@ -144,6 +167,42 @@ public class FireBaseUtil {
 
     public static void removeCategory(Category category){
         FireBaseUtil.reference.child("categories/" + category.getName()).removeValue();
+    }
+
+    public static void sendShare(ListOfProducts listOfProducts){
+        HashMap<String, SharedMember> hashShared = listOfProducts.getSharedWith();
+            for (Map.Entry<String, SharedMember> entry:
+                    hashShared.entrySet()) {
+                SharedMember sharedMember = entry.getValue();
+                if(listOfProducts.isShared()){
+                    String email = FireBaseUtil.user.getEmail();
+                    String uid = FireBaseUtil.user.getUid();
+                    String name = listOfProducts.getName();
+                    int update = 0;
+                    SharedList sharedList = new SharedList(email, uid, name, update);
+                    FirebaseDatabase.getInstance(source).getReference().child("users")
+                        .child(sharedMember.getUid()).child("sharedLists")
+                        .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                        .setValue(sharedList);
+                }else {
+                    FirebaseDatabase.getInstance(source).getReference().child("users")
+                        .child(sharedMember.getUid()).child("sharedLists")
+                        .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                        .removeValue();
+                }
+        }
+    }
+    
+    public static void removeShare(ListOfProducts listOfProducts){
+        HashMap<String, SharedMember> hashShared = listOfProducts.getSharedWith();
+        for (Map.Entry<String, SharedMember> entry:
+                hashShared.entrySet()) {
+            SharedMember sharedMember = entry.getValue();
+            FirebaseDatabase.getInstance(source).getReference().child("users")
+                    .child(sharedMember.getUid()).child("sharedLists")
+                    .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                    .removeValue();
+            }
     }
 
     public static void addBundle(String path, MyBundle bundle){
@@ -289,7 +348,6 @@ public class FireBaseUtil {
                     for (DataSnapshot ds :
                             snapshot.getChildren()) {
                         String list = ds.child("name").getValue(String.class);
-                        Log.d(TAG, "LTEST: " + ds.toString());
                         lists.add(list);
                     }
                     myCallback.onListCallback(lists);
@@ -300,40 +358,95 @@ public class FireBaseUtil {
                 Log.d(TAG, "onCancelled: " + error);
             }
         };
-        //reference.child("sharedLists").addValueEventListener(listener);
         reference.child("lists").addValueEventListener(listener);
     }
 
     public static void readSharedList(final MyCallback myCallback){
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(reference != null) {
+                    ArrayList<SharedList> lists = new ArrayList<>();
+                    for (DataSnapshot ds :
+                            snapshot.getChildren()) {
+                        for (DataSnapshot snap :
+                                ds.getChildren()) {
+                            SharedList sharedList = snap.getValue(SharedList.class);
+                            lists.add(sharedList);
+                        }
+                    }
+                    myCallback.readSharedLists(lists);
+                    Log.d(TAG, "MyTest: " + lists.size());
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        };
+        reference.child("sharedLists").addValueEventListener(listener);
     }
+
+
 
     public static void readFullList(String listName, final MyCallback myCallback){
-        DatabaseReference currentRef = FireBaseUtil.reference.child(listName);
-        Log.d(TAG, "PrintPath: " + currentRef);
-        currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
-                myCallback.readFullList(listOfProducts);
-            }
-        });
+        if(!listName.contains("(")) {
+            DatabaseReference currentRef = FireBaseUtil.reference.child(listName);
+            Log.d(TAG, "PrintPath: " + currentRef);
+            currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
+                    myCallback.readFullList(listOfProducts);
+                }
+            });
+        }
     }
 
-    public static void readAllLists(String path, final MyCallback myCallback){
-        DatabaseReference ref = FireBaseUtil.reference.child(path);
-        ref.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+    public static void readFullSharedList(SharedList listName, final MyCallback myCallback){
+        ValueEventListener listener = new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                ArrayList<String> test = new ArrayList<>();
-                for (DataSnapshot ds:
-                     task.getResult().getChildren()) {
-                    test.add(ds.getKey());
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(reference != null) {
+                    ListOfProducts list = new ListOfProducts();
+                    list = snapshot.getValue(ListOfProducts.class);
+                    Log.d(TAG, "onDataChange: " + list.getName());
+
+                            DatabaseReference currentRef = FirebaseDatabase.getInstance(source).getReference()
+                .child("users/").child(listName.getUid()).child("/lists/").child(listName.getName());
+                Log.d(TAG, "PrintPath: " + currentRef);
+                currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
+                        myCallback.readFullSharedList(listOfProducts);
+                    }
+                });
+
+                    //myCallback.readFullSharedList(listOfProducts);
                 }
-                myCallback.readAllList(test);
             }
-        });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        globalRef.child(listName.getUid()).child("lists/").child(listName.getName()).addValueEventListener(listener);
+        //reference.child("sharedLists").addValueEventListener(listener);
+
+
+//        DatabaseReference currentRef = FirebaseDatabase.getInstance(source).getReference()
+//                .child("users/").child(listName.getUid()).child("/lists/").child(listName.getName());
+//        Log.d(TAG, "PrintPath: " + currentRef);
+//        currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DataSnapshot> task) {
+//                ListOfProducts listOfProducts = task.getResult().getValue(ListOfProducts.class);
+//                myCallback.readFullSharedList(listOfProducts);
+//            }
+//        });
     }
+
 
     //Method to read categories
     public static void readCategory(final MyCallback myCallback){
@@ -401,7 +514,7 @@ public class FireBaseUtil {
 
     //Method to check if path is already taken - This will prevent users from doubling the data. Supported by MyCallback.ifPathExists
     public static void ifPathExists(String path, final MyCallback myCallback){
-        reference.child(path).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+        globalRef.child(path).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             boolean pathExists;
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

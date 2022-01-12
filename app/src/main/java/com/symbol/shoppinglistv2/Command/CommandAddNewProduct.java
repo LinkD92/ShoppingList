@@ -14,6 +14,7 @@ import com.symbol.shoppinglistv2.Activities.ActivityBarcodeScanner;
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
 import com.symbol.shoppinglistv2.Activities.MainActivity;
 import com.symbol.shoppinglistv2.Components.Category;
+import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
@@ -52,7 +53,8 @@ public class CommandAddNewProduct implements Command {
                 if(name.length() > 0){
                     Product product = extractValues();
                     //Callback to check if product already exists - see more class: MyCallback.onProductExistsCallback
-                    String path = "lists/" +FireBaseUtil.currentList +"/products/"+ product.getName();
+                    //String path = "lists/" +FireBaseUtil.currentList +"/products/"+ product.getName();
+                    String path = FireBaseUtil.mutableList.getValue().getListPath() +"/products/"+ product.getName();
                     FireBaseUtil.ifPathExists(path, new MyCallback() {
                         @Override
                         public boolean onProductExistsCallback(boolean isTrue) {
@@ -62,12 +64,11 @@ public class CommandAddNewProduct implements Command {
                                 dialogInfo(product);
                             }else{
                                 //add product do database
-                                FireBaseUtil.addProduct(product);
-                                Log.d(TAG, "Product: " + product.getName());
-                                Log.d(TAG, "Product: " + product.getCategory());
-                                Log.d(TAG, "Product: " + product.getPrice());
-                                Log.d(TAG, "Product: " + product.getBarCode());
-                                Log.d(TAG, "Product: " + product.getAvgExpirationDays());
+                                FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
+                                ListOfProducts list = FireBaseUtil.mutableList.getValue();
+                                list.getProducts().put(product.getName(), product);
+                                FireBaseUtil.mutableList.setValue(list);
+
                                 Toast.makeText(MainActivity.appContext, "Product has been added", Toast.LENGTH_LONG).show();
                             }
                             return super.onProductExistsCallback(isTrue);
@@ -88,7 +89,7 @@ public class CommandAddNewProduct implements Command {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        FireBaseUtil.addProduct(product);
+                        FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
                         Log.d(MainActivity.TAG, "Dialog Positive: ");
                         break;
 
@@ -118,7 +119,12 @@ public class CommandAddNewProduct implements Command {
             }else{
                 price = Double.parseDouble(fragmentAddProduct.etFABAddProductPrice.getText().toString());
             }
-            Category category = (Category) fragmentAddProduct.spnProductCategory.getSelectedItem();
+            Category category;
+            try{
+                category = (Category) fragmentAddProduct.spnProductCategory.getSelectedItem();
+            }catch (IndexOutOfBoundsException e){
+                category = (Category) fragmentAddProduct.spnProductCategory.getItemAtPosition(0);
+            }
             if(fragmentAddProduct.etBarcodeValue.getText().toString().length() > 0){
                 barcodeVal = Integer.parseInt(fragmentAddProduct.etBarcodeValue.getText().toString());
             }else{

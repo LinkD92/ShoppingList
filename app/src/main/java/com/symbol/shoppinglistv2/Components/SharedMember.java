@@ -8,9 +8,9 @@ public class SharedMember {
     public SharedMember() {
     }
 
-    public SharedMember(String uid, String email, String path) {
+    public SharedMember(String uid, String email) {
         this.email = email;
-        this.path = path;
+      //  this.path = path;
         this.uid = uid;
     }
 

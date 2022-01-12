@@ -6,6 +6,7 @@ import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
+import com.symbol.shoppinglistv2.Components.SharedList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +29,10 @@ public abstract class MyCallback {
     public void getList(ListOfProducts listOfProducts){}
     public void getBundles(ArrayList<MyBundle> myBundleArrayList){};
     public MyBundle findBundle(MyBundle bundle){return bundle;}
-    public void readSharedLists(ArrayList<ListOfProducts> listOfProductsArrayList){}
+    public void readSharedLists(ArrayList<SharedList> sharedLists){}
     public void readListsInHash(HashMap<String, ListOfProducts> listHashMap) {}
     public void readFullList (ListOfProducts listOfProducts){}
+    public void readFullSharedList (ListOfProducts listOfProducts){}
     public void readAllList(ArrayList<String> listNames){}
     public void readUsers(HashMap<String,String> userEmails){}
 
