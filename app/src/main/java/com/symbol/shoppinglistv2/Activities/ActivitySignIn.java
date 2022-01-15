@@ -24,10 +24,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.R;
 
-import static com.symbol.shoppinglistv2.Activities.MainActivity.TAG;
+import static com.symbol.shoppinglistv2.Activities.ActivityMain.TAG;
 
 public class ActivitySignIn extends AppCompatActivity {
 

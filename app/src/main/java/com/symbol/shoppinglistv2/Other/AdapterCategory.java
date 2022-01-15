@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.symbol.shoppinglistv2.Activities.FragmentAddCategory;
+import com.symbol.shoppinglistv2.Activities.FragmentCreateCategory;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.R;
 
@@ -14,31 +14,31 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder>{
+public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHolder>{
 
     private final String TAG = "com.symbol.shoppinglistv2.Other.CategoryAdapter";
     private ArrayList<Category> categoryArrayList;
     private View container;
-    private FragmentAddCategory fragmentAddCategory;
+    private FragmentCreateCategory fragmentCreateCategory;
 
 
 
-    public CategoryAdapter(ArrayList<Category> categoryList, View container) {
+    public AdapterCategory(ArrayList<Category> categoryList, View container) {
         this.categoryArrayList = categoryList;
         this.container = container;
     }
 
     @Override
-    public CategoryAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public AdapterCategory.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.adapter_category_item, viewGroup, false);
 
-        return new CategoryAdapter.ViewHolder(view);
+        return new AdapterCategory.ViewHolder(view);
     }
 
     //Method that binds data from Database to the view
     @Override
-    public void onBindViewHolder(CategoryAdapter.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(AdapterCategory.ViewHolder viewHolder, final int position) {
         //proper Values assigned to the Views
         Category category = categoryArrayList.get(position);
         viewHolder.categoryName.setText(category.getName());
@@ -51,9 +51,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             public void onClick(View view) {
                 //opens FragmentAddCategory fragment with category parameter to assign values of
                 // currently selected category to the Views.
-                fragmentAddCategory = new FragmentAddCategory(category);
-                fragmentMyOpener.close(fragmentAddCategory);
-                fragmentMyOpener.replace(fragmentAddCategory);
+                fragmentCreateCategory = new FragmentCreateCategory(category);
+                fragmentMyOpener.close(fragmentCreateCategory);
+                fragmentMyOpener.replace(fragmentCreateCategory);
             }
         });
         viewHolder.ibtnRemoveCategory.setOnClickListener(new View.OnClickListener() {

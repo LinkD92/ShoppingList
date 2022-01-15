@@ -1,6 +1,5 @@
 package com.symbol.shoppinglistv2.Other;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,12 +7,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.symbol.shoppinglistv2.Activities.FragmentAddBundle;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.R;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

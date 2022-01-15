@@ -1,19 +1,16 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
-import com.symbol.shoppinglistv2.Activities.FragmentListDetails;
-import com.symbol.shoppinglistv2.Activities.FragmentMyManageLists;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.FragmentListSummary;
+import com.symbol.shoppinglistv2.Activities.FragmentManageLists;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
-import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
 import androidx.lifecycle.MutableLiveData;
@@ -26,8 +23,8 @@ public class CommandManageLists implements Command{
     private View container;
 
     private FragmentMyOpener fragmentMyOpener;
-    private FragmentListDetails fragmentListDetails = new FragmentListDetails();
-    private FragmentMyManageLists fragmentMyManageLists;
+    private FragmentListSummary fragmentListSummary = new FragmentListSummary();
+    private FragmentManageLists fragmentManageLists;
     private MutableLiveData<ListOfProducts> currentList;
 
 
@@ -56,7 +53,7 @@ public class CommandManageLists implements Command{
             @Override
             public void onClick(View view) {
 
-                PopupMenu popupMenu = new PopupMenu(MainActivity.appContext, view);
+                PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                 popupMenu.getMenuInflater().inflate(R.menu.list_actions, popupMenu.getMenu());
                 popupMenu.getMenu().getItem(3).setTitle("Sort By: " + currentList.getValue().getSortType());
                 if(!currentList.getValue().getListPath().contains(FireBaseUtil.userPath)){
@@ -94,15 +91,15 @@ public class CommandManageLists implements Command{
     }
 
     private void menuItemClickAddList(){
-        fragmentMyManageLists = new FragmentMyManageLists();
-        fragmentMyOpener.open(fragmentMyManageLists);
-        fragmentMyOpener.close(fragmentMyManageLists);
+        fragmentManageLists = new FragmentManageLists();
+        fragmentMyOpener.open(fragmentManageLists);
+        fragmentMyOpener.close(fragmentManageLists);
     }
 
     private void menuItemClickEditList(){
-        fragmentMyManageLists = new FragmentMyManageLists(FireBaseUtil.mutableList.getValue());
-        fragmentMyOpener.close(fragmentMyManageLists);
-        fragmentMyOpener.open(fragmentMyManageLists);
+        fragmentManageLists = new FragmentManageLists(FireBaseUtil.mutableList.getValue());
+        fragmentMyOpener.close(fragmentManageLists);
+        fragmentMyOpener.open(fragmentManageLists);
     }
 
     private void menuItemClickRemoveList(){
@@ -123,8 +120,8 @@ public class CommandManageLists implements Command{
         ibtnListDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentMyOpener.open(fragmentListDetails);
-                fragmentMyOpener.close(fragmentListDetails);
+                fragmentMyOpener.open(fragmentListSummary);
+                fragmentMyOpener.close(fragmentListSummary);
             }
         });
 

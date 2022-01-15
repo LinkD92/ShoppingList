@@ -5,9 +5,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.MyBundle;
-import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
@@ -44,7 +43,7 @@ public class CommandBundleToList implements Command{
                         myBundleArrayList) {
                     stringBund.add(bundle.getName());
                 }
-                adapter = new ArrayAdapter<>(MainActivity.appContext, R.layout.support_simple_spinner_dropdown_item, stringBund);
+                adapter = new ArrayAdapter<>(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, stringBund);
                 searchableSpinner.setAdapter(adapter);
 
                 super.getBundles(myBundleArrayList);

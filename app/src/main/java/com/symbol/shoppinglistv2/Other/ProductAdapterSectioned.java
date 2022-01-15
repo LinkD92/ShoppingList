@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.sectionedrecyclerview.SectionedRecyclerViewAdapter;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.R;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class ProductAdapterSectioned extends SectionedRecyclerViewAdapter<Produc
         });
 
         if(selectedSection == i && selectedItem == i1){
-            Log.d(MainActivity.TAG, "onBindViewHolder:  + tu sie zmienia tlo");
+            Log.d(ActivityMain.TAG, "onBindViewHolder:  + tu sie zmienia tlo");
         }
     }
 

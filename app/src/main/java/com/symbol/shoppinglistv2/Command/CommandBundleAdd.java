@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 
 import com.symbol.shoppinglistv2.Activities.FragmentAddBundle;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleProducts;
@@ -65,7 +65,7 @@ public class CommandBundleAdd implements Command{
                     stringBund.add(pr.getName());
                     Log.d(TAG, "onProductCallback string: " + stringBund.size());
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(MainActivity.appContext, R.layout.support_simple_spinner_dropdown_item, stringBund);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, stringBund);
                 fragmentAddBundle.ssBundleAddProductName.setAdapter(adapter);
             }
         });
@@ -97,7 +97,7 @@ public class CommandBundleAdd implements Command{
                     Log.d(TAG, "onProductCallback: " + productArrayList.size());
                     products = productArrayList;
                     adapter = new AdapterBundleProducts(productArrayList);
-                    fragmentAddBundle.rvBundleProducts.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
+                    fragmentAddBundle.rvBundleProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
                     new ItemTouchHelper(simpleCallback).attachToRecyclerView(fragmentAddBundle.rvBundleProducts);
                     fragmentAddBundle.rvBundleProducts.setAdapter(adapter);
                 }

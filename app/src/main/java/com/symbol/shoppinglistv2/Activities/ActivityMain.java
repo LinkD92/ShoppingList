@@ -1,13 +1,13 @@
 package com.symbol.shoppinglistv2.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,18 +15,15 @@ import android.widget.Spinner;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandMAbnvActions;
+import com.symbol.shoppinglistv2.Command.CommandPushNotification;
 import com.symbol.shoppinglistv2.Command.CommandSignIn;
-import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.R;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /*
 
@@ -49,12 +46,14 @@ import com.symbol.shoppinglistv2.R;
 
  */
 
-public class MainActivity extends AppCompatActivity {
+public class ActivityMain extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
     public static Context appContext;
     public static FragmentManager fragmentManager;
-    public static MainActivity mainActivity;
+    public static ActivityMain activityMain;
+    public static AlarmManager service;
+    public static NotificationManager notificationManager;
 
     //Views
     public ConstraintLayout clFragmentContainer;
@@ -73,8 +72,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appContext = this;
-        mainActivity = this;
+        activityMain = this;
         fragmentManager = getSupportFragmentManager();
+        service = (AlarmManager) getSystemService(ALARM_SERVICE);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         inflater = getLayoutInflater();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -90,13 +91,19 @@ public class MainActivity extends AppCompatActivity {
 
         //Commands to execute
         executeCommands();
+
+        Date data = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_YEAR, 8);
+        Date nowaData = calendar.getTime();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         executeCommand(new CommandSignIn(this));
-        Log.d(MainActivity.TAG, "MATAG: on Start");
+        Log.d(ActivityMain.TAG, "MATAG: on Start");
 
     }
 
@@ -107,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
     private void executeCommands(){
         executeCommand(new CommandSignIn(this));
         executeCommand(new CommandMAbnvActions(bnvBottomMenu, clFragmentContainerBNV));
+        executeCommand(new CommandPushNotification(this,service, notificationManager ));
     }
 
 }

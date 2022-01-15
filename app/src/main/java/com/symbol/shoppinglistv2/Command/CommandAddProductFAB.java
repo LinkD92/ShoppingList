@@ -29,13 +29,11 @@ public class CommandAddProductFAB implements Command{
 
     @Override
     public boolean execute() {
+        Log.d(TAG, "MyTest: tu jestem" );
         fragmentMyOpener = new FragmentMyOpener(container);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                fragmentMyOpener.open(fragmentAddProduct);
-//                fragmentMyOpener.close(fragmentAddProduct);
-
                 fragmentMyOpener.open(fragmentAddToList);
                 fragmentMyOpener.close(fragmentAddToList);
             }

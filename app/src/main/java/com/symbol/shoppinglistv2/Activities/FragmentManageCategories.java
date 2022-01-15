@@ -1,28 +1,20 @@
 package com.symbol.shoppinglistv2.Activities;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandCategoryDisplay;
 
 import com.symbol.shoppinglistv2.R;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-public class FragmentMyManageCategories extends FragmentMyManager {
+public class FragmentManageCategories extends FragmentManagement {
     private final String TAG = "com.symbol.shoppinglistv2.Activities.FragmentMyManageCategories";
     private RecyclerView rvCategoryAdapter;
     private ConstraintLayout clContainer;

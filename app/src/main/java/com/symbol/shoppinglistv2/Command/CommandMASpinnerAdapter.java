@@ -1,14 +1,12 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.bluetooth.le.ScanSettings;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.SharedList;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
@@ -16,7 +14,6 @@ import com.symbol.shoppinglistv2.R;
 
 import java.util.ArrayList;
 
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
@@ -59,7 +56,7 @@ public class CommandMASpinnerAdapter implements Command{
         listLoaded.observeForever(new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> strings) {
-                adapter = new ArrayAdapter(MainActivity.appContext, R.layout.support_simple_spinner_dropdown_item, listLoaded.getValue());
+                adapter = new ArrayAdapter(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, listLoaded.getValue());
                 adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                 spinList.setAdapter(adapter);
                 spinList.setSelection(FireBaseUtil.spinnerPositionERROR);
@@ -84,7 +81,7 @@ public class CommandMASpinnerAdapter implements Command{
                     String sharedList = "(" +sh.getEmail() +")"+sh.getName();
                     tempArray.add(sharedList);
                 }
-                adapter = new ArrayAdapter(MainActivity.appContext, R.layout.support_simple_spinner_dropdown_item, tempArray);
+                adapter = new ArrayAdapter(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, tempArray);
                 adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                 spinList.setAdapter(adapter);
                 spinList.setSelection(FireBaseUtil.spinnerPositionERROR);
@@ -112,7 +109,7 @@ public class CommandMASpinnerAdapter implements Command{
         ArrayList<String > privShared = new ArrayList<>();
         privShared.add("Private");
         privShared.add("Shared");
-        adapter = new ArrayAdapter(MainActivity.appContext, R.layout.support_simple_spinner_dropdown_item, privShared);
+        adapter = new ArrayAdapter(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, privShared);
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         spinPrivShared.setAdapter(adapter);
 

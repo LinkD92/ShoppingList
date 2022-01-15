@@ -8,33 +8,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.symbol.shoppinglistv2.Command.Command;
-import com.symbol.shoppinglistv2.Command.CommandBundleList;
+import com.symbol.shoppinglistv2.Command.CommandManageLogs;
 import com.symbol.shoppinglistv2.R;
 
 
-public class FragmentMyManageBundles extends Fragment {
+public class FragmentNotificationLog extends Fragment {
 
-    private RecyclerView rvBundleList;
-    private View container;
+    private ImageButton ibtnCloseFragment;
+    private RecyclerView rvNotifications;
 
+
+    public FragmentNotificationLog() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_manage_bundles, container, false);
-        View v2 = inflater.inflate(R.layout.fragment_manager, container, false);
-        rvBundleList = v.findViewById(R.id.rvBundles);
-        container = v2.findViewById(R.id.clFragmentManageContainerFAB);
+        // Inflate the layout for this fragment
+        View v =  inflater.inflate(R.layout.fragment_notification_log, container, false);
 
-        executeCommand(new CommandBundleList(rvBundleList, container));
+        rvNotifications = v.findViewById(R.id.rvNotifications);
+
+        executeCommand(new CommandManageLogs(ibtnCloseFragment, rvNotifications));
 
         return v;
     }

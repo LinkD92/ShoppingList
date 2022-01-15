@@ -3,7 +3,6 @@ package com.symbol.shoppinglistv2.Other;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.symbol.shoppinglistv2.Components.MyDetail;
@@ -15,12 +14,12 @@ import java.util.HashMap;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class DetailsAdapter extends RecyclerView.Adapter<DetailsAdapter.ViewHolder> {
+public class AdapterDetails extends RecyclerView.Adapter<AdapterDetails.ViewHolder> {
 
 private HashMap<String , MyDetail> myDetails;
 private ArrayList<MyDetail> myDetailArrayList;
 
-    public DetailsAdapter(HashMap<String, MyDetail> myDetails) {
+    public AdapterDetails(HashMap<String, MyDetail> myDetails) {
         this.myDetails = myDetails;
         myDetailArrayList = new ArrayList<>();
         for (String name :

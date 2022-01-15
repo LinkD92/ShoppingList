@@ -2,15 +2,14 @@ package com.symbol.shoppinglistv2.Other;
 
 import com.google.firebase.database.DatabaseReference;
 import com.symbol.shoppinglistv2.Components.Category;
-import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
+import com.symbol.shoppinglistv2.Components.MyLog;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Components.SharedList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 //Abstract callback class for syncing data from firebase
 public abstract class MyCallback {
@@ -35,5 +34,6 @@ public abstract class MyCallback {
     public void readFullSharedList (ListOfProducts listOfProducts){}
     public void readAllList(ArrayList<String> listNames){}
     public void readUsers(HashMap<String,String> userEmails){}
+    public void readLog(ArrayList<MyLog> myLogs){}
 
 }

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/purple_200"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Activities.FragmentMyLists">
+    tools:context=".Activities.FragmentLists">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

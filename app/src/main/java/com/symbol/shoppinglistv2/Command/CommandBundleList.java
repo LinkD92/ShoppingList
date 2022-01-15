@@ -1,12 +1,9 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.MyBundle;
-import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleItems;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
@@ -38,7 +35,7 @@ public class CommandBundleList implements Command{
                 super.getBundles(myBundleArrayList);
                 bundleArrayList = myBundleArrayList;
                 adapterBundleItems = new AdapterBundleItems(myBundleArrayList,container );
-                rvBundleList.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
+                rvBundleList.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
                 new ItemTouchHelper(test()).attachToRecyclerView(rvBundleList);
                 rvBundleList.setAdapter(adapterBundleItems);
 

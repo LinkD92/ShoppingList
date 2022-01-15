@@ -5,16 +5,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
-import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Other.AdapterBundleItems;
 import com.symbol.shoppinglistv2.Other.AdapterBundleOnList;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
-import com.symbol.shoppinglistv2.Other.MyCallback;
 
-import java.util.ArrayList;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CommandMABundleDisplay implements Command{

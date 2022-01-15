@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,24 +15,17 @@ import android.widget.Spinner;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandAddProductFAB;
-import com.symbol.shoppinglistv2.Command.CommandMABundleDisplay;
-import com.symbol.shoppinglistv2.Command.CommandMAProductDisplay;
 import com.symbol.shoppinglistv2.Command.CommandMASpinnerAdapter;
 import com.symbol.shoppinglistv2.Command.CommandManageLists;
 import com.symbol.shoppinglistv2.Command.CommandTestCommand;
-import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.SharedList;
-import com.symbol.shoppinglistv2.Other.BundleDetailsFiller;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
-import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
-public class FragmentMyLists extends Fragment {
+public class FragmentLists extends Fragment {
 
     private final String TAG = "com.symbol.shoppinglistv2.Activities.FragmentMyLists";
     public Spinner spinList;
@@ -48,7 +40,7 @@ public class FragmentMyLists extends Fragment {
     private MutableLiveData<ArrayList<SharedList>> sharedListLoaded;
 
 
-    public FragmentMyLists() {
+    public FragmentLists() {
         currentList = new MutableLiveData<>();
         sharedListLoaded = new MutableLiveData<>();
         // Required empty public constructor
@@ -81,8 +73,6 @@ public class FragmentMyLists extends Fragment {
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));
         //executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
         executeCommand(new CommandTestCommand(this, currentList, sharedListLoaded));
-
-
         return v;
     }
 

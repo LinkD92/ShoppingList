@@ -1,21 +1,13 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.util.Log;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.symbol.shoppinglistv2.Activities.FragmentAddBundle;
-import com.symbol.shoppinglistv2.Activities.FragmentAddCategory;
-import com.symbol.shoppinglistv2.Activities.FragmentMyManageBundles;
-import com.symbol.shoppinglistv2.Activities.FragmentMyManageCategories;
-import com.symbol.shoppinglistv2.Components.Category;
+import com.symbol.shoppinglistv2.Activities.FragmentCreateCategory;
 import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 
-import javax.security.auth.callback.Callback;
-
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 
 //Command to manage FAB actions according to the currently opened fragment
 public class CommandManageFAB implements Command{
@@ -25,7 +17,7 @@ public class CommandManageFAB implements Command{
     private View container;
 
     private FragmentAddBundle fragmentAddBundle = new FragmentAddBundle();
-    private FragmentAddCategory fragmentAddCategory = new FragmentAddCategory();
+    private FragmentCreateCategory fragmentCreateCategory = new FragmentCreateCategory();
     private MutableLiveData tracker;
 
     public CommandManageFAB(FloatingActionButton fab, View container, MutableLiveData tracker){
@@ -42,8 +34,8 @@ public class CommandManageFAB implements Command{
             @Override
             public void onClick(View view) {
                 if(tracker.getValue().equals("fragmentMyManageCategories")){
-                    fragmentMyOpener.close(fragmentAddCategory);
-                    fragmentMyOpener.replace(fragmentAddCategory);
+                    fragmentMyOpener.close(fragmentCreateCategory);
+                    fragmentMyOpener.replace(fragmentCreateCategory);
 
                 }else if (tracker.getValue().equals("fragmentMyManageBundles")){
                     fragmentMyOpener.close(fragmentAddBundle);

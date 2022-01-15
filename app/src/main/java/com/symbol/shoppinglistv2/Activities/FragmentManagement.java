@@ -18,7 +18,7 @@ import com.symbol.shoppinglistv2.Command.CommandFMbnvActions;
 import com.symbol.shoppinglistv2.Command.CommandManageFAB;
 import com.symbol.shoppinglistv2.R;
 
-public class FragmentMyManager extends Fragment {
+public class FragmentManagement extends Fragment {
 
     private final String TAG = "FragmentMyManager";
     public BottomNavigationView bottomNavigationView;
@@ -28,7 +28,7 @@ public class FragmentMyManager extends Fragment {
     public MutableLiveData tracker = new MutableLiveData();
 
 
-    public FragmentMyManager() {
+    public FragmentManagement() {
     }
 
 

@@ -1,26 +1,21 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.text.Layout;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Components.Product;
-import com.symbol.shoppinglistv2.Other.CategorySpinnerAdapter;
+import com.symbol.shoppinglistv2.Other.AdapterCategorySpinner;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CommandCategorySpnAdapter implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandCategorySpnAdapter";
     private Spinner spnProductCategory;
-    private CategorySpinnerAdapter categoryAdapter;
+    private AdapterCategorySpinner categoryAdapter;
     private Product product;
 
     public CommandCategorySpnAdapter(Spinner spnProductCategory, Product product) {
@@ -40,7 +35,7 @@ public class CommandCategorySpnAdapter implements Command{
                     categoryArrayList.add(defaultCategory);
 
                 }
-                categoryAdapter = new CategorySpinnerAdapter(MainActivity.appContext, R.layout.test_spinner_cat, categoryArrayList);
+                categoryAdapter = new AdapterCategorySpinner(ActivityMain.appContext, R.layout.test_spinner_cat, categoryArrayList);
                 categoryAdapter.setDropDownViewResource(R.layout.test_spinner_cat);
                 spnProductCategory.setAdapter(categoryAdapter);
 

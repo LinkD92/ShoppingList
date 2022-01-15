@@ -1,26 +1,20 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.symbol.shoppinglistv2.Activities.ActivityBarcodeScanner;
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
-import com.symbol.shoppinglistv2.Other.mCodeScanner;
-
-import androidx.fragment.app.Fragment;
 
 //Functionality to add products to the firebase
 public class CommandAddNewProduct implements Command {
@@ -69,7 +63,7 @@ public class CommandAddNewProduct implements Command {
                                 list.getProducts().put(product.getName(), product);
                                 FireBaseUtil.mutableList.setValue(list);
 
-                                Toast.makeText(MainActivity.appContext, "Product has been added", Toast.LENGTH_LONG).show();
+                                Toast.makeText(ActivityMain.appContext, "Product has been added", Toast.LENGTH_LONG).show();
                             }
                             return super.onProductExistsCallback(isTrue);
                         }
@@ -90,18 +84,18 @@ public class CommandAddNewProduct implements Command {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
                         FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
-                        Log.d(MainActivity.TAG, "Dialog Positive: ");
+                        Log.d(ActivityMain.TAG, "Dialog Positive: ");
                         break;
 
                     case DialogInterface.BUTTON_NEGATIVE:
-                        Log.d(MainActivity.TAG, "Dialog Negative: ");
+                        Log.d(ActivityMain.TAG, "Dialog Negative: ");
                         break;
 
                 }
             }
         };
         //config of dialogbox
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.appContext);
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMain.appContext);
         builder.setMessage("There already exists product: " + product.getName()+ ". Would you like to replace it?");
         builder.setPositiveButton("Yes", dialogClickListener);
         builder.setNegativeButton("Choose Another Name", dialogClickListener);

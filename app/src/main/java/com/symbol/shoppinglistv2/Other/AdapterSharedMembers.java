@@ -1,14 +1,11 @@
 package com.symbol.shoppinglistv2.Other;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
 import com.symbol.shoppinglistv2.Components.SharedMember;
 import com.symbol.shoppinglistv2.R;
 

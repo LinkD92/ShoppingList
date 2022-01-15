@@ -1,28 +1,23 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
-import com.symbol.shoppinglistv2.Activities.FragmentMyManageBundles;
-import com.symbol.shoppinglistv2.Activities.FragmentMyManageCategories;
-import com.symbol.shoppinglistv2.Activities.FragmentMyManager;
+import com.symbol.shoppinglistv2.Activities.FragmentManageBundles;
+import com.symbol.shoppinglistv2.Activities.FragmentManageCategories;
 import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.R;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 //Bottom navigation view in Management Fragment actions
 public class CommandFMbnvActions implements Command{
     private final String TAG = "CommandFMbnvActions";
 
     private FragmentMyOpener fragmentMyOpener;
-    private FragmentMyManageBundles fragmentMyManageBundles = new FragmentMyManageBundles();
-    private FragmentMyManageCategories fragmentMyManageCategories = new FragmentMyManageCategories();
+    private FragmentManageBundles fragmentManageBundles = new FragmentManageBundles();
+    private FragmentManageCategories fragmentManageCategories = new FragmentManageCategories();
 
     private BottomNavigationView bottomNavigationView;
 
@@ -43,19 +38,19 @@ public class CommandFMbnvActions implements Command{
     public boolean execute() {
         //fragmentMyOpener is a custom class to simplify fragment management
         fragmentMyOpener = new FragmentMyOpener(container);
-        fragmentMyOpener.open(fragmentMyManageCategories);
+        fragmentMyOpener.open(fragmentManageCategories);
         tracker.setValue("fragmentMyManageCategories");
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.bnvFragmentManageCategories:
-                        fragmentMyOpener.replace(fragmentMyManageCategories);
+                        fragmentMyOpener.replace(fragmentManageCategories);
                         tracker.setValue("fragmentMyManageCategories");
                         break;
 
                     case R.id.bnvFragmentManageBundles:
-                        fragmentMyOpener.replace(fragmentMyManageBundles);
+                        fragmentMyOpener.replace(fragmentManageBundles);
                         tracker.setValue("fragmentMyManageBundles");
                         break;
                 }

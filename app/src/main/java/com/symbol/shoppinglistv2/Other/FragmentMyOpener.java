@@ -2,13 +2,10 @@ package com.symbol.shoppinglistv2.Other;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
-import com.symbol.shoppinglistv2.Activities.FragmentAddCategory;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.FragmentCreateCategory;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
-import com.symbol.shoppinglistv2.R;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -17,11 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 //Fragment Opener class for simple manage fragments
 public class FragmentMyOpener {
     private final String TAG = "com.symbol.shoppinglistv2.Other.FragmentMyOpener";
-    private FragmentManager fragmentManager = MainActivity.fragmentManager;
+    private FragmentManager fragmentManager = ActivityMain.fragmentManager;
     private int container;
     private FragmentTransaction transaction;
     private Fragment fragment;
-    private FragmentAddCategory fragmentAddCategory;
+    private FragmentCreateCategory fragmentCreateCategory;
 
     public FragmentMyOpener(View container, Fragment fragment) {
         this.container = container.getId();
@@ -65,7 +62,7 @@ public class FragmentMyOpener {
     }
 
     public void open(String tag) {
-         FragmentAddCategory fragment = (FragmentAddCategory) fragmentManager.findFragmentByTag(tag);
+         FragmentCreateCategory fragment = (FragmentCreateCategory) fragmentManager.findFragmentByTag(tag);
         if (!fragment.isVisible()) {
             Log.d(TAG, "open:  ::: " + fragment.isDetached() + " " + fragment.isAdded());
             transaction = fragmentManager.beginTransaction();
@@ -76,7 +73,7 @@ public class FragmentMyOpener {
     }
 
     public void close(String tag) {
-        FragmentAddCategory fragment = (FragmentAddCategory) fragmentManager.findFragmentByTag(tag);
+        FragmentCreateCategory fragment = (FragmentCreateCategory) fragmentManager.findFragmentByTag(tag);
         if (fragment.isVisible()) {
             Log.d(TAG, "close ::: " + fragment.isVisible());
             transaction = fragmentManager.beginTransaction();
@@ -86,12 +83,12 @@ public class FragmentMyOpener {
     }
 
     public void setCategoryValues(Category category, String tag){
-        FragmentAddCategory fragmentAddCategory = (FragmentAddCategory) fragmentManager.findFragmentByTag(tag);
+        FragmentCreateCategory fragmentCreateCategory = (FragmentCreateCategory) fragmentManager.findFragmentByTag(tag);
         if(category != null){
             Log.d(TAG, ": " + category.getName());
-            fragmentAddCategory.etCategoryName.setText(category.getName());
-            fragmentAddCategory.clSquare.setBackgroundColor(category.getColor());
-            Log.d(TAG, "setCategoryValues: " + fragmentAddCategory.etCategoryName.getText());
+            fragmentCreateCategory.etCategoryName.setText(category.getName());
+            fragmentCreateCategory.clSquare.setBackgroundColor(category.getColor());
+            Log.d(TAG, "setCategoryValues: " + fragmentCreateCategory.etCategoryName.getText());
         }
 
     }

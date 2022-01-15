@@ -1,7 +1,5 @@
 package com.symbol.shoppinglistv2.Other;
 
-import android.graphics.Color;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,32 +10,25 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
-import com.symbol.shoppinglistv2.Activities.FragmentMyLists;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
+import com.symbol.shoppinglistv2.Components.MyLog;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
-import java.lang.reflect.Array;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.view.MotionEventCompat;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 //class to create recycler view for products assigned to ArrayList
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHolder> implements ItemTouchHelperAdapter {
 
     private final String TAG = "com.symbol.shoppinglistv2.Other.ProductAdapter";
     private ArrayList<Product> productList;
@@ -46,7 +37,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private MutableLiveData<ListOfProducts> mutableList;
 
 
-    public ProductAdapter(ArrayList<Product> productList, View fragmentContainer, MutableLiveData<ListOfProducts> mutableList) {
+    public AdapterProduct(ArrayList<Product> productList, View fragmentContainer, MutableLiveData<ListOfProducts> mutableList) {
 
         this.productList = productList;
         this.container = fragmentContainer;
@@ -93,10 +84,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 //if(checkBox.isChecked()){
-                    product.setChecked(checkBox.isChecked());
-                    Date date = new Date();
-                    if(product.isChecked()){
+                product.setChecked(checkBox.isChecked());
+                Calendar calendar = Calendar.getInstance();
+                Date date = new Date();
+                if(product.isChecked()){
                         product.setLastCheckDate(date.getTime());
+                        if(product.getAvgExpirationDays() != 0){
+                            String logName = FireBaseUtil.mutableList.getValue().getName();
+                            String logProduct = product.getName();
+                            int days = product.getAvgExpirationDays();
+                            calendar.add(Calendar.DAY_OF_YEAR, days);
+                            String expirationDate = calendar.getTime().toString();
+                            MyLog myLog = new MyLog(logName, logProduct, expirationDate);
+                            FireBaseUtil.addLog(myLog);
+                        }
+
                     }
 
                     FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
@@ -247,7 +249,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 @Override
                 public void onClick(View view) {
                     Product product = productList.get(getAdapterPosition());
-                    PopupMenu popupMenu = new PopupMenu(MainActivity.appContext, view);
+                    PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                     popupMenu.getMenuInflater().inflate(R.menu.product_options, popupMenu.getMenu());
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override

@@ -1,14 +1,11 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.symbol.shoppinglistv2.Activities.FragmentMyManageLists;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.FragmentManageLists;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.SharedMember;
 import com.symbol.shoppinglistv2.Other.AdapterSharedMembers;
@@ -29,14 +26,14 @@ public class CommandEditList implements Command {
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandEditList";
 
     private ListOfProducts listOfProducts;
-    private FragmentMyManageLists fragmentMyManageLists;
+    private FragmentManageLists fragmentManageLists;
     private MutableLiveData<HashMap<String, SharedMember>> sharedMembersListener = new MutableLiveData<>();
 
 
     public CommandEditList(){}
 
-    public CommandEditList(FragmentMyManageLists fragmentMyManageLists, ListOfProducts listOfProducts) {
-        this.fragmentMyManageLists = fragmentMyManageLists;
+    public CommandEditList(FragmentManageLists fragmentManageLists, ListOfProducts listOfProducts) {
+        this.fragmentManageLists = fragmentManageLists;
         if(listOfProducts == null){
             this.listOfProducts = new ListOfProducts();
         }else
@@ -62,19 +59,19 @@ public class CommandEditList implements Command {
     }
 
     private void btnSaveChangesListener(){
-        fragmentMyManageLists.btnEditListSaveChanges.setOnClickListener(new View.OnClickListener() {
+        fragmentManageLists.btnEditListSaveChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String currentName = listOfProducts.getName();
-                String newName = fragmentMyManageLists.etListName.getText().toString();
-                listOfProducts.setName(fragmentMyManageLists.etListName.getText().toString());
-                listOfProducts.setShared(fragmentMyManageLists.rbSharedList.isChecked());
+                String newName = fragmentManageLists.etListName.getText().toString();
+                listOfProducts.setName(fragmentManageLists.etListName.getText().toString());
+                listOfProducts.setShared(fragmentManageLists.rbSharedList.isChecked());
                 if(listOfProducts.getListPath() == null){
                     listOfProducts.setListPath(FireBaseUtil.userPath + "/lists/" +listOfProducts.getName());
                 }
 
                 if(listOfProducts.getName().equals(null) || listOfProducts.getName().equals("")){
-                    Toast.makeText(MainActivity.appContext, "Nazwa nie moze byc pusta", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityMain.appContext, "Nazwa nie moze byc pusta", Toast.LENGTH_LONG).show();
                 }else{
                     FireBaseUtil.addList(listOfProducts);
                     FireBaseUtil.sendShare(listOfProducts);
@@ -90,22 +87,22 @@ public class CommandEditList implements Command {
     }
 
     private void btnRadioListener(){
-        fragmentMyManageLists.rgManageList.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        fragmentManageLists.rgManageList.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i){
                     case R.id.rbSharedList:
-                        fragmentMyManageLists.etListSharedWith.setFocusable(true);
-                        fragmentMyManageLists.etListSharedWith.setFocusableInTouchMode(true);
-                        fragmentMyManageLists.btnAddMember.setVisibility(View.VISIBLE);
-                        fragmentMyManageLists.etListSharedWith.setVisibility(View.VISIBLE);
-                        fragmentMyManageLists.rvSharedWithMembers.setVisibility(View.VISIBLE);
+                        fragmentManageLists.etListSharedWith.setFocusable(true);
+                        fragmentManageLists.etListSharedWith.setFocusableInTouchMode(true);
+                        fragmentManageLists.btnAddMember.setVisibility(View.VISIBLE);
+                        fragmentManageLists.etListSharedWith.setVisibility(View.VISIBLE);
+                        fragmentManageLists.rvSharedWithMembers.setVisibility(View.VISIBLE);
                         break;
                     case R.id.rbPrivateList:
-                        fragmentMyManageLists.etListSharedWith.setFocusable(false);
-                        fragmentMyManageLists.etListSharedWith.setVisibility(View.GONE);
-                        fragmentMyManageLists.btnAddMember.setVisibility(View.GONE);
-                        fragmentMyManageLists.rvSharedWithMembers.setVisibility(View.GONE);
+                        fragmentManageLists.etListSharedWith.setFocusable(false);
+                        fragmentManageLists.etListSharedWith.setVisibility(View.GONE);
+                        fragmentManageLists.btnAddMember.setVisibility(View.GONE);
+                        fragmentManageLists.rvSharedWithMembers.setVisibility(View.GONE);
                         break;
                 }
             }
@@ -124,20 +121,20 @@ public class CommandEditList implements Command {
                     sharedMembers.add(test);
                 }
                 AdapterSharedMembers adapterSharedMembers = new AdapterSharedMembers(sharedMembers, sharedMembersListener);
-                fragmentMyManageLists.rvSharedWithMembers.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
-                fragmentMyManageLists.rvSharedWithMembers.setAdapter(adapterSharedMembers);
+                fragmentManageLists.rvSharedWithMembers.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+                fragmentManageLists.rvSharedWithMembers.setAdapter(adapterSharedMembers);
             }
         });
     }
 
     private void addSharedMemberListener(){
-        fragmentMyManageLists.btnAddMember.setOnClickListener(new View.OnClickListener() {
+        fragmentManageLists.btnAddMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FireBaseUtil.readUsers(new MyCallback() {
                     @Override
                     public void readUsers(HashMap<String, String> userEmails) {
-                        String findUser = fragmentMyManageLists.etListSharedWith.getText().toString();
+                        String findUser = fragmentManageLists.etListSharedWith.getText().toString();
                         boolean test = userEmails.containsValue(findUser);
                         if(test){
                             for (Map.Entry<String, String > entry :
@@ -158,13 +155,13 @@ public class CommandEditList implements Command {
     }
 
     private void fillListData(){
-        fragmentMyManageLists.etListName.setText(listOfProducts.getName());
+        fragmentManageLists.etListName.setText(listOfProducts.getName());
         if(listOfProducts.isShared()){
-            fragmentMyManageLists.rbSharedList.setChecked(true);
-            fragmentMyManageLists.rbPrivateList.setChecked(false);
+            fragmentManageLists.rbSharedList.setChecked(true);
+            fragmentManageLists.rbPrivateList.setChecked(false);
         }else{
-            fragmentMyManageLists.rbSharedList.setChecked(false);
-            fragmentMyManageLists.rbPrivateList.setChecked(true);
+            fragmentManageLists.rbSharedList.setChecked(false);
+            fragmentManageLists.rbPrivateList.setChecked(true);
         }
     }
 }

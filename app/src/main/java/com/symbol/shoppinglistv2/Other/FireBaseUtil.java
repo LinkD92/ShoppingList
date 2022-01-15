@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.api.LogDescriptor;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -13,20 +12,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
-import com.symbol.shoppinglistv2.Components.ListHashMap;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
+import com.symbol.shoppinglistv2.Components.MyLog;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Components.SharedList;
 import com.symbol.shoppinglistv2.Components.SharedMember;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -102,7 +98,7 @@ public class FireBaseUtil {
                         myCallback.getProduct(product);
                     }
                 } else {
-                    Toast.makeText(MainActivity.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityMain.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -229,7 +225,7 @@ public class FireBaseUtil {
                         Log.d(TAG, "onComplete: " + bundle.getName());
                     }
                 } else {
-                    Toast.makeText(MainActivity.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityMain.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -306,7 +302,7 @@ public class FireBaseUtil {
                         }
 
                 } else {
-                    Toast.makeText(MainActivity.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityMain.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -503,7 +499,7 @@ public class FireBaseUtil {
                 if(task.isSuccessful()){
                     myCallback.onReferenceConnectedCallback(databaseReference);
                 }else{
-                    Toast.makeText(MainActivity.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityMain.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -528,7 +524,7 @@ public class FireBaseUtil {
                         myCallback.onProductExistsCallback(pathExists);
                     }
                 } else {
-                    Toast.makeText(MainActivity.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ActivityMain.appContext, "Sth went wrong", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -552,6 +548,32 @@ public class FireBaseUtil {
             }
         };
         FirebaseDatabase.getInstance(source).getReference().child("users").addValueEventListener(listener);
+    }
+
+    public static void addLog(MyLog myLog){
+        FireBaseUtil.reference.child("logs").push().setValue(myLog);
+    }
+
+    public static void readLog(MyCallback myCallback){
+        ValueEventListener listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ArrayList<MyLog> myLogs = new ArrayList<>();
+                for (DataSnapshot ds :
+                        snapshot.getChildren()) {
+                    MyLog myLog = ds.getValue(MyLog.class);
+                    myLogs.add(myLog);
+                    myCallback.readLog(myLogs);
+                    Log.d(TAG, "onDataChange: " + myLogs.size());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        reference.child("logs").addValueEventListener(listener);
     }
 
 }

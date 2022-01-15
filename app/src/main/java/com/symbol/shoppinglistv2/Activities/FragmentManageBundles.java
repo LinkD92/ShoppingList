@@ -10,16 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.symbol.shoppinglistv2.Command.Command;
-import com.symbol.shoppinglistv2.Command.CommandListDetails;
+import com.symbol.shoppinglistv2.Command.CommandBundleList;
 import com.symbol.shoppinglistv2.R;
 
-public class FragmentListDetails extends Fragment {
 
-    private RecyclerView rvListDetails;
+public class FragmentManageBundles extends Fragment {
 
-    public FragmentListDetails() {
-        // Required empty public constructor
-    }
+    private RecyclerView rvBundleList;
+    private View container;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,12 +29,12 @@ public class FragmentListDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_list_details, container, false);
-        rvListDetails =v.findViewById(R.id.rvListDetails);
+        View v = inflater.inflate(R.layout.fragment_manage_bundles, container, false);
+        View v2 = inflater.inflate(R.layout.fragment_manager, container, false);
+        rvBundleList = v.findViewById(R.id.rvBundles);
+        container = v2.findViewById(R.id.clFragmentManageContainerFAB);
 
-        executeCommand(new CommandListDetails(rvListDetails));
-
+        executeCommand(new CommandBundleList(rvBundleList, container));
 
         return v;
     }

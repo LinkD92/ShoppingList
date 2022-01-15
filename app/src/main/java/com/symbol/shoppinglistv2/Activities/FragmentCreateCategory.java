@@ -3,17 +3,12 @@ package com.symbol.shoppinglistv2.Activities;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import petrov.kristiyan.colorpicker.ColorPicker;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandAddCategory;
@@ -21,10 +16,8 @@ import com.symbol.shoppinglistv2.Command.CommandEditCategory;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.R;
 
-import java.util.ArrayList;
-
 //Add category Fragment views
-public class FragmentAddCategory extends FragmentMyManageCategories {
+public class FragmentCreateCategory extends FragmentManageCategories {
 
 
     private final String TAG = "FragmentAddCategory";
@@ -34,11 +27,11 @@ public class FragmentAddCategory extends FragmentMyManageCategories {
     private Category category;
 
 
-    public FragmentAddCategory(Category category){
+    public FragmentCreateCategory(Category category){
         this.category = category;
     }
 
-    public FragmentAddCategory(){
+    public FragmentCreateCategory(){
     }
 
     @Override

@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.security.auth.callback.Callback;
 
-public class FragmentMyManageLists extends Fragment {
+public class FragmentManageLists extends Fragment {
     public final String TAG = "com.symbol.shoppinglistv2.Activities.FragmentMyManageLists";
     public ListOfProducts listOfProducts;
     public EditText etListSharedWith;
@@ -38,10 +38,10 @@ public class FragmentMyManageLists extends Fragment {
     public Button btnAddMember;
 
 
-    public FragmentMyManageLists() {
+    public FragmentManageLists() {
         // Required empty public constructor
     }
-    public FragmentMyManageLists(ListOfProducts listOfProducts){
+    public FragmentManageLists(ListOfProducts listOfProducts){
         this.listOfProducts = listOfProducts;
         Log.d(TAG, "testList: " + listOfProducts.getName());
     }

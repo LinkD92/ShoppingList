@@ -3,7 +3,7 @@ package com.symbol.shoppinglistv2.Command;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
@@ -27,7 +27,7 @@ public class CommandProductAutoCompleteList implements Command{
 
     @Override
     public boolean execute() {
-        ArrayAdapter adapter = new ArrayAdapter(MainActivity.appContext, R.layout.support_simple_spinner_dropdown_item, allProducts());
+        ArrayAdapter adapter = new ArrayAdapter(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, allProducts());
         autoCompleteTextView.setAdapter(adapter);
         return false;
     }

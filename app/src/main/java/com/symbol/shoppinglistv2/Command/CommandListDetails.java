@@ -2,22 +2,16 @@ package com.symbol.shoppinglistv2.Command;
 
 import android.util.Log;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
-import com.symbol.shoppinglistv2.Components.Category;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyDetail;
 import com.symbol.shoppinglistv2.Components.Product;
-import com.symbol.shoppinglistv2.Other.DetailsAdapter;
+import com.symbol.shoppinglistv2.Other.AdapterDetails;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
-import com.symbol.shoppinglistv2.Other.MyCallback;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +20,7 @@ public class CommandListDetails implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandListDetails";
     private RecyclerView rvListDetails;
     private HashMap<String, MyDetail> details;
-    private DetailsAdapter detailsAdapter;
+    private AdapterDetails adapterDetails;
 
     public CommandListDetails(RecyclerView rvListDetails) {
         this.rvListDetails = rvListDetails;
@@ -65,9 +59,9 @@ public class CommandListDetails implements Command{
 //            myDetail.setAmount(myDetail.getAmount() + product.getAmount());
 //            details.put(myDetail.getName(), myDetail);
         }
-        detailsAdapter = new DetailsAdapter(details);
-        rvListDetails.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
-        rvListDetails.setAdapter(detailsAdapter);
+        adapterDetails = new AdapterDetails(details);
+        rvListDetails.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+        rvListDetails.setAdapter(adapterDetails);
 
 //        String buildPath = "/lists/" + FireBaseUtil.currentList  +"/products";
 //            FireBaseUtil.readProducts(buildPath, new MyCallback() {

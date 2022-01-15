@@ -1,15 +1,12 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.content.ClipData;
-import android.graphics.Color;
-import android.media.MediaRouter;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.symbol.shoppinglistv2.Activities.MainActivity;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
@@ -18,14 +15,11 @@ import com.symbol.shoppinglistv2.Other.AdapterBundleOnList;
 import com.symbol.shoppinglistv2.Other.BundleDetailsFiller;
 import com.symbol.shoppinglistv2.Other.FireBaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
-import com.symbol.shoppinglistv2.Other.MyItemTouchHelper;
-import com.symbol.shoppinglistv2.Other.ProductAdapter;
+import com.symbol.shoppinglistv2.Other.AdapterProduct;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -38,7 +32,7 @@ public class CommandMAProductDisplay implements Command {
     private final String TAG = "CommandProductDisplay";
     private RecyclerView rvProductDisplay;
     private Spinner spinList;
-    private ProductAdapter adapter;
+    private AdapterProduct adapter;
     private View container;
     private RecyclerView rvBundlesDisplay;
     private AdapterBundleItems adapterBundleItems;
@@ -88,8 +82,8 @@ public class CommandMAProductDisplay implements Command {
                                         FireBaseUtil.currentListProducts = productArrayList;
                                         BundleDetailsFiller test = new BundleDetailsFiller();
                                         //TU UWAGA - WYWALIC NULLA.
-                                        adapter = new ProductAdapter(productArrayList, container, null);
-                                        rvProductDisplay.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
+                                        adapter = new AdapterProduct(productArrayList, container, null);
+                                        rvProductDisplay.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
                                         //ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapter, productArrayList);
                                         //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                                         //adapter.setTouchHelper(itemTouchHelper);
@@ -123,14 +117,14 @@ public class CommandMAProductDisplay implements Command {
                                                     String path = "lists/" + FireBaseUtil.currentList + "/bundles/";
                                                     FireBaseUtil.removeBundle(path, bundle);
                                                 }else{
-                                                    Toast.makeText(MainActivity.appContext, "Uncheck Bundle First", Toast.LENGTH_LONG);
+                                                    Toast.makeText(ActivityMain.appContext, "Uncheck Bundle First", Toast.LENGTH_LONG);
                                                 }
 
                                             }
                                         };
 
                                         adapterBundleOnList = new AdapterBundleOnList(tempArrBundle);
-                                        rvBundlesDisplay.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
+                                        rvBundlesDisplay.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
                                         new ItemTouchHelper(simpleCallback).attachToRecyclerView(rvBundlesDisplay);
                                         rvBundlesDisplay.setAdapter(adapterBundleOnList);
                                     }
