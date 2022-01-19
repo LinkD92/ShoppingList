@@ -1,18 +1,14 @@
 package com.symbol.shoppinglistv2.Command;
 
 import android.app.Activity;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.symbol.shoppinglistv2.Components.Category;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
-import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyColorPicker;
-import com.symbol.shoppinglistv2.R;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 //Logic to add category
@@ -61,12 +57,12 @@ public class CommandAddCategory implements Command{
                     ColorDrawable color = (ColorDrawable)clSquare.getBackground();
                     categoryColor = color.getColor();
                     Category category = new Category(categoryName, categoryColor);
-                    FireBaseUtil.addCategory(category);
+                    FirebaseUtil.addCategory(category);
                 }
 
                 //to compare old and new name - if it is different - remove old record
                 if(!oldName.equals(categoryName) && oldName.length()>0){
-                    FireBaseUtil.reference.child("categories/" + oldName).removeValue();
+                    FirebaseUtil.reference.child("categories/" + oldName).removeValue();
 
                 }
                 //clear text view after button save action

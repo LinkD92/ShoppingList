@@ -9,7 +9,7 @@ import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleProducts;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
@@ -54,8 +54,8 @@ public class CommandBundleAdd implements Command{
     }
 
     private void actvProduct(){
-        String fullPath = "/lists/" + FireBaseUtil.currentList + "/products/";
-        FireBaseUtil.readProducts(fullPath, new MyCallback() {
+        String fullPath = "/lists/" + FirebaseUtil.currentList + "/products/";
+        FirebaseUtil.readProducts(fullPath, new MyCallback() {
             @Override
             public void onProductCallback(ArrayList<Product> productArrayList) {
                 Log.d(TAG, "onProductCallback arr: " + productArrayList.size());
@@ -90,7 +90,7 @@ public class CommandBundleAdd implements Command{
     private void productToRecyclerView(){
         if(myBundle != null) {
             String path = "bundles/" + myBundle.getName() + "/products";
-            FireBaseUtil.readProducts(path, new MyCallback() {
+            FirebaseUtil.readProducts(path, new MyCallback() {
                 @Override
                 public void onProductCallback(ArrayList<Product> productArrayList) {
                     super.onProductCallback(productArrayList);
@@ -113,7 +113,7 @@ public class CommandBundleAdd implements Command{
                         Product product = products.get(viewHolder.getAdapterPosition());
                         products.remove(viewHolder.getAdapterPosition());
                         Log.d(TAG, "onSwiped: " + product.getName());
-                        FireBaseUtil.removeBundleProduct(FireBaseUtil.currentBundle, product);
+                        FirebaseUtil.removeBundleProduct(FirebaseUtil.currentBundle, product);
                     }
                 };
 
@@ -130,7 +130,7 @@ public class CommandBundleAdd implements Command{
                 String prodName = fragmentAddBundle.ssBundleAddProductName.getSelectedItem().toString();
                 Log.d(TAG, "prodName: " + prodName);
                 Product product = new Product(prodName);
-                FireBaseUtil.addBundleProduct(myBundle.getName(), product);
+                FirebaseUtil.addBundleProduct(myBundle.getName(), product);
             }
         });
     }
@@ -141,7 +141,7 @@ public class CommandBundleAdd implements Command{
             public void onClick(View view) {
                 String bundleName = fragmentAddBundle.etAddBundleName.getText().toString();
                 MyBundle bundle = new MyBundle(bundleName);
-                FireBaseUtil.addBundle("bundles/", bundle);
+                FirebaseUtil.addBundle("bundles/", bundle);
 
             }
         });

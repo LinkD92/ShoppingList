@@ -3,13 +3,7 @@ package com.symbol.shoppinglistv2.Command;
 import android.util.Log;
 
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
-import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Components.Product;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
-import com.symbol.shoppinglistv2.Other.MyCallback;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CommandEditProduct implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandEditProduct";

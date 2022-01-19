@@ -13,7 +13,7 @@ import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleItems;
 import com.symbol.shoppinglistv2.Other.AdapterBundleOnList;
 import com.symbol.shoppinglistv2.Other.BundleDetailsFiller;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.Other.AdapterProduct;
 
@@ -53,33 +53,33 @@ public class CommandMAProductDisplay implements Command {
                 //getting list choosen
                 Object listClicked = adapterView.getItemAtPosition(i);
                 //assignint the value to static field;
-                FireBaseUtil.currentList = listClicked.toString();
+                FirebaseUtil.currentList = listClicked.toString();
                 //Helper value to resolve issues - further investigation might be required -
                 //After editing anything in "list" path of database the selection is going back to
                 // first list
-                FireBaseUtil.spinnerPositionERROR = i;
-                String buildPath = "/lists/" + FireBaseUtil.currentList  +"/products";
-                        FireBaseUtil.readProducts(buildPath, new MyCallback() {
+                FirebaseUtil.spinnerPositionERROR = i;
+                String buildPath = "/lists/" + FirebaseUtil.currentList  +"/products";
+                        FirebaseUtil.readProducts(buildPath, new MyCallback() {
                             @Override
                             public void onProductCallback(ArrayList<Product> productArrayList) {
 
-                                FireBaseUtil.getList(FireBaseUtil.currentList, new MyCallback() {
+                                FirebaseUtil.getList(FirebaseUtil.currentList, new MyCallback() {
                                     @Override
                                     public void getList(ListOfProducts listOfProducts) {
                                         //one of the sort methods - Pushes check products to the bottom of the list
-                                        FireBaseUtil.sortMethod = listOfProducts.getSortType();
-                                        Log.d(TAG, "SortLOL: " + FireBaseUtil.sortMethod);
-                                        if(FireBaseUtil.sortMethod.equals("name")){
+                                        FirebaseUtil.sortMethod = listOfProducts.getSortType();
+                                        Log.d(TAG, "SortLOL: " + FirebaseUtil.sortMethod);
+                                        if(FirebaseUtil.sortMethod.equals("name")){
                                             sortName(productArrayList);
-                                        }else if(FireBaseUtil.sortMethod.equals("category/name")){
+                                        }else if(FirebaseUtil.sortMethod.equals("category/name")){
                                             sortCategory(productArrayList);
-                                        }else if(FireBaseUtil.sortMethod.equals("customID")){
+                                        }else if(FirebaseUtil.sortMethod.equals("customID")){
                                             sortCustom(productArrayList);
                                         }
                                         sortWay(productArrayList);
 
                                         //adapter assignem for Recycler View
-                                        FireBaseUtil.currentListProducts = productArrayList;
+                                        FirebaseUtil.currentListProducts = productArrayList;
                                         BundleDetailsFiller test = new BundleDetailsFiller();
                                         //TU UWAGA - WYWALIC NULLA.
                                         adapter = new AdapterProduct(productArrayList, container, null);
@@ -95,8 +95,8 @@ public class CommandMAProductDisplay implements Command {
 
 
 
-                                String fullPath = "/lists/" + FireBaseUtil.currentList + "/bundles";
-                                FireBaseUtil.getBundles(fullPath, new MyCallback() {
+                                String fullPath = "/lists/" + FirebaseUtil.currentList + "/bundles";
+                                FirebaseUtil.getBundles(fullPath, new MyCallback() {
                                     @Override
                                     public void getBundles(ArrayList<MyBundle> myBundleArrayList) {
                                         super.getBundles(myBundleArrayList);
@@ -114,8 +114,8 @@ public class CommandMAProductDisplay implements Command {
                                                 Log.d(TAG, "MyTest: " + bundle.isChecked());
                                                 if(bundle.isChecked() == false){
                                                     tempArrBundle.remove(viewHolder.getAdapterPosition());
-                                                    String path = "lists/" + FireBaseUtil.currentList + "/bundles/";
-                                                    FireBaseUtil.removeBundle(path, bundle);
+                                                    String path = "lists/" + FirebaseUtil.currentList + "/bundles/";
+                                                    FirebaseUtil.removeBundle(path, bundle);
                                                 }else{
                                                     Toast.makeText(ActivityMain.appContext, "Uncheck Bundle First", Toast.LENGTH_LONG);
                                                 }

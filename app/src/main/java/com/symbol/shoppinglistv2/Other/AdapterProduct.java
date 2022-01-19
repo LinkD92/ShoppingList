@@ -1,5 +1,6 @@
 package com.symbol.shoppinglistv2.Other;
 
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -48,7 +49,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.adapter_product_item, viewGroup, false);
+                .inflate(R.layout.adapter_item_product, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -67,7 +68,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         viewHolder.clContainerWholeProduct.setAlpha(setAlpha(product.isChecked()));
         String bundleAmount = Integer.toString(product.getBundleAmount());
         viewHolder.tvCurrentBundleAmount.setText(bundleAmount);
-        checkBoxListener(viewHolder.cbCheckedProduct, product);
+        checkBoxClickListener(viewHolder.cbCheckedProduct, product);
     }
 
     @Override
@@ -79,44 +80,29 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     }
 
 
-    private void checkBoxListener(CheckBox checkBox, Product product){
+    private void checkBoxClickListener(CheckBox checkBox, Product product){
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if(checkBox.isChecked()){
                 product.setChecked(checkBox.isChecked());
-                Calendar calendar = Calendar.getInstance();
-                Date date = new Date();
                 if(product.isChecked()){
-                        product.setLastCheckDate(date.getTime());
+                    Calendar calendar = Calendar.getInstance();
+                    Date date = new Date();
+                    product.setLastCheckDate(date.getTime());
                         if(product.getAvgExpirationDays() != 0){
-                            String logName = FireBaseUtil.mutableList.getValue().getName();
+                            String path = FirebaseUtil.mutableList.getValue().getListPath();
+                            String test[] = path.split("/");
+                            Log.d(TAG, "MyTest: " + test[0]);
+                            String logName = FirebaseUtil.mutableList.getValue().getName();
                             String logProduct = product.getName();
                             int days = product.getAvgExpirationDays();
                             calendar.add(Calendar.DAY_OF_YEAR, days);
                             String expirationDate = calendar.getTime().toString();
                             MyLog myLog = new MyLog(logName, logProduct, expirationDate);
-                            FireBaseUtil.addLog(myLog);
+                            FirebaseUtil.addLog(test[0], myLog);
                         }
-
                     }
-
-                    FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
-                //}
-//                    product.setChecked(checkBox.isChecked());
-//                    notifyDataSetChanged();
-////                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
-////                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
-////                    FireBaseUtil.mutableList.setValue(list);
-//                    FireBaseUtil.addProduct(mutableList.getValue(), product);
-//                }else{
-//                    product.setChecked(checkBox.isChecked());
-//                    notifyDataSetChanged();
-////                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
-////                    list.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
-////                    FireBaseUtil.mutableList.setValue(list);
-//                    FireBaseUtil.addProduct(mutableList.getValue(), product);
-//                }
+                    FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
             }
         });
     }
@@ -133,7 +119,6 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public int getItemCount() {
         return productList.size();
-
     }
 
 
@@ -224,7 +209,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                     Product product = productList.get(getAdapterPosition());
                     product.setAmount(product.getAmount()+1);
                     notifyDataSetChanged();
-                    FireBaseUtil.addProduct(mutableList.getValue(), product);
+                    FirebaseUtil.addProduct(mutableList.getValue(), product);
                 }
             });
 
@@ -237,7 +222,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                     if(product.getAmount() >0){
                         product.setAmount(product.getAmount()-1);
                         notifyDataSetChanged();
-                        FireBaseUtil.addProduct(mutableList.getValue(), product);
+                        FirebaseUtil.addProduct(mutableList.getValue(), product);
                     }
                 }
             });
@@ -257,10 +242,10 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
 
                             switch (menuItem.getItemId()){
                                 case R.id.menuOptionsRemove:
-                                    FireBaseUtil.removeProduct(FireBaseUtil.mutableList.getValue(), product);
-                                    ListOfProducts list = FireBaseUtil.mutableList.getValue();
+                                    FirebaseUtil.removeProduct(FirebaseUtil.mutableList.getValue(), product);
+                                    ListOfProducts list = FirebaseUtil.mutableList.getValue();
                                     list.getProducts().remove(product.getName());
-                                    FireBaseUtil.mutableList.setValue(list);
+                                    FirebaseUtil.mutableList.setValue(list);
                                     break;
                                 case R.id.menuOptionsEdit:
                                     fragmentAddProduct = new FragmentAddProduct(product);

@@ -80,6 +80,26 @@
             app:layout_constraintRight_toRightOf="parent"
             />
 
+        <TextView
+            android:id="@+id/tvDaysBeforeExpire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="Days before expiration"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/spnDaysToExpire"
+            app:layout_constraintBottom_toBottomOf="@+id/spnDaysToExpire"
+            />
+
+        <Spinner
+            android:id="@+id/spnDaysToExpire"
+            android:layout_width="wrap_content"
+            app:layout_constraintRight_toRightOf="@+id/swSettingsNotifications"
+            app:layout_constraintTop_toBottomOf="@+id/swSettingsNotifications"
+            android:layout_margin="8dp"
+            android:layout_height="wrap_content"
+            />
+
         <Button
             android:id="@+id/btnSettingsNotificationLog"
             android:text="Notification Log"
@@ -88,7 +108,8 @@
             android:layout_marginLeft="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/swSettingsNotifications"
+            app:layout_constraintTop_toBottomOf="@+id/spnDaysToExpire"
+            app:layout_constraintBottom_toBottomOf="parent"
             />
 
 

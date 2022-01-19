@@ -6,7 +6,7 @@ import android.widget.EditText;
 
 import com.google.firebase.database.DatabaseReference;
 import com.symbol.shoppinglistv2.Components.Product;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 
 //Class to add existing product from list to bundle - implementation in progress
@@ -33,10 +33,10 @@ public class CommandAddProduct implements Command{
             @Override
             public void onClick(View view) {
                 String productLocation = editText.getText().toString();
-                FireBaseUtil.getProduct(productLocation, new MyCallback() {
+                FirebaseUtil.getProduct(productLocation, new MyCallback() {
                     @Override
                     public Product getProduct(Product product) {
-                        FireBaseUtil.addProduct(product);
+                        FirebaseUtil.addProduct(product);
                         return super.getProduct(product);
                     }
                 });

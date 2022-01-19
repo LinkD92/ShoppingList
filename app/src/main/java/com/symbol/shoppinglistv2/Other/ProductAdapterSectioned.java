@@ -88,7 +88,7 @@ public class ProductAdapterSectioned extends SectionedRecyclerViewAdapter<Produc
         int layout = 0;
 
         if(viewType == VIEW_TYPE_HEADER){
-           layout = R.layout.adapter_product_item;
+           layout = R.layout.adapter_item_product;
         }else{
             
             

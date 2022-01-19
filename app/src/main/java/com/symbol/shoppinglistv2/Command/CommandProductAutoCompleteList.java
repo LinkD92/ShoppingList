@@ -5,7 +5,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Product;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
@@ -33,7 +33,7 @@ public class CommandProductAutoCompleteList implements Command{
     }
 
     private ArrayList<String> allProducts(){
-        FireBaseUtil.readProducts("/products/", new MyCallback() {
+        FirebaseUtil.readProducts("/products/", new MyCallback() {
             @Override
             public void onProductCallback(ArrayList<Product> productArrayList) {
                 for (Product product :

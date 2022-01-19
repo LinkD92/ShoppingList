@@ -17,7 +17,7 @@ import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandAddProductFAB;
 import com.symbol.shoppinglistv2.Command.CommandMASpinnerAdapter;
 import com.symbol.shoppinglistv2.Command.CommandManageLists;
-import com.symbol.shoppinglistv2.Command.CommandTestCommand;
+import com.symbol.shoppinglistv2.Command.CommandListProductDisplay;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.SharedList;
 import com.symbol.shoppinglistv2.R;
@@ -72,7 +72,7 @@ public class FragmentLists extends Fragment {
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));
         //executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
-        executeCommand(new CommandTestCommand(this, currentList, sharedListLoaded));
+        executeCommand(new CommandListProductDisplay(this, currentList, sharedListLoaded));
         return v;
     }
 

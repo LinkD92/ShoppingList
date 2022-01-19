@@ -16,8 +16,8 @@ public class BundleDetailsFiller {
     }
 
     private void test(){
-        String productPath = "lists/" + FireBaseUtil.currentList + "/products/";
-        FireBaseUtil.readProducts(productPath, new MyCallback() {
+        String productPath = "lists/" + FirebaseUtil.currentList + "/products/";
+        FirebaseUtil.readProducts(productPath, new MyCallback() {
             @Override
             public void onProductCallback(ArrayList<Product> productArrayList) {
                 super.onProductCallback(productArrayList);
@@ -27,7 +27,7 @@ public class BundleDetailsFiller {
                     hashProd.put(prod.getName(), prod);
                 }
                 String path = "bundles/";
-                FireBaseUtil.getBundles(path, new MyCallback() {
+                FirebaseUtil.getBundles(path, new MyCallback() {
                     @Override
                     public void getBundles(ArrayList<MyBundle> myBundleArrayList) {
                         for (MyBundle bund :
@@ -42,8 +42,8 @@ public class BundleDetailsFiller {
                                 totalPrice = totalPrice + testPrice;
                                 bund.setPrice(totalPrice);
                             }
-                            String bundlePath = "lists/" + FireBaseUtil.currentList + "/bundles/";
-                            FireBaseUtil.addBundle(bundlePath, bund);
+                            String bundlePath = "lists/" + FirebaseUtil.currentList + "/bundles/";
+                            FirebaseUtil.addBundle(bundlePath, bund);
 
 
                         }
@@ -59,13 +59,13 @@ public class BundleDetailsFiller {
     }
 
     private void test2(){
-        FireBaseUtil.productHashMap = new HashMap<>();
+        FirebaseUtil.productHashMap = new HashMap<>();
         for (Product pr :
-                FireBaseUtil.currentListProducts) {
-            FireBaseUtil.productHashMap.put(pr.getName(), pr);
+                FirebaseUtil.currentListProducts) {
+            FirebaseUtil.productHashMap.put(pr.getName(), pr);
         }
-        String bundlePath = "lists/" + FireBaseUtil.currentList + "/bundles/";
-        FireBaseUtil.getBundles(bundlePath, new MyCallback() {
+        String bundlePath = "lists/" + FirebaseUtil.currentList + "/bundles/";
+        FirebaseUtil.getBundles(bundlePath, new MyCallback() {
             @Override
             public void getBundles(ArrayList<MyBundle> myBundleArrayList) {
                 for (MyBundle bund : myBundleArrayList) {
@@ -76,8 +76,8 @@ public class BundleDetailsFiller {
                         Product currentProd = pro.getValue();
                         String key = pro.getKey();
 
-                        if(FireBaseUtil.productHashMap.containsKey(currentProd.getName())){
-                            double testPrice =  FireBaseUtil.productHashMap.get(key).getPrice() * currentProd.getAmount();
+                        if(FirebaseUtil.productHashMap.containsKey(currentProd.getName())){
+                            double testPrice =  FirebaseUtil.productHashMap.get(key).getPrice() * currentProd.getAmount();
                             totalPrice = totalPrice + testPrice;
                             bund.setPrice(totalPrice * bund.getAmount());
 
@@ -85,8 +85,8 @@ public class BundleDetailsFiller {
                             bund.setError(-504764);
                         }
                     }
-                    String bundlePath = "lists/" + FireBaseUtil.currentList + "/bundles/";
-                    FireBaseUtil.addBundle(bundlePath, bund);
+                    String bundlePath = "lists/" + FirebaseUtil.currentList + "/bundles/";
+                    FirebaseUtil.addBundle(bundlePath, bund);
 
                 }
 

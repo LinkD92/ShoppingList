@@ -29,7 +29,6 @@ public class CommandAddProductFAB implements Command{
 
     @Override
     public boolean execute() {
-        Log.d(TAG, "MyTest: tu jestem" );
         fragmentMyOpener = new FragmentMyOpener(container);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,7 +9,7 @@ import com.symbol.shoppinglistv2.Activities.FragmentListSummary;
 import com.symbol.shoppinglistv2.Activities.FragmentManageLists;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.R;
 
@@ -56,7 +56,7 @@ public class CommandManageLists implements Command{
                 PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                 popupMenu.getMenuInflater().inflate(R.menu.list_actions, popupMenu.getMenu());
                 popupMenu.getMenu().getItem(3).setTitle("Sort By: " + currentList.getValue().getSortType());
-                if(!currentList.getValue().getListPath().contains(FireBaseUtil.userPath)){
+                if(!currentList.getValue().getListPath().contains(FirebaseUtil.userPath)){
                     popupMenu.getMenu().getItem(1).setEnabled(false);
                     popupMenu.getMenu().getItem(2).setEnabled(false);
                 }
@@ -97,21 +97,21 @@ public class CommandManageLists implements Command{
     }
 
     private void menuItemClickEditList(){
-        fragmentManageLists = new FragmentManageLists(FireBaseUtil.mutableList.getValue());
+        fragmentManageLists = new FragmentManageLists(FirebaseUtil.mutableList.getValue());
         fragmentMyOpener.close(fragmentManageLists);
         fragmentMyOpener.open(fragmentManageLists);
     }
 
     private void menuItemClickRemoveList(){
-        FireBaseUtil.removeShare(currentList.getValue());
-        FireBaseUtil.removeList(currentList.getValue().getName());
+        FirebaseUtil.removeShare(currentList.getValue());
+        FirebaseUtil.removeList(currentList.getValue().getName());
     }
 
     private void menuItemSortType(String sortType){
 
         currentList.getValue().setSortType(sortType);
-        FireBaseUtil.mutableList.setValue(FireBaseUtil.mutableList.getValue());
-        FireBaseUtil.globalRef.child(currentList.getValue()
+        FirebaseUtil.mutableList.setValue(FirebaseUtil.mutableList.getValue());
+        FirebaseUtil.globalRef.child(currentList.getValue()
                 .getListPath()).child("sortType").setValue(sortType);
     }
 

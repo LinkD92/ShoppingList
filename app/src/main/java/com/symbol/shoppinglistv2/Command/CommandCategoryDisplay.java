@@ -5,7 +5,7 @@ import android.view.View;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Other.AdapterCategory;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class CommandCategoryDisplay implements Command{
     @Override
     public boolean execute() {
         //Callback to get categories from database
-        FireBaseUtil.readCategory(new MyCallback() {
+        FirebaseUtil.readCategory(new MyCallback() {
             @Override
             public void onCategoryCallback(ArrayList<Category> categoryArrayList) {
                 //after list is gathered RecyclerView adapter is diplaying categories

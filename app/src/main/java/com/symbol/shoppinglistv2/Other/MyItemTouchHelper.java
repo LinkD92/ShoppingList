@@ -5,14 +5,12 @@ import android.util.Log;
 
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
-import com.symbol.shoppinglistv2.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,10 +43,10 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
         Product product = productArrayList.get(viewHolder.getAdapterPosition());
         viewHolder.itemView.setBackgroundColor(
                 product.getCategory().getColor());
-        String test  = FireBaseUtil.mutableList.getValue().getSortType();
+        String test  = FirebaseUtil.mutableList.getValue().getSortType();
         Log.d(TAG, "clearView: test " + test );
         HashMap<String, Product> tempHash = new HashMap<>();
-        if(FireBaseUtil.mutableList.getValue().getSortType() == "customID"){
+        if(FirebaseUtil.mutableList.getValue().getSortType() == "customID"){
                 int iter=0;
                 for (Product pr :
                         productArrayList) {
@@ -62,13 +60,13 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
                     tempHash.put(pr.getName(), pr);
                 }
         }else{
-            tempHash = FireBaseUtil.mutableList.getValue().getProducts();
+            tempHash = FirebaseUtil.mutableList.getValue().getProducts();
         }
         //String buildPath = "lists/" + FireBaseUtil.currentList + "/products";
-        ListOfProducts tempList = FireBaseUtil.mutableList.getValue();
+        ListOfProducts tempList = FirebaseUtil.mutableList.getValue();
         tempList.setProducts(tempHash);
-        FireBaseUtil.mutableList.setValue(tempList);
-        FireBaseUtil.addAddArrayProducts(FireBaseUtil.mutableList.getValue(), tempHash);
+        FirebaseUtil.mutableList.setValue(tempList);
+        FirebaseUtil.addAddArrayProducts(FirebaseUtil.mutableList.getValue(), tempHash);
 
 
 

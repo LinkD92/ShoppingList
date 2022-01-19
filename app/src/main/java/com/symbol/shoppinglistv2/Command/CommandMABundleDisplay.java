@@ -7,7 +7,7 @@ import android.widget.Spinner;
 
 import com.symbol.shoppinglistv2.Other.AdapterBundleItems;
 import com.symbol.shoppinglistv2.Other.AdapterBundleOnList;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,8 +30,8 @@ public class CommandMABundleDisplay implements Command{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 //FireBaseUtil.currentList = adapterView.getItemAtPosition(i).toString();
-                String fullPath = "/lists/" + FireBaseUtil.currentList + "/bundles";
-                Log.d(TAG, "Testoo " + FireBaseUtil.currentList);
+                String fullPath = "/lists/" + FirebaseUtil.currentList + "/bundles";
+                Log.d(TAG, "Testoo " + FirebaseUtil.currentList);
 
             }
 

@@ -6,7 +6,7 @@ import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterCategorySpinner;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
@@ -25,7 +25,7 @@ public class CommandCategorySpnAdapter implements Command{
 
     @Override
     public boolean execute() {
-        FireBaseUtil.readCategory(new MyCallback() {
+        FirebaseUtil.readCategory(new MyCallback() {
             @Override
             public void onCategoryCallback(ArrayList<Category> categoryArrayList) {
                 if(categoryArrayList.size() == 0){

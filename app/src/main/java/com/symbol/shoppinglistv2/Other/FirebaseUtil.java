@@ -29,7 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 //Class created to manage Firebase access
-public class FireBaseUtil {
+public class FirebaseUtil {
 
     //Values for weired errors
     public static int spinnerPositionERROR; //spinner position resets to 0 every time product is added - this variable remembers last position of spinner
@@ -65,7 +65,7 @@ public class FireBaseUtil {
     public static ArrayList<Product> currentListProducts;
     public static HashMap<String, Product> productHashMap;
 
-    private FireBaseUtil(){
+    private FirebaseUtil(){
 
     }
 
@@ -85,7 +85,7 @@ public class FireBaseUtil {
 
     //method to read data from firebase supported by Abstractclass MyCallback - see more class: MyCallback.readData
     public static Product getProduct(String path, final MyCallback myCallback){
-        DatabaseReference currentRef = FireBaseUtil.reference.child("lists/" + currentList).child("/products/" + path);
+        DatabaseReference currentRef = FirebaseUtil.reference.child("lists/" + currentList).child("/products/" + path);
         currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -162,7 +162,7 @@ public class FireBaseUtil {
     }
 
     public static void removeCategory(Category category){
-        FireBaseUtil.reference.child("categories/" + category.getName()).removeValue();
+        FirebaseUtil.reference.child("categories/" + category.getName()).removeValue();
     }
 
     public static void sendShare(ListOfProducts listOfProducts){
@@ -171,19 +171,19 @@ public class FireBaseUtil {
                     hashShared.entrySet()) {
                 SharedMember sharedMember = entry.getValue();
                 if(listOfProducts.isShared()){
-                    String email = FireBaseUtil.user.getEmail();
-                    String uid = FireBaseUtil.user.getUid();
+                    String email = FirebaseUtil.user.getEmail();
+                    String uid = FirebaseUtil.user.getUid();
                     String name = listOfProducts.getName();
                     int update = 0;
                     SharedList sharedList = new SharedList(email, uid, name, update);
                     FirebaseDatabase.getInstance(source).getReference().child("users")
                         .child(sharedMember.getUid()).child("sharedLists")
-                        .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                        .child(FirebaseUtil.userPath).child(listOfProducts.getName())
                         .setValue(sharedList);
                 }else {
                     FirebaseDatabase.getInstance(source).getReference().child("users")
                         .child(sharedMember.getUid()).child("sharedLists")
-                        .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                        .child(FirebaseUtil.userPath).child(listOfProducts.getName())
                         .removeValue();
                 }
         }
@@ -196,21 +196,21 @@ public class FireBaseUtil {
             SharedMember sharedMember = entry.getValue();
             FirebaseDatabase.getInstance(source).getReference().child("users")
                     .child(sharedMember.getUid()).child("sharedLists")
-                    .child(FireBaseUtil.userPath).child(listOfProducts.getName())
+                    .child(FirebaseUtil.userPath).child(listOfProducts.getName())
                     .removeValue();
             }
     }
 
     public static void addBundle(String path, MyBundle bundle){
-        FireBaseUtil.reference.child(path + bundle.getName()).setValue(bundle);
+        FirebaseUtil.reference.child(path + bundle.getName()).setValue(bundle);
     }
 
     public static void removeBundle(String path, MyBundle bundle){
-        FireBaseUtil.reference.child(path + bundle.getName()).removeValue();
+        FirebaseUtil.reference.child(path + bundle.getName()).removeValue();
     }
 
     public static MyBundle findBundle(String path, final MyCallback myCallback){
-        DatabaseReference currentRef = FireBaseUtil.reference.child(path);
+        DatabaseReference currentRef = FirebaseUtil.reference.child(path);
         Log.d(TAG, "findBundle: " + currentRef);
         currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -267,7 +267,7 @@ public class FireBaseUtil {
 
     //method to get list parameters
     public static ListOfProducts getList(String listName, final MyCallback myCallback){
-        DatabaseReference currentRef = FireBaseUtil.reference.child("lists/" + listName);
+        DatabaseReference currentRef = FirebaseUtil.reference.child("lists/" + listName);
         currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -387,7 +387,7 @@ public class FireBaseUtil {
 
     public static void readFullList(String listName, final MyCallback myCallback){
         if(!listName.contains("(")) {
-            DatabaseReference currentRef = FireBaseUtil.reference.child(listName);
+            DatabaseReference currentRef = FirebaseUtil.reference.child(listName);
             Log.d(TAG, "PrintPath: " + currentRef);
             currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
@@ -551,7 +551,15 @@ public class FireBaseUtil {
     }
 
     public static void addLog(MyLog myLog){
-        FireBaseUtil.reference.child("logs").push().setValue(myLog);
+        FirebaseUtil.reference.child("logs").push().setValue(myLog);
+    }
+
+    public static void addLog(String path, MyLog myLog){
+        globalRef.child(path).child("logs").push().setValue(myLog);
+    }
+
+    public static void removeLog(MyLog myLog){
+        FirebaseUtil.reference.child("logs").child(myLog.getKey()).removeValue();
     }
 
     public static void readLog(MyCallback myCallback){
@@ -562,6 +570,7 @@ public class FireBaseUtil {
                 for (DataSnapshot ds :
                         snapshot.getChildren()) {
                     MyLog myLog = ds.getValue(MyLog.class);
+                    myLog.setKey(ds.getKey());
                     myLogs.add(myLog);
                     myCallback.readLog(myLogs);
                     Log.d(TAG, "onDataChange: " + myLogs.size());

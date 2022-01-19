@@ -46,7 +46,7 @@ public class AdapterBundleItems extends RecyclerView.Adapter<AdapterBundleItems.
         holder.ibtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FireBaseUtil.currentBundle = bundle.getName();
+                FirebaseUtil.currentBundle = bundle.getName();
                 fragmentAddBundle = new FragmentAddBundle(bundle);
                 fragmentMyOpener = new FragmentMyOpener(container);
                 fragmentMyOpener.open(fragmentAddBundle);

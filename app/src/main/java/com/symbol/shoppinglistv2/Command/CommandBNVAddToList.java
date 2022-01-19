@@ -7,7 +7,7 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
 import com.symbol.shoppinglistv2.Activities.FragmentBundleToList;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.R;
 
@@ -29,11 +29,11 @@ public class CommandBNVAddToList implements Command{
 
     @Override
     public boolean execute() {
-        Log.d(TAG, "execute select: " + FireBaseUtil.currentSelection);
+        Log.d(TAG, "execute select: " + FirebaseUtil.currentSelection);
         fragmentMyOpener = new FragmentMyOpener(container);
-        if(FireBaseUtil.currentSelection == R.id.bnvAddToListProduct || FireBaseUtil.currentSelection == 0){
+        if(FirebaseUtil.currentSelection == R.id.bnvAddToListProduct || FirebaseUtil.currentSelection == 0){
             fragmentMyOpener.open(fragmentAddProduct);
-        }else if(FireBaseUtil.currentSelection != 0 && FireBaseUtil.currentSelection == R.id.bnvAddToListBundle){
+        }else if(FirebaseUtil.currentSelection != 0 && FirebaseUtil.currentSelection == R.id.bnvAddToListBundle){
             fragmentMyOpener.open(fragmentBundleToList);
         }
         bottomNavigationView.setSelectedItemId(R.id.bnvAddToListBundle);
@@ -45,11 +45,11 @@ public class CommandBNVAddToList implements Command{
                 switch (item.getItemId()){
                     case R.id.bnvAddToListProduct:
                         fragmentMyOpener.open(fragmentAddProduct);
-                        FireBaseUtil.currentSelection = R.id.bnvAddToListProduct;
+                        FirebaseUtil.currentSelection = R.id.bnvAddToListProduct;
                         break;
                     case R.id.bnvAddToListBundle:
                         fragmentMyOpener.open(fragmentBundleToList);
-                        FireBaseUtil.currentSelection = R.id.bnvAddToListBundle;
+                        FirebaseUtil.currentSelection = R.id.bnvAddToListBundle;
                         break;
                 }
 

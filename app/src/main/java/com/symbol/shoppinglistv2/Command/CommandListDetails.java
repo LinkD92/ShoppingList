@@ -7,7 +7,7 @@ import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyDetail;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterDetails;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class CommandListDetails implements Command{
 
     @Override
     public boolean execute() {
-        ListOfProducts list = FireBaseUtil.mutableList.getValue();
+        ListOfProducts list = FirebaseUtil.mutableList.getValue();
         details = new HashMap<>();
         ArrayList<Product> productArrayList = new ArrayList<>();
         for (Map.Entry<String, Product> productEntry:

@@ -5,7 +5,7 @@ import android.view.View;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Other.AdapterBundleItems;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class CommandBundleList implements Command{
 
     @Override
     public boolean execute() {
-        FireBaseUtil.getBundles("/bundles/", new MyCallback() {
+        FirebaseUtil.getBundles("/bundles/", new MyCallback() {
             @Override
             public void getBundles(ArrayList<MyBundle> myBundleArrayList) {
                 super.getBundles(myBundleArrayList);
@@ -59,7 +59,7 @@ public class CommandBundleList implements Command{
                 MyBundle bundle = bundleArrayList.get(viewHolder.getAdapterPosition());
                 bundleArrayList.remove(viewHolder.getAdapterPosition());
                 String path = "bundles/";
-                FireBaseUtil.removeBundle(path, bundle);
+                FirebaseUtil.removeBundle(path, bundle);
             }
         };
         return simpleCallback;

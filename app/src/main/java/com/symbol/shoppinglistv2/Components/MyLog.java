@@ -6,6 +6,7 @@ public class MyLog {
     private String listName;
     private String productName;
     private String expirationDate;
+    private String key;
     private ArrayList<MyLog> myLogArrayList;
 
     public MyLog() {
@@ -41,11 +42,11 @@ public class MyLog {
         this.expirationDate = expirationDays;
     }
 
-    public ArrayList<MyLog> getMyLogArrayList() {
-        return myLogArrayList;
+    public String getKey() {
+        return key;
     }
 
-    public void setMyLogArrayList(ArrayList<MyLog> myLogArrayList) {
-        this.myLogArrayList = myLogArrayList;
+    public void setKey(String key) {
+        this.key = key;
     }
 }

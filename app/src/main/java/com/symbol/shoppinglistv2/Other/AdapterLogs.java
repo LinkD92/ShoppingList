@@ -32,8 +32,8 @@ public class AdapterLogs extends RecyclerView.Adapter<AdapterLogs.ViewHolder>{
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_notification_item, parent, false);
-
+        View view = LayoutInflater.from(parent.getContext()).inflate(
+                R.layout.adapter_notification_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -43,22 +43,12 @@ public class AdapterLogs extends RecyclerView.Adapter<AdapterLogs.ViewHolder>{
         holder.tvLogListName.setText(log.getListName());
         holder.tvLogProductName.setText(log.getProductName());
         Date myDate = new Date(Date.parse(log.getExpirationDays()));
-        Calendar calendar = Calendar.getInstance();
-        Date date2 = calendar.getTime();
-
-        long diff = myDate.getTime() - date2.getTime();
-        diff = diff / 86400000;
-        TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-
-//        long daysBetween  = myDate.getDate() - calendar.getTime();
-//        LocalDateTime time1 = LocalDateTime.now();
-//        LocalDateTime tim2 = myDate.getTime();
-//        long diff = ChronoUnit.DAYS.between(time1, myDate.getTime())
-
-        Log.d(TAG, "MyTest: " + diff);
+        int day = myDate.getDate();
+        int month = myDate.getMonth() +1;
+        int year = myDate.getYear()+1900;
 
 
-        String create = myDate.getDay() + "/" + myDate.getMonth() + "/" + myDate.getYear();
+        String create = day + "/" + month+ "/" + year;
         holder.tvLogExpirationDays.setText(create);
 
     }
@@ -79,6 +69,17 @@ public class AdapterLogs extends RecyclerView.Adapter<AdapterLogs.ViewHolder>{
             tvLogProductName = itemView.findViewById(R.id.tvLogProductName);
             tvLogExpirationDays = itemView.findViewById(R.id.tvLogExpirationDays);
             tvLogListName = itemView.findViewById(R.id.tvLogListName);
+            ibtnLogRemove = itemView.findViewById(R.id.ibtnLogRemove);
+            removeListener();
+        }
+
+        private void removeListener(){
+            ibtnLogRemove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    FirebaseUtil.removeLog(myLogs.get(getAdapterPosition()));
+                }
+            });
         }
     }
 

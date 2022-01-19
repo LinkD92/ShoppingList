@@ -13,7 +13,7 @@ import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 
 //Functionality to add products to the firebase
@@ -48,8 +48,8 @@ public class CommandAddNewProduct implements Command {
                     Product product = extractValues();
                     //Callback to check if product already exists - see more class: MyCallback.onProductExistsCallback
                     //String path = "lists/" +FireBaseUtil.currentList +"/products/"+ product.getName();
-                    String path = FireBaseUtil.mutableList.getValue().getListPath() +"/products/"+ product.getName();
-                    FireBaseUtil.ifPathExists(path, new MyCallback() {
+                    String path = FirebaseUtil.mutableList.getValue().getListPath() +"/products/"+ product.getName();
+                    FirebaseUtil.ifPathExists(path, new MyCallback() {
                         @Override
                         public boolean onProductExistsCallback(boolean isTrue) {
                             //checking if product already exists
@@ -58,10 +58,10 @@ public class CommandAddNewProduct implements Command {
                                 dialogInfo(product);
                             }else{
                                 //add product do database
-                                FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
-                                ListOfProducts list = FireBaseUtil.mutableList.getValue();
+                                FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+                                ListOfProducts list = FirebaseUtil.mutableList.getValue();
                                 list.getProducts().put(product.getName(), product);
-                                FireBaseUtil.mutableList.setValue(list);
+                                FirebaseUtil.mutableList.setValue(list);
 
                                 Toast.makeText(ActivityMain.appContext, "Product has been added", Toast.LENGTH_LONG).show();
                             }
@@ -83,7 +83,7 @@ public class CommandAddNewProduct implements Command {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which){
                     case DialogInterface.BUTTON_POSITIVE:
-                        FireBaseUtil.addProduct(FireBaseUtil.mutableList.getValue(), product);
+                        FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
                         Log.d(ActivityMain.TAG, "Dialog Positive: ");
                         break;
 

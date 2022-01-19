@@ -59,7 +59,7 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
         viewHolder.ibtnRemoveCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FireBaseUtil.removeCategory(category);
+                FirebaseUtil.removeCategory(category);
             }
         });
 

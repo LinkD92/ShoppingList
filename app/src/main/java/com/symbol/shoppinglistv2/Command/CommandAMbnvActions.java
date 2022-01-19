@@ -12,7 +12,7 @@ import com.symbol.shoppinglistv2.R;
 
 import androidx.annotation.NonNull;
 
-public class CommandMAbnvActions implements Command{
+public class CommandAMbnvActions implements Command{
     private final String TAG = "CommandMAbnvActions";
 
     //Fragments and Fragment opener declaration;
@@ -26,7 +26,7 @@ public class CommandMAbnvActions implements Command{
     private View container;
 
 
-    public CommandMAbnvActions(BottomNavigationView bottomNavigationView, View container) {
+    public CommandAMbnvActions(BottomNavigationView bottomNavigationView, View container) {
         this.bottomNavigationView = bottomNavigationView;
         this.container = container;
     }

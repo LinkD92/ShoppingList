@@ -1,6 +1,5 @@
 package com.symbol.shoppinglistv2.Other;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import com.symbol.shoppinglistv2.R;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 
@@ -50,7 +48,7 @@ public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundlePro
             @Override
             public void onClick(View view) {
                 product.setAmount(product.getAmount() + 1);
-                FireBaseUtil.addBundleProduct(FireBaseUtil.currentBundle, product);
+                FirebaseUtil.addBundleProduct(FirebaseUtil.currentBundle, product);
             }
         });
 
@@ -59,7 +57,7 @@ public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundlePro
             public void onClick(View view) {
                 if(product.getAmount() > 0){
                     product.setAmount(product.getAmount() -1);
-                    FireBaseUtil.addBundleProduct(FireBaseUtil.currentBundle, product);
+                    FirebaseUtil.addBundleProduct(FirebaseUtil.currentBundle, product);
                 }
             }
         });

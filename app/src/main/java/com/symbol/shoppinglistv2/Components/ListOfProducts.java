@@ -1,10 +1,8 @@
 package com.symbol.shoppinglistv2.Components;
 
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ListOfProducts {
 
@@ -31,13 +29,13 @@ public class ListOfProducts {
 
     public ListOfProducts(String name) {
         this.name = name;
-        this.listPath = FireBaseUtil.reference.child(name).toString();
+        this.listPath = FirebaseUtil.reference.child(name).toString();
     }
 
     public ListOfProducts(String name, boolean shared) {
         this.name = name;
         this.shared = shared;
-        this.listPath = FireBaseUtil.reference.child(name).toString();
+        this.listPath = FirebaseUtil.reference.child(name).toString();
     }
 
     public String getName() {

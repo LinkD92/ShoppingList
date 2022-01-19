@@ -7,11 +7,15 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.preference.Preference;
+import android.util.Log;
 
 import com.symbol.shoppinglistv2.Activities.FragmentSettings;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
+import com.symbol.shoppinglistv2.Components.MyLog;
 import com.symbol.shoppinglistv2.Components.MyNotifications;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CommandPushNotification implements Command{
@@ -36,27 +40,25 @@ public class CommandPushNotification implements Command{
 
     @Override
     public boolean execute() {
-        createChannel();
-//        fragmentSettings.switchCompat.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.set(Calendar.HOUR_OF_DAY, 9);
-                calendar.set(Calendar.SECOND, Calendar.SECOND+10);
+        Calendar calendar = Calendar.getInstance();
+        //calendar.set(Calendar.HOUR_OF_DAY, 9);
+        calendar.set(Calendar.MINUTE, Calendar.MINUTE);
+        calendar.set(Calendar.SECOND, Calendar.SECOND+ 30);
+        ArrayList<MyLog> myLogs = new ArrayList<>();
 
-
-                Intent intent = new Intent(ActivityMain.appContext, MyNotifications.class);
-
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(ActivityMain.appContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-//                AlarmManager alarmManager = MainActivity.service;
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent );
-//
-//            }
-//        });
-//
-
+        Intent intent = new Intent(ActivityMain.appContext, MyNotifications.class);
+        intent.putExtra("array", myLogs);
+        intent.putExtra("days", ActivityMain.daysBeforeExpire);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ActivityMain.appContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        if(ActivityMain.notifications){
+            createChannel();
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent );
+            Log.d(TAG, "TestNote: notifications ON" );
+        }else{
+            Log.d(TAG, "TestNote: notifications OFF" );
+            alarmManager.cancel(pendingIntent);
+        }
         return false;
     }
 

@@ -13,9 +13,7 @@ import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReferenceArray;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,29 +56,29 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
         cbCheckedBundle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String path = "lists/" + FireBaseUtil.currentList + "/bundles/";
+                String path = "lists/" + FirebaseUtil.currentList + "/bundles/";
                // MyBundle bundle = myBundleArrayList.get(getAdapterPosition());
                 if(cbCheckedBundle.isChecked()){
                     bundle.setChecked((cbCheckedBundle.isChecked()));
                     for (Map.Entry<String, Product> productEntry :
                             bundle.getProducts().entrySet()) {
                         Product product = productEntry.getValue();
-                        String prodPath = "lists/" + FireBaseUtil.currentList + "/products/" + productEntry.getKey() + "/bundleAmount";
-                        int currentAmount = FireBaseUtil.productHashMap.get(product.getName()).getBundleAmount() + product.getAmount();
-                        FireBaseUtil.reference.child(prodPath).setValue(currentAmount);
-                        Log.d(TAG, "onClick: " + FireBaseUtil.productHashMap.size());
+                        String prodPath = "lists/" + FirebaseUtil.currentList + "/products/" + productEntry.getKey() + "/bundleAmount";
+                        int currentAmount = FirebaseUtil.productHashMap.get(product.getName()).getBundleAmount() + product.getAmount();
+                        FirebaseUtil.reference.child(prodPath).setValue(currentAmount);
+                        Log.d(TAG, "onClick: " + FirebaseUtil.productHashMap.size());
                     }
-                    FireBaseUtil.addBundle(path, bundle);
+                    FirebaseUtil.addBundle(path, bundle);
                 }else{
                     bundle.setChecked(cbCheckedBundle.isChecked());
                     for (Map.Entry<String, Product> productEntry :
                             bundle.getProducts().entrySet()) {
                         Product product = productEntry.getValue();
-                        String prodPath = "lists/" + FireBaseUtil.currentList + "/products/" + productEntry.getKey() + "/bundleAmount";
-                        int currentAmount = FireBaseUtil.productHashMap.get(product.getName()).getBundleAmount() - product.getAmount();
-                        FireBaseUtil.reference.child(prodPath).setValue(currentAmount);
+                        String prodPath = "lists/" + FirebaseUtil.currentList + "/products/" + productEntry.getKey() + "/bundleAmount";
+                        int currentAmount = FirebaseUtil.productHashMap.get(product.getName()).getBundleAmount() - product.getAmount();
+                        FirebaseUtil.reference.child(prodPath).setValue(currentAmount);
                     }
-                    FireBaseUtil.addBundle(path, bundle);
+                    FirebaseUtil.addBundle(path, bundle);
                 }
 
             }
@@ -125,8 +123,8 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
                 public void onClick(View view) {
                     MyBundle bundle = myBundleArrayList.get(getAdapterPosition());
                     bundle.setAmount(bundle.getAmount()+1);
-                    String path = "lists/" + FireBaseUtil.currentList + "/bundles/";
-                    FireBaseUtil.addBundle(path, bundle);
+                    String path = "lists/" + FirebaseUtil.currentList + "/bundles/";
+                    FirebaseUtil.addBundle(path, bundle);
                 }
             });
 
@@ -138,8 +136,8 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
                     MyBundle bundle = myBundleArrayList.get(getAdapterPosition());
                     if(bundle.getAmount() >0){
                         bundle.setAmount(bundle.getAmount()-1);
-                        String path = "lists/" + FireBaseUtil.currentList + "/bundles/";
-                        FireBaseUtil.addBundle(path, bundle);
+                        String path = "lists/" + FirebaseUtil.currentList + "/bundles/";
+                        FirebaseUtil.addBundle(path, bundle);
                     }
                 }
             });

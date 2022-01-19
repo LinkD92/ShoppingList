@@ -8,7 +8,7 @@ import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Components.SharedList;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.Other.MyItemTouchHelper;
 import com.symbol.shoppinglistv2.Other.AdapterProduct;
@@ -24,18 +24,18 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-public class CommandTestCommand implements Command{
+public class CommandListProductDisplay implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandTestCommand";
     private FragmentLists fragmentLists;
     private MutableLiveData <ListOfProducts> currentList;
     private AdapterProduct adapterProduct;
     private MutableLiveData<ArrayList<SharedList>> sharedListLoaded;
 
-    public CommandTestCommand(FragmentLists fragmentLists, MutableLiveData<ListOfProducts> currentList, MutableLiveData<ArrayList<SharedList>> sharedListLoaded) {
+    public CommandListProductDisplay(FragmentLists fragmentLists, MutableLiveData<ListOfProducts> currentList, MutableLiveData<ArrayList<SharedList>> sharedListLoaded) {
         this.fragmentLists = fragmentLists;
         this.currentList = currentList;
         this.sharedListLoaded = sharedListLoaded;
-        FireBaseUtil.mutableList = currentList;
+        FirebaseUtil.mutableList = currentList;
     }
 
     @Override
@@ -50,15 +50,15 @@ public class CommandTestCommand implements Command{
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String listName = adapterView.getItemAtPosition(i).toString();
-                FireBaseUtil.spinnerPositionERROR = i;
-                FireBaseUtil.currentList = listName;
+                FirebaseUtil.spinnerPositionERROR = i;
+                FirebaseUtil.currentList = listName;
                 String path;
                 if(!listName.contains("(")){
                     path = "lists/" + listName;
-                    FireBaseUtil.readFullList(path, new MyCallback() {
+                    FirebaseUtil.readFullList(path, new MyCallback() {
                         @Override
                         public void readFullList(ListOfProducts listOfProducts) {
-                            FireBaseUtil.mutableList.setValue(listOfProducts);
+                            FirebaseUtil.mutableList.setValue(listOfProducts);
                             currentList.setValue(listOfProducts);
                         }
                     });
@@ -68,10 +68,10 @@ public class CommandTestCommand implements Command{
                         boolean check = listName.contains(sharedList.getName());
                         boolean check2 = listName.contains(sharedList.getEmail());
                         if(check && check2){
-                            FireBaseUtil.readFullSharedList(sharedList, new MyCallback() {
+                            FirebaseUtil.readFullSharedList(sharedList, new MyCallback() {
                                 @Override
                                 public void readFullSharedList(ListOfProducts listOfProducts) {
-                                    FireBaseUtil.mutableList.setValue(listOfProducts);
+                                    FirebaseUtil.mutableList.setValue(listOfProducts);
                                     currentList.setValue(listOfProducts);
                                 }
                             });
@@ -87,7 +87,7 @@ public class CommandTestCommand implements Command{
     }
 
     private void fillProductsRV(){
-        FireBaseUtil.mutableList.observeForever(new Observer<ListOfProducts>() {
+        FirebaseUtil.mutableList.observeForever(new Observer<ListOfProducts>() {
             @Override
             public void onChanged(ListOfProducts listOfProducts) {
                 HashMap<String, Product> products = listOfProducts.getProducts();

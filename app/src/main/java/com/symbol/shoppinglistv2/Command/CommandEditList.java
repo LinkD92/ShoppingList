@@ -9,7 +9,7 @@ import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.SharedMember;
 import com.symbol.shoppinglistv2.Other.AdapterSharedMembers;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
@@ -67,20 +67,20 @@ public class CommandEditList implements Command {
                 listOfProducts.setName(fragmentManageLists.etListName.getText().toString());
                 listOfProducts.setShared(fragmentManageLists.rbSharedList.isChecked());
                 if(listOfProducts.getListPath() == null){
-                    listOfProducts.setListPath(FireBaseUtil.userPath + "/lists/" +listOfProducts.getName());
+                    listOfProducts.setListPath(FirebaseUtil.userPath + "/lists/" +listOfProducts.getName());
                 }
 
                 if(listOfProducts.getName().equals(null) || listOfProducts.getName().equals("")){
                     Toast.makeText(ActivityMain.appContext, "Nazwa nie moze byc pusta", Toast.LENGTH_LONG).show();
                 }else{
-                    FireBaseUtil.addList(listOfProducts);
-                    FireBaseUtil.sendShare(listOfProducts);
+                    FirebaseUtil.addList(listOfProducts);
+                    FirebaseUtil.sendShare(listOfProducts);
                 }
                 if(currentName != null && !currentName.equals(newName)){
                     String removePath = "lists/" + currentName;
                     listOfProducts.setName(currentName);
-                    FireBaseUtil.removeShare(listOfProducts);
-                    FireBaseUtil.removeValue(removePath);
+                    FirebaseUtil.removeShare(listOfProducts);
+                    FirebaseUtil.removeValue(removePath);
                 }
             }
         });
@@ -131,7 +131,7 @@ public class CommandEditList implements Command {
         fragmentManageLists.btnAddMember.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FireBaseUtil.readUsers(new MyCallback() {
+                FirebaseUtil.readUsers(new MyCallback() {
                     @Override
                     public void readUsers(HashMap<String, String> userEmails) {
                         String findUser = fragmentManageLists.etListSharedWith.getText().toString();

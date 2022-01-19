@@ -8,7 +8,7 @@ import android.widget.Spinner;
 
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.SharedList;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
@@ -47,7 +47,7 @@ public class CommandMASpinnerAdapter implements Command{
 
     private void getLocalLists(){
         listLoaded = new MutableLiveData<>();
-        FireBaseUtil.readList(new MyCallback() {
+        FirebaseUtil.readList(new MyCallback() {
             @Override
             public void onListCallback(ArrayList<String> listsArrayList) {
                 listLoaded.setValue(listsArrayList);
@@ -59,13 +59,13 @@ public class CommandMASpinnerAdapter implements Command{
                 adapter = new ArrayAdapter(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, listLoaded.getValue());
                 adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                 spinList.setAdapter(adapter);
-                spinList.setSelection(FireBaseUtil.spinnerPositionERROR);
+                spinList.setSelection(FirebaseUtil.spinnerPositionERROR);
             }
         });
     }
 
     private void getSharedLists(){
-        FireBaseUtil.readSharedList(new MyCallback() {
+        FirebaseUtil.readSharedList(new MyCallback() {
             @Override
             public void readSharedLists(ArrayList<SharedList> sharedLists) {
                 sharedListLoaded.setValue(sharedLists);
@@ -84,7 +84,7 @@ public class CommandMASpinnerAdapter implements Command{
                 adapter = new ArrayAdapter(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, tempArray);
                 adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
                 spinList.setAdapter(adapter);
-                spinList.setSelection(FireBaseUtil.spinnerPositionERROR);
+                spinList.setSelection(FirebaseUtil.spinnerPositionERROR);
             }
         });
 
@@ -95,10 +95,10 @@ public class CommandMASpinnerAdapter implements Command{
             @Override
             public void onChanged(String s) {
                 if(s.equals("Private")){
-                    FireBaseUtil.spinnerPositionERROR = 0;
+                    FirebaseUtil.spinnerPositionERROR = 0;
                     getLocalLists();
                 }else{
-                    FireBaseUtil.spinnerPositionERROR = 0;
+                    FirebaseUtil.spinnerPositionERROR = 0;
                     getSharedLists();
                 }
             }

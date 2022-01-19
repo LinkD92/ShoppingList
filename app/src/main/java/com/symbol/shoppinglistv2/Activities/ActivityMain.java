@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Spinner;
@@ -16,35 +18,13 @@ import android.widget.Spinner;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.symbol.shoppinglistv2.Command.Command;
-import com.symbol.shoppinglistv2.Command.CommandMAbnvActions;
+import com.symbol.shoppinglistv2.Command.CommandAMbnvActions;
 import com.symbol.shoppinglistv2.Command.CommandPushNotification;
+import com.symbol.shoppinglistv2.Command.CommandSetPrefs;
 import com.symbol.shoppinglistv2.Command.CommandSignIn;
-import com.symbol.shoppinglistv2.Other.FireBaseUtil;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.R;
 
-import java.util.Calendar;
-import java.util.Date;
-
-/*
-
-#FINISHED
-
-#PARTIALY FINISHED
-- Log in / log out
-- Spinner for lists
-- Product display
-
-#TO DO LIST
-- fab to add products
-    - retrieve data of product
-- creation/edit of new products
-- sorting
-- categorizing
-- category class
-- product class update
-- list class update
-
- */
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -54,6 +34,9 @@ public class ActivityMain extends AppCompatActivity {
     public static ActivityMain activityMain;
     public static AlarmManager service;
     public static NotificationManager notificationManager;
+    public static boolean notifications;
+    public static int daysBeforeExpire;
+    private SharedPreferences prefs;
 
     //Views
     public ConstraintLayout clFragmentContainer;
@@ -82,7 +65,7 @@ public class ActivityMain extends AppCompatActivity {
 
 
         //Firebase startup
-        FireBaseUtil.connect();
+        FirebaseUtil.connect();
 
 
         //Views assignment
@@ -92,19 +75,12 @@ public class ActivityMain extends AppCompatActivity {
         //Commands to execute
         executeCommands();
 
-        Date data = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, 8);
-        Date nowaData = calendar.getTime();
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         executeCommand(new CommandSignIn(this));
-        Log.d(ActivityMain.TAG, "MATAG: on Start");
-
     }
 
     private void executeCommand(Command command){
@@ -112,9 +88,21 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void executeCommands(){
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        notifications = prefs.getBoolean("notifications", false);
+        daysBeforeExpire = prefs.getInt("daysBeforeExpire", 2);
+        Log.d(TAG, "MyTest  execute : " + notifications);
         executeCommand(new CommandSignIn(this));
-        executeCommand(new CommandMAbnvActions(bnvBottomMenu, clFragmentContainerBNV));
-        executeCommand(new CommandPushNotification(this,service, notificationManager ));
+        executeCommand(new CommandAMbnvActions(bnvBottomMenu, clFragmentContainerBNV));
+
+
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        executeCommand(new CommandSetPrefs(prefs));
+        executeCommand(new CommandPushNotification(this,service, notificationManager ));
+    }
 }
