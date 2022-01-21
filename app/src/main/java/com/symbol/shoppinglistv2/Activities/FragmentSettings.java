@@ -16,6 +16,7 @@ import android.widget.Switch;
 
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandFragmentSettingsLogic;
+import com.symbol.shoppinglistv2.Command.CommandImportExport;
 import com.symbol.shoppinglistv2.Command.CommandPushNotification;
 import com.symbol.shoppinglistv2.R;
 
@@ -48,6 +49,7 @@ public class FragmentSettings extends Fragment {
         btnExport = v.findViewById(R.id.btnSettingExportList);
 
         executeCommand(new CommandFragmentSettingsLogic(button, btnSettingsNotificationLog, this));
+        executeCommand(new CommandImportExport(btnImport, btnExport));
 
         return v;
     }

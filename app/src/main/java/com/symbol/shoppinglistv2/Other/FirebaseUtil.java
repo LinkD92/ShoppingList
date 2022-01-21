@@ -138,7 +138,7 @@ public class FirebaseUtil {
     }
 
     public static void addList(String path, ListOfProducts list){
-        reference.child(path).setValue(list);
+        reference.child(path).child(list.getName()).setValue(list);
     }
 
     public static void addList(ListOfProducts list){

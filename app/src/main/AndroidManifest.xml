@@ -11,6 +11,11 @@
         android:theme="@style/Theme.ShoppingListv2"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Activities.ActivityFileExplorer"
+            android:exported="true">
+
+        </activity>
+        <activity
             android:name=".Activities.ActivitySignIn"
             android:exported="false" />
         <activity
@@ -33,9 +38,11 @@
 
         <receiver android:name=".Components.MyNotifications" />
     </application>
-    <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.SET_ALARM" />
 
 </manifest>

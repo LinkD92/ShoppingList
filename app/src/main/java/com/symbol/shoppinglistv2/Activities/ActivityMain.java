@@ -1,29 +1,60 @@
 package com.symbol.shoppinglistv2.Activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.Spinner;
 
+import com.google.android.gms.common.util.IOUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandAMbnvActions;
+import com.symbol.shoppinglistv2.Command.CommandImportExportResult;
 import com.symbol.shoppinglistv2.Command.CommandPushNotification;
 import com.symbol.shoppinglistv2.Command.CommandSetPrefs;
 import com.symbol.shoppinglistv2.Command.CommandSignIn;
+import com.symbol.shoppinglistv2.Components.ListOfProducts;
+import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.R;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 
 public class ActivityMain extends AppCompatActivity {
@@ -36,6 +67,7 @@ public class ActivityMain extends AppCompatActivity {
     public static NotificationManager notificationManager;
     public static boolean notifications;
     public static int daysBeforeExpire;
+    public static Context test;
     private SharedPreferences prefs;
 
     //Views
@@ -45,12 +77,21 @@ public class ActivityMain extends AppCompatActivity {
     public Spinner spinList;
     public RecyclerView rvProducts;
     public FloatingActionButton floatingActionButton;
+    public int PICKFILE_REQUEST_CODE = 0;
+
 
     //FragmentManager
     public FragmentManager manager = getSupportFragmentManager();
     public static LayoutInflater inflater;
 
+    //Method required to manage import/export files
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        executeCommand(new CommandImportExportResult(requestCode, resultCode, data));
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +115,9 @@ public class ActivityMain extends AppCompatActivity {
 
         //Commands to execute
         executeCommands();
+
+
+
 
     }
 
