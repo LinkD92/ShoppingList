@@ -20,6 +20,7 @@ public class Product {
     private int customID = 0;
     private int bundleAmount =0;
     private long lastCheckDate =0;
+    private String group ="";
 
 
 
@@ -149,5 +150,13 @@ public class Product {
 
     public void setLastCheckDate(long lastCheckDate) {
         this.lastCheckDate = lastCheckDate;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

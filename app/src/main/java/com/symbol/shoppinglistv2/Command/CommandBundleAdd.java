@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 
 import com.symbol.shoppinglistv2.Activities.FragmentAddBundle;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
+import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleProducts;
@@ -128,8 +129,10 @@ public class CommandBundleAdd implements Command{
             @Override
             public void onClick(View view) {
                 String prodName = fragmentAddBundle.ssBundleAddProductName.getSelectedItem().toString();
+                ListOfProducts list = FirebaseUtil.mutableList.getValue();
                 Log.d(TAG, "prodName: " + prodName);
-                Product product = new Product(prodName);
+                Product product = list.getProducts().get(prodName);
+                product.setGroup(myBundle.getName());
                 FirebaseUtil.addBundleProduct(myBundle.getName(), product);
             }
         });

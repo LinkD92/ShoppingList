@@ -164,4 +164,5 @@ public class CommandEditList implements Command {
             fragmentManageLists.rbPrivateList.setChecked(true);
         }
     }
+
 }

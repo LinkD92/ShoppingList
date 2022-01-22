@@ -59,7 +59,7 @@ import java.util.Objects;
 
 public class ActivityMain extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    public static final String TAG = "ActivityMain";
     public static Context appContext;
     public static FragmentManager fragmentManager;
     public static ActivityMain activityMain;
@@ -78,6 +78,10 @@ public class ActivityMain extends AppCompatActivity {
     public RecyclerView rvProducts;
     public FloatingActionButton floatingActionButton;
     public int PICKFILE_REQUEST_CODE = 0;
+
+
+
+
 
 
     //FragmentManager
@@ -136,7 +140,6 @@ public class ActivityMain extends AppCompatActivity {
 
         notifications = prefs.getBoolean("notifications", false);
         daysBeforeExpire = prefs.getInt("daysBeforeExpire", 2);
-        Log.d(TAG, "MyTest  execute : " + notifications);
         executeCommand(new CommandSignIn(this));
         executeCommand(new CommandAMbnvActions(bnvBottomMenu, clFragmentContainerBNV));
 
