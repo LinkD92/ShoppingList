@@ -11,7 +11,7 @@ public class MyBundle{
     private ArrayList<Product> bundleProducts;
     private HashMap<String, Product> products;
     private int error = -740056;
-    private boolean isChecked;
+    private boolean isChecked = true;
 
     public MyBundle(String name){
         this.name = name;

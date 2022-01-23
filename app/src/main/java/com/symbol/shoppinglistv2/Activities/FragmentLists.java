@@ -72,8 +72,8 @@ public class FragmentLists extends Fragment {
         //executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));
-        //executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
         executeCommand(new CommandListProductDisplay(this, currentList, sharedListLoaded));
+        executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
         return v;
     }
 

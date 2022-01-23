@@ -5,10 +5,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
+import com.symbol.shoppinglistv2.Components.ListOfProducts;
+import com.symbol.shoppinglistv2.Components.MyBundle;
+import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleItems;
 import com.symbol.shoppinglistv2.Other.AdapterBundleOnList;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
+import com.symbol.shoppinglistv2.Other.MyCallback;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Map;
+
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CommandMABundleDisplay implements Command{
@@ -18,34 +32,60 @@ public class CommandMABundleDisplay implements Command{
     private AdapterBundleItems adapterBundleItems;
     private AdapterBundleOnList adapterBundleOnList;
     private Spinner spinner;
+    private MutableLiveData<ListOfProducts> currentList;
 
-    public CommandMABundleDisplay(RecyclerView rvBundlesDisplay, Spinner spinner) {
+    public CommandMABundleDisplay(RecyclerView rvBundlesDisplay, Spinner spinner ) {//MutableLiveData<ListOfProducts> currentList
         this.spinner = spinner;
         this.rvBundlesDisplay = rvBundlesDisplay;
+        //this.currentList = currentList;
     }
 
     @Override
     public boolean execute() {
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        FirebaseUtil.mutableList.observeForever(new Observer<ListOfProducts>() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //FireBaseUtil.currentList = adapterView.getItemAtPosition(i).toString();
-                String fullPath = "/lists/" + FirebaseUtil.currentList + "/bundles";
-                Log.d(TAG, "Testoo " + FirebaseUtil.currentList);
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
+            public void onChanged(ListOfProducts listOfProducts) {
+                ArrayList<MyBundle> bundleArrayList = new ArrayList<>();
+                for (Map.Entry<String, MyBundle> myBundle :
+                        listOfProducts.getBundles().entrySet()) {
+                    bundleArrayList.add(myBundle.getValue());
+                }
+                sortWay(bundleArrayList);
+                adapterBundleOnList = new AdapterBundleOnList(bundleArrayList);
+                rvBundlesDisplay.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+                //new ItemTouchHelper(simpleCallback).attachToRecyclerView(rvBundlesDisplay);
+                rvBundlesDisplay.setAdapter(adapterBundleOnList);
             }
         });
 
-
-
+//        Log.d(TAG, "MyTest: outer " + spinner.getSelectedItem());
+//        FirebaseUtil.getList(FirebaseUtil.currentList, new MyCallback() {
+//            @Override
+//            public void getList(ListOfProducts listOfProducts) {
+//                super.getList(listOfProducts);
+//
+//                Log.d(TAG, "MyTest: list name" + listOfProducts.getName());
+//            }
+//        });
 
 
 
         return false;
+    }
+
+    private void sortWay(ArrayList<MyBundle> myBundleArrayList)
+    {
+        Collections.sort(myBundleArrayList, new Comparator<MyBundle>() {
+            @Override
+            public int compare(MyBundle bundle, MyBundle t1) {
+                if(bundle.isChecked()==true && t1.isChecked()==false){
+                    return 1;
+                }else if(bundle.isChecked()==false && t1.isChecked()==true){
+                    return -1;
+                }else{
+                    return 0;
+                }
+            }
+        });
     }
 }

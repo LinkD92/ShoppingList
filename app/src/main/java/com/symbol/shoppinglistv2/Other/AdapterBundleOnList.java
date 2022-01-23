@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnList.ViewHolder> {
@@ -47,9 +48,50 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
         holder.tvCurrentBundleAmount.setText(converInt);
         holder.tvBundleItemName.setTextColor(bundle.getError());
         holder.cbCheckedBundle.setChecked(bundle.isChecked());
-        checkBoxListener(holder.cbCheckedBundle, bundle);
+        holder.clContainerWholeBundle.setAlpha(setAlpha(bundle.isChecked()));
 
+        //checkBoxListener(holder.cbCheckedBundle, bundle);
+        cbListener(holder.cbCheckedBundle, bundle);
 
+    }
+    private void cbListener(CheckBox checkBox, MyBundle myBundle){
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myBundle.setChecked(checkBox.isChecked());
+                if(myBundle.isChecked()){
+                    cbChecked(myBundle);
+                }else{
+                    cbUnchecked(myBundle);
+                }
+            }
+        });
+
+    }
+
+    private void cbChecked(MyBundle myBundle){
+        for (Map.Entry<String, Product> product:
+                myBundle.getProducts().entrySet()) {
+            FirebaseUtil.removeBundleProduct(FirebaseUtil.mutableList.getValue(), product.getValue());
+        }
+        FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), myBundle);
+    }
+
+    private void cbUnchecked(MyBundle myBundle){
+        for (Map.Entry<String, Product> product:
+                myBundle.getProducts().entrySet()) {
+                FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product.getValue());
+        }
+
+        FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), myBundle);
+    }
+
+    private float setAlpha(boolean isChecked){
+        if(isChecked){
+            return 0.35F;
+        }else{
+            return 1;
+        }
     }
 
     private void checkBoxListener(CheckBox cbCheckedBundle, MyBundle bundle ){
@@ -96,6 +138,7 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
         private ImageButton ibtnIncreaseAmountBundle, ibtnDecreaseAmountBundle;
         private TextView tvBundleItemName, tvBundlePrice, tvCurrentBundleAmount;
         private CheckBox cbCheckedBundle;
+        private ConstraintLayout clContainerWholeBundle;
 
 
         public ViewHolder(@NonNull View v) {
@@ -106,6 +149,7 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
             tvBundlePrice = v.findViewById(R.id.tvBundleItemTotalPrice);
             tvCurrentBundleAmount = v.findViewById(R.id.tvCurrentAmountBundle);
             cbCheckedBundle = v.findViewById(R.id.cbCheckedBundle);
+            clContainerWholeBundle = v.findViewById(R.id.clContainerWholeBundle);
             //getBundlePrice();
             onClicklisteners();
 

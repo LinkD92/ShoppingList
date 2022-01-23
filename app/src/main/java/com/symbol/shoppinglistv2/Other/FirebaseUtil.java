@@ -23,6 +23,7 @@ import com.symbol.shoppinglistv2.Components.SharedMember;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -115,6 +116,16 @@ public class FirebaseUtil {
                 .setValue(product);
     }
 
+    public static void addBundleProduct(ListOfProducts listOfProducts, Product product){
+        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()+product.getGroup())
+                .setValue(product);
+    }
+
+    public static void removeBundleProduct(ListOfProducts listOfProducts, Product product){
+        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()+product.getGroup())
+                .removeValue();
+    }
+
     public static void addBundleProduct(String path, Product product){
         String buildPath = "bundles/" + path  + "/products";
         reference.child(buildPath).child(product.getName()).setValue(product);
@@ -204,6 +215,11 @@ public class FirebaseUtil {
     public static void addBundle(String path, MyBundle bundle){
         FirebaseUtil.reference.child(path + bundle.getName()).setValue(bundle);
     }
+
+    public static void addBundle(ListOfProducts listOfProducts, MyBundle bundle){
+        globalRef.child(listOfProducts.getListPath()).child("bundles").child(bundle.getName()).setValue(bundle);
+    }
+
 
     public static void removeBundle(String path, MyBundle bundle){
         FirebaseUtil.reference.child(path + bundle.getName()).removeValue();
