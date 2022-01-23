@@ -20,30 +20,24 @@ import com.symbol.shoppinglistv2.Other.MyCallback;
 public class CommandAddNewProduct implements Command {
     //variables
     private final String TAG = "CommandAddNewProduct";
-    private EditText productName;
-    private EditText productPrice;
-    private String sharedWith;
-    private Button button;
     private FragmentAddProduct fragmentAddProduct;
+    private Product productOld;
 
-    public CommandAddNewProduct(Button button, EditText productName, EditText productPrice){
-        this.button = button;
-        this.productName = productName;
-        this.productPrice = productPrice;
-    };
-
-    public CommandAddNewProduct(FragmentAddProduct fragmentAddProduct){
+    public CommandAddNewProduct(FragmentAddProduct fragmentAddProduct, Product productOld){
         this.fragmentAddProduct = fragmentAddProduct;
+        this.productOld = productOld;
+        Log.d(TAG, "MyTest: " + productOld);
     }
 
     @Override
     public boolean execute() {
-
         fragmentAddProduct.btnFABAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                //creation of Product object with extracted parameters
                 String name = fragmentAddProduct.etFABAddProductName.getText().toString();
+
+                
                 if(name.length() > 0){
                     Product product = extractValues();
                     //Callback to check if product already exists - see more class: MyCallback.onProductExistsCallback
@@ -58,11 +52,16 @@ public class CommandAddNewProduct implements Command {
                                 dialogInfo(product);
                             }else{
                                 //add product do database
-                                FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
-                                ListOfProducts list = FirebaseUtil.mutableList.getValue();
-                                list.getProducts().put(product.getName(), product);
-                                FirebaseUtil.mutableList.setValue(list);
-
+                                if(productOld != null){
+                                    String oldName = productOld.getName();
+                                    String newName = product.getName();
+                                    FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+                                    if(!newName.equals(oldName)){
+                                        FirebaseUtil.removeProduct(FirebaseUtil.mutableList.getValue(), productOld);
+                                    }
+                                }else{
+                                    FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+                                }
                                 Toast.makeText(ActivityMain.appContext, "Product has been added", Toast.LENGTH_LONG).show();
                             }
                             return super.onProductExistsCallback(isTrue);

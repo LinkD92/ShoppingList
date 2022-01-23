@@ -3,6 +3,7 @@ package com.symbol.shoppinglistv2.Command;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.symbol.shoppinglistv2.Activities.FragmentAddBundle;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
@@ -11,143 +12,142 @@ import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleProducts;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
-import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CommandBundleAdd implements Command{
-
-    private final String TAG = "com.symbol.shoppinglistv2.Command.CommandBundleAdd";
+    private final String TAG = this.getClass().getSimpleName();
     private FragmentAddBundle fragmentAddBundle;
     private AdapterBundleProducts adapter;
     private ArrayList<Product> products;
     private MyBundle myBundle;
     private View container;
+    private MutableLiveData<HashMap<String, Product>> hashProducts = new MutableLiveData<>();
 
     public CommandBundleAdd(FragmentAddBundle fragmentAddBundle, MyBundle myBundle, View container) {
         this.fragmentAddBundle = fragmentAddBundle;
-        products = new ArrayList<>();
-        this.myBundle = myBundle;
         this.container = container;
         if(myBundle == null){
-            fragmentAddBundle.ibtnAddBundleAddPorduct.setVisibility(View.GONE);
-            fragmentAddBundle.rvBundleProducts.setVisibility(View.GONE);
-            fragmentAddBundle.ssBundleAddProductName.setVisibility(View.GONE);
+            this.myBundle = new MyBundle();
+            hashProducts.setValue(new HashMap<String, Product>());
         }else{
-            fragmentAddBundle.etAddBundleName.setText(myBundle.getName());
+            this.myBundle = myBundle;
+            hashProducts.setValue(myBundle.getProducts());
         }
     }
 
     @Override
     public boolean execute() {
-        ibtnListener();
-        actvProduct();
-        //addProductToBundle();
+        extractData();
+        ibtnAddProductListener();
+        availableProducts();
         productToRecyclerView();
-        btnListener();
+        btnSaveChangesListener();
         return false;
     }
 
-    private void actvProduct(){
-        String fullPath = "/lists/" + FirebaseUtil.currentList + "/products/";
-        FirebaseUtil.readProducts(fullPath, new MyCallback() {
-            @Override
-            public void onProductCallback(ArrayList<Product> productArrayList) {
-                Log.d(TAG, "onProductCallback arr: " + productArrayList.size());
-                ArrayList<String> stringBund = new ArrayList<>();
-                for (Product pr :
-                        productArrayList) {
-                    stringBund.add(pr.getName());
-                    Log.d(TAG, "onProductCallback string: " + stringBund.size());
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, stringBund);
-                fragmentAddBundle.ssBundleAddProductName.setAdapter(adapter);
+    private void availableProducts(){
+        HashMap<String, Product> productHashMap = FirebaseUtil.mutableList.getValue().getProducts();
+        ArrayList<String> tempProducts = new ArrayList<>();
+        for (Map.Entry<String, Product> prodEntry:
+             productHashMap.entrySet()) {
+            if(prodEntry.getValue().getGroup() != null && prodEntry.getValue().getGroup().length() == 0){
+                tempProducts.add(prodEntry.getValue().getName());
             }
-        });
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(ActivityMain.appContext, R.layout.support_simple_spinner_dropdown_item, tempProducts);
+        fragmentAddBundle.ssBundleAddProductName.setAdapter(adapter);
 
     }
 
-//    private void addProductToBundle(){
-//        fragmentAddBundle.btnAddBundleSave.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                MyBundle myBundle;
-//                String bundleName = fragmentAddBundle.etAddBundleName.getText().toString();
-//                String productName = fragmentAddBundle.actvBundleAddProductName.getText().toString();
-//                Product product = new Product();
-//                product.setName(productName);
-//                myBundle = new MyBundle(bundleName);
-//                FireBaseUtil.addBundle(myBundle);
-//            }
-//        });
-//    }
 
     private void productToRecyclerView(){
-        if(myBundle != null) {
-            String path = "bundles/" + myBundle.getName() + "/products";
-            FirebaseUtil.readProducts(path, new MyCallback() {
+    hashProducts.observeForever(new Observer<HashMap<String, Product>>() {
+        @Override
+        public void onChanged(HashMap<String, Product> productHashMap) {
+            products = new ArrayList<>();
+            for (Map.Entry<String, Product> prodEntry:
+                    productHashMap.entrySet()) {
+                products.add(prodEntry.getValue());
+            adapter = new AdapterBundleProducts(products);
+            ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 @Override
-                public void onProductCallback(ArrayList<Product> productArrayList) {
-                    super.onProductCallback(productArrayList);
-                    Log.d(TAG, "onProductCallback: " + productArrayList.size());
-                    products = productArrayList;
-                    adapter = new AdapterBundleProducts(productArrayList);
-                    fragmentAddBundle.rvBundleProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
-                    new ItemTouchHelper(simpleCallback).attachToRecyclerView(fragmentAddBundle.rvBundleProducts);
-                    fragmentAddBundle.rvBundleProducts.setAdapter(adapter);
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
                 }
 
-                ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
-                    @Override
-                    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                        return false;
-                    }
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    products.remove(viewHolder.getAdapterPosition());
+                    //hashProducts.getValue().remove(product.getName());
+                    adapter.notifyDataSetChanged();
+                }
+            };
 
-                    @Override
-                    public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                        Product product = products.get(viewHolder.getAdapterPosition());
-                        products.remove(viewHolder.getAdapterPosition());
-                        Log.d(TAG, "onSwiped: " + product.getName());
-                        FirebaseUtil.removeBundleProduct(FirebaseUtil.currentBundle, product);
-                    }
-                };
+                fragmentAddBundle.rvBundleProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+                new ItemTouchHelper(simpleCallback).attachToRecyclerView(fragmentAddBundle.rvBundleProducts);
+                fragmentAddBundle.rvBundleProducts.setAdapter(adapter);
 
-            });
+
+            }
         }
-
-
+    });
     }
 
-    private void ibtnListener(){
+    private void ibtnAddProductListener(){
         fragmentAddBundle.ibtnAddBundleAddPorduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String prodName = fragmentAddBundle.ssBundleAddProductName.getSelectedItem().toString();
                 ListOfProducts list = FirebaseUtil.mutableList.getValue();
-                Log.d(TAG, "prodName: " + prodName);
                 Product product = list.getProducts().get(prodName);
-                product.setGroup(myBundle.getName());
-                FirebaseUtil.addBundleProduct(myBundle.getName(), product);
+                hashProducts.getValue().put(product.getName(), product);
+                hashProducts.setValue(hashProducts.getValue());
             }
         });
     }
 
-    private void btnListener(){
+    private void btnSaveChangesListener(){
         fragmentAddBundle.btnAddBundle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String bundleName = fragmentAddBundle.etAddBundleName.getText().toString();
-                MyBundle bundle = new MyBundle(bundleName);
-                FirebaseUtil.addBundle("bundles/", bundle);
+                HashMap<String, Product> temp = new HashMap<>();
+                if(bundleName.length() >0){
+                    myBundle.setName(bundleName);
+                    for (Product pr :
+                            products) {
+                        pr.setGroup(bundleName);
+                        pr.setChecked(false);
+                        temp.put(pr.getName(), pr);
+                    }
+                    myBundle.setProducts(temp);
+                    FirebaseUtil.addBundle("bundles/", myBundle);
+                }else{
+                    Toast.makeText(ActivityMain.appContext, "Name is empty", Toast.LENGTH_LONG).show();
+                }
 
             }
         });
     }
+
+    private void extractData(){
+        if(myBundle != null){
+            fragmentAddBundle.etAddBundleName.setText(myBundle.getName());
+        }
+    }
+
 
 }

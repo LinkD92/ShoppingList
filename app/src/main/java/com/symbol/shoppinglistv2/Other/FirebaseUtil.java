@@ -112,8 +112,14 @@ public class FirebaseUtil {
     }
 
     public static void addProduct(ListOfProducts listOfProducts, Product product){
-        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName())
-                .setValue(product);
+        if(product.getGroup().length()>0){
+            globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()+product.getGroup())
+                    .setValue(product);
+        }else{
+            globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName())
+                    .setValue(product);
+        }
+
     }
 
     public static void addBundleProduct(ListOfProducts listOfProducts, Product product){

@@ -1,5 +1,6 @@
 package com.symbol.shoppinglistv2.Other;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundlePro
             @Override
             public void onClick(View view) {
                 product.setAmount(product.getAmount() + 1);
-                FirebaseUtil.addBundleProduct(FirebaseUtil.currentBundle, product);
+                notifyDataSetChanged();
             }
         });
 
@@ -57,7 +58,7 @@ public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundlePro
             public void onClick(View view) {
                 if(product.getAmount() > 0){
                     product.setAmount(product.getAmount() -1);
-                    FirebaseUtil.addBundleProduct(FirebaseUtil.currentBundle, product);
+                    notifyDataSetChanged();
                 }
             }
         });

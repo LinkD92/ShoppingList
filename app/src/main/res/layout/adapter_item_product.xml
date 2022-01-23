@@ -25,17 +25,29 @@
         app:layout_constraintBottom_toBottomOf="@+id/clContainerForAmountChangeProduct"
         app:layout_constraintEnd_toEndOf="parent"
         >
+
         <TextView
             android:id="@+id/tvItemProductName"
             android:layout_width="0dp"
-            android:textSize="20dp"
             android:layout_height="wrap_content"
             android:background="@color/teal_200"
             android:text="Loading Data"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/tvItemProductGroup"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvItemProductGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="group"
+            android:textSize="20dp"
+
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvItemProductName"
             app:layout_constraintEnd_toStartOf="@+id/cbCheckedProduct"
-            />
+            app:layout_constraintStart_toEndOf="@+id/tvItemProductName"
+            tools:visibility="gone" />
 
         <CheckBox
             android:id="@+id/cbCheckedProduct"
@@ -53,11 +65,10 @@
             android:textSize="10dp"
             android:text="0"
             android:background="@color/teal_200"
-            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="16dp"
+            app:layout_constraintRight_toRightOf="@id/tvItemProductName"
             app:layout_constraintTop_toBottomOf="@id/tvItemProductName"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-
             />
 
 
@@ -79,17 +90,16 @@
             android:layout_marginRight="16dp"
             android:src="@drawable/ic_temp"
             app:layout_constraintBottom_toBottomOf="@+id/tvCurrentAmountProduct"
-            app:layout_constraintEnd_toStartOf="@+id/tvCurrentAmountProduct"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvCurrentAmountProduct" />
 
         <ImageButton
             android:id="@+id/ibtnAddAmountProduct"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginLeft="8dp"
             android:src="@drawable/ic_temp"
             app:layout_constraintBottom_toBottomOf="@+id/tvCurrentAmountProduct"
-            app:layout_constraintStart_toEndOf="@+id/tvAmountFromBundle"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvCurrentAmountProduct" />
 
         <TextView
@@ -99,31 +109,10 @@
             android:textSize="24dp"
             android:text="1"
             android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@+id/ibtnReduceAmountProduct"
-
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-
-        <TextView
-            android:id="@+id/tvAmountPlusMark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24dp"
-            android:text="+"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/tvCurrentAmountProduct"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvAmountFromBundle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24dp"
-            android:text="0"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/tvAmountPlusMark"
+            app:layout_constraintStart_toEndOf="@+id/ibtnReduceAmountProduct"
+            app:layout_constraintEnd_toStartOf="@id/ibtnAddAmountProduct"
             app:layout_constraintTop_toTopOf="parent" />
 
 

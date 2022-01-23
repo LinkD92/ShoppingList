@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 //class to create recycler view for products assigned to ArrayList
 public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHolder> implements ItemTouchHelperAdapter {
 
-    private final String TAG = "com.symbol.shoppinglistv2.Other.ProductAdapter";
+    private final String TAG = this.getClass().getName();
     private ArrayList<Product> productList;
     private ItemTouchHelper itemTouchHelper;
     private View container;
@@ -58,6 +58,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Product product = productList.get(position);
+
         viewHolder.tvItemProductName.setText(product.getName());
         String price = Double.toString(product.getPrice());
         viewHolder.tvItemProductPrice.setText(price);
@@ -66,8 +67,13 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         viewHolder.cbCheckedProduct.setChecked(product.isChecked());
         viewHolder.clContainerWholeProduct.setBackgroundColor(product.getCategory().getColor());
         viewHolder.clContainerWholeProduct.setAlpha(setAlpha(product.isChecked()));
-        String bundleAmount = Integer.toString(product.getBundleAmount());
-        viewHolder.tvCurrentBundleAmount.setText(bundleAmount);
+        viewHolder.tvItemProductGroup.setText(product.getGroup());
+        if(product.getGroup().length() > 0){
+            viewHolder.ibtnAddAmountProduct.setVisibility(View.GONE);
+            viewHolder.ibtnReduceAmountProduct.setVisibility(View.GONE);
+            viewHolder.ibtnOptions.setVisibility(View.GONE);
+            viewHolder.tvItemProductGroup.setVisibility(View.VISIBLE);
+        }
         checkBoxClickListener(viewHolder.cbCheckedProduct, product);
     }
 
@@ -92,7 +98,6 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                         if(product.getAvgExpirationDays() != 0){
                             String path = FirebaseUtil.mutableList.getValue().getListPath();
                             String test[] = path.split("/");
-                            Log.d(TAG, "MyTest: " + test[0]);
                             String logName = FirebaseUtil.mutableList.getValue().getName();
                             String logProduct = product.getName();
                             int days = product.getAvgExpirationDays();
@@ -132,7 +137,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             GestureDetector.OnGestureListener
 
     {
-        private TextView tvItemProductName;
+        private TextView tvItemProductName, tvItemProductGroup;
         private TextView tvItemProductPrice;
         private TextView tvCurrentAmountProduct, tvCurrentBundleAmount;
         private CheckBox cbCheckedProduct;
@@ -152,7 +157,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             clContainerWholeProduct = view.findViewById(R.id.clContainerWholeProduct);
             ibtnAddAmountProduct = view.findViewById(R.id.ibtnAddAmountProduct);
             ibtnReduceAmountProduct = view.findViewById(R.id.ibtnReduceAmountProduct);
-            tvCurrentBundleAmount = view.findViewById(R.id.tvAmountFromBundle);
+            tvItemProductGroup = view.findViewById(R.id.tvItemProductGroup);
             this.gestureDetector = new GestureDetector(view.getContext(), this);
             itemView.setOnTouchListener(this);
             onClicklisteners();
@@ -236,6 +241,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                     Product product = productList.get(getAdapterPosition());
                     PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                     popupMenu.getMenuInflater().inflate(R.menu.product_options, popupMenu.getMenu());
+
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {

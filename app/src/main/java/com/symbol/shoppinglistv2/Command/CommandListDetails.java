@@ -36,7 +36,6 @@ public class CommandListDetails implements Command{
             Product product = productEntry.getValue();
             MyDetail myDetail = new MyDetail();
             myDetail.setName(product.getCategory().getName());
-            Log.d(TAG, "MyTest: " + myDetail.getName());
             if(details.containsKey(myDetail.getName())){
                 MyDetail currentDetail = details.get(myDetail.getName());
                 if(!product.isChecked()){

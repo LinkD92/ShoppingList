@@ -55,11 +55,19 @@ public class CommandManageLists implements Command{
 
                 PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                 popupMenu.getMenuInflater().inflate(R.menu.list_actions, popupMenu.getMenu());
-                popupMenu.getMenu().getItem(3).setTitle("Sort By: " + currentList.getValue().getSortType());
-                if(!currentList.getValue().getListPath().contains(FirebaseUtil.userPath)){
+                if(FirebaseUtil.mutableList.getValue() != null){
+                    popupMenu.getMenu().getItem(3).setTitle("Sort By: " + currentList.getValue().getSortType());
+                    if(!currentList.getValue().getListPath().contains(FirebaseUtil.userPath)){
+                        popupMenu.getMenu().getItem(1).setEnabled(false);
+                        popupMenu.getMenu().getItem(2).setEnabled(false);
+                    }
+                }else{
                     popupMenu.getMenu().getItem(1).setEnabled(false);
                     popupMenu.getMenu().getItem(2).setEnabled(false);
+                    popupMenu.getMenu().getItem(3).setEnabled(false);
+
                 }
+
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem menuItem) {

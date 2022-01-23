@@ -29,7 +29,6 @@ public class CommandEditProduct implements Command{
             String barcodeConvert = String.valueOf(product.getBarCode());
             fragmentAddProduct.etBarcodeValue.setText(barcodeConvert);
 
-            Log.d(TAG, "execute: "  + fragmentAddProduct.spnProductCategory.getSelectedItem());
         }
         return false;
     }

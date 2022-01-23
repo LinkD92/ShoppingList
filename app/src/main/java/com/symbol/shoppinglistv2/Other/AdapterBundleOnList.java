@@ -78,9 +78,14 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
     }
 
     private void cbUnchecked(MyBundle myBundle){
-        for (Map.Entry<String, Product> product:
+
+        for (Map.Entry<String, Product> prod:
                 myBundle.getProducts().entrySet()) {
-                FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product.getValue());
+            int prodAmount = myBundle.getAmount() * prod.getValue().getAmount();
+
+            Product product = new Product(prod.getValue());
+            product.setAmount(prodAmount);
+            FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
         }
 
         FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), myBundle);
@@ -167,8 +172,14 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
                 public void onClick(View view) {
                     MyBundle bundle = myBundleArrayList.get(getAdapterPosition());
                     bundle.setAmount(bundle.getAmount()+1);
-                    String path = "lists/" + FirebaseUtil.currentList + "/bundles/";
-                    FirebaseUtil.addBundle(path, bundle);
+                    FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), bundle);
+                    for (Map.Entry<String, Product> prod:
+                         bundle.getProducts().entrySet()) {
+                        int prodAmount = bundle.getAmount() * prod.getValue().getAmount();
+                        Product product = new Product(prod.getValue());
+                        product.setAmount(prodAmount);
+                        FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
+                    }
                 }
             });
 
@@ -180,8 +191,14 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
                     MyBundle bundle = myBundleArrayList.get(getAdapterPosition());
                     if(bundle.getAmount() >0){
                         bundle.setAmount(bundle.getAmount()-1);
-                        String path = "lists/" + FirebaseUtil.currentList + "/bundles/";
-                        FirebaseUtil.addBundle(path, bundle);
+                        FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), bundle);
+                        for (Map.Entry<String, Product> prod:
+                                bundle.getProducts().entrySet()) {
+                            int prodAmount = bundle.getAmount() * prod.getValue().getAmount();
+                            Product product = new Product(prod.getValue());
+                            product.setAmount(prodAmount);
+                            FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
+                        }
                     }
                 }
             });

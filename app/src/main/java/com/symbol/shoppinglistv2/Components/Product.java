@@ -46,13 +46,26 @@ public class Product {
 //        this.sharedWith = sharedWith;
     }
 
+//
+//        public Product(Product copyProduct){
+//        this.name = copyProduct.name;
+//        this.price = copyProduct.price;
+//        this.category = copyProduct.category;
+//    }
 
-        public Product(Product copyProduct){
+    public Product(Product copyProduct) {
         this.name = copyProduct.name;
         this.price = copyProduct.price;
         this.category = copyProduct.category;
-
-
+        this.expirationDate = copyProduct.expirationDate;
+        this.amount = copyProduct.amount;
+        this.checked = copyProduct.checked;
+        this.barCode = copyProduct.barCode;
+        this.avgExpirationDays = copyProduct.avgExpirationDays;
+        this.customID = copyProduct.customID;
+        this.bundleAmount = copyProduct.bundleAmount;
+        this.lastCheckDate = copyProduct.lastCheckDate;
+        this.group = copyProduct.group;
     }
 
     public Map<String, Object> addToMap(){

@@ -65,7 +65,7 @@ public class FragmentAddProduct extends Fragment {
         ibtnScanBarcode = v.findViewById(R.id.ibtnScanBarcode);
 
         //executeCommand(new CommandProductAutoCompleteList(etFABAddProductName, acList));
-        executeCommand(new CommandAddNewProduct(this));
+        executeCommand(new CommandAddNewProduct(this, product));
         executeCommand(new CommandCategorySpnAdapter(spnProductCategory, product));
         executeCommand(new CommandEditProduct(product,this));
         return v;
