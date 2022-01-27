@@ -73,6 +73,7 @@ public class FirebaseUtil {
     //begins interaction with Firebase
     public static void connect(){
         user = FirebaseAuth.getInstance().getCurrentUser();
+        mutableList = new MutableLiveData<>();
         //"products" is a temp path
         if(user != null){
             userPath = user.getUid();
@@ -155,19 +156,34 @@ public class FirebaseUtil {
     }
 
     public static void addList(String path, ListOfProducts list){
+
         reference.child(path).child(list.getName()).setValue(list);
     }
 
     public static void addList(ListOfProducts list){
+        Log.d(TAG, "trbls: czy to sie wywolalo?");
         globalRef.child(list.getListPath()).setValue(list);
     }
 
-    public static void removeList(String listName){
-        reference.child("lists").child(listName).removeValue();
+    public static void removeList(ListOfProducts list){
+        for (Map.Entry<String, SharedMember> sharedM:
+             list.getSharedWith().entrySet()) {
+            FirebaseUtil.removeShare(list, sharedM.getValue());
+        }
+        reference.child("lists").child(list.getName()).removeValue();
     }
 
     public static void removeValue(String path){
         reference.child(path).removeValue();
+    }
+
+    public static void removeValue(ListOfProducts list, HashMap<String,SharedMember> sharedMembers){
+
+        for (Map.Entry<String, SharedMember> sm:
+             sharedMembers.entrySet()) {
+            globalRef.child(sm.getValue().getUid()).child("sharedLists").child(FirebaseUtil.userPath).child(list.getName()).removeValue();
+        }
+
     }
 
     public static void addSharedMemeber(String path, SharedMember sharedMember){
@@ -206,16 +222,22 @@ public class FirebaseUtil {
         }
     }
     
-    public static void removeShare(ListOfProducts listOfProducts){
-        HashMap<String, SharedMember> hashShared = listOfProducts.getSharedWith();
-        for (Map.Entry<String, SharedMember> entry:
-                hashShared.entrySet()) {
-            SharedMember sharedMember = entry.getValue();
+    public static void removeShare(ListOfProducts listOfProducts, SharedMember sharedMember){
             FirebaseDatabase.getInstance(source).getReference().child("users")
                     .child(sharedMember.getUid()).child("sharedLists")
                     .child(FirebaseUtil.userPath).child(listOfProducts.getName())
                     .removeValue();
+    }
+
+    public static void updateShare(ListOfProducts list, HashMap<String, SharedMember> sharedMemberHashMap){
+        sendShare(list);
+        for (Map.Entry<String, SharedMember> sharedM:
+                sharedMemberHashMap.entrySet()) {
+            if(!list.getSharedWith().containsValue(sharedM.getValue())){
+                removeShare(list, sharedM.getValue());
             }
+
+        }
     }
 
     public static void addBundle(String path, MyBundle bundle){
@@ -289,6 +311,7 @@ public class FirebaseUtil {
 
     //method to get list parameters
     public static ListOfProducts getList(String listName, final MyCallback myCallback){
+        Log.d(TAG, "trbls: "  );
         DatabaseReference currentRef = FirebaseUtil.reference.child("lists/" + listName);
         currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -302,7 +325,7 @@ public class FirebaseUtil {
                         //assigment of parameters of List
                         String name = task.getResult().child("name").getValue(String.class);
                         boolean shared = task.getResult().child("shared").getValue(boolean.class);
-                        String sortType = task.getResult().child("sortType").getValue(String.class);
+                        //String sortType = task.getResult().child("sortType").getValue(String.class);
 
                         //HashMap declaration for products
                         HashMap<String, Product> products = new HashMap<>();
@@ -315,11 +338,11 @@ public class FirebaseUtil {
 
                         }
                         //new object of List created + values setters
-                        listOfProducts = new ListOfProducts(name);
+                        //listOfProducts = new ListOfProducts(name);
                         listOfProducts.setShared(shared);
                         //listOfProducts.setSharedWith(sharedWith);
                         listOfProducts.setProducts(products);
-                        listOfProducts.setSortType(sortType);
+                        //listOfProducts.setSortType(sortType);
                         myCallback.getList(listOfProducts);
                         }
 

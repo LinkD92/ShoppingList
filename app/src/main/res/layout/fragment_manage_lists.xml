@@ -59,7 +59,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="linq147@gmail.com"
+        android:text="name@test.pl"
         android:hint="Email Address of user to share list with"
         android:inputType="textEmailAddress"
         app:layout_constraintLeft_toLeftOf="parent"

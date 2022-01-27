@@ -58,17 +58,17 @@ public class CommandMAProductDisplay implements Command {
                 //After editing anything in "list" path of database the selection is going back to
                 // first list
                 FirebaseUtil.spinnerPositionERROR = i;
+                Log.d(TAG, "trbls: oute MAProdDisp " );
                 String buildPath = "/lists/" + FirebaseUtil.currentList  +"/products";
                         FirebaseUtil.readProducts(buildPath, new MyCallback() {
                             @Override
                             public void onProductCallback(ArrayList<Product> productArrayList) {
-
+                                Log.d(TAG, "trbls: " );
                                 FirebaseUtil.getList(FirebaseUtil.currentList, new MyCallback() {
                                     @Override
                                     public void getList(ListOfProducts listOfProducts) {
                                         //one of the sort methods - Pushes check products to the bottom of the list
                                         FirebaseUtil.sortMethod = listOfProducts.getSortType();
-                                        Log.d(TAG, "SortLOL: " + FirebaseUtil.sortMethod);
                                         if(FirebaseUtil.sortMethod.equals("name")){
                                             sortName(productArrayList);
                                         }else if(FirebaseUtil.sortMethod.equals("category/name")){

@@ -1,15 +1,18 @@
 package com.symbol.shoppinglistv2.Command;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.symbol.shoppinglistv2.Activities.FragmentManageLists;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
+import com.symbol.shoppinglistv2.Activities.FragmentManagement;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.SharedMember;
 import com.symbol.shoppinglistv2.Other.AdapterSharedMembers;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
+import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,7 +32,8 @@ public class CommandEditList implements Command {
     private ListOfProducts listOfProducts;
     private FragmentManageLists fragmentManageLists;
     private MutableLiveData<HashMap<String, SharedMember>> sharedMembersListener = new MutableLiveData<>();
-
+    private FragmentMyOpener fragmentMyOpener;
+    private HashMap<String,SharedMember> oldMembers;
 
     public CommandEditList(){}
 
@@ -36,9 +41,13 @@ public class CommandEditList implements Command {
         this.fragmentManageLists = fragmentManageLists;
         if(listOfProducts == null){
             this.listOfProducts = new ListOfProducts();
+            oldMembers = new HashMap<>();
         }else
         {
             this.listOfProducts = listOfProducts;
+            oldMembers = new HashMap<>(listOfProducts.getSharedWith());
+
+            Log.d(TAG, "trbls old constructor: " + oldMembers.size());
         }
     }
 
@@ -64,8 +73,12 @@ public class CommandEditList implements Command {
             public void onClick(View view) {
                 String currentName = listOfProducts.getName();
                 String newName = fragmentManageLists.etListName.getText().toString();
+
+
+
                 listOfProducts.setName(fragmentManageLists.etListName.getText().toString());
                 listOfProducts.setShared(fragmentManageLists.rbSharedList.isChecked());
+                FirebaseUtil.mutableList.setValue(listOfProducts);
                 if(listOfProducts.getListPath() == null){
                     listOfProducts.setListPath(FirebaseUtil.userPath + "/lists/" +listOfProducts.getName());
                 }
@@ -74,14 +87,23 @@ public class CommandEditList implements Command {
                     Toast.makeText(ActivityMain.appContext, "Nazwa nie moze byc pusta", Toast.LENGTH_LONG).show();
                 }else{
                     FirebaseUtil.addList(listOfProducts);
-                    FirebaseUtil.sendShare(listOfProducts);
+                    FirebaseUtil.updateShare(listOfProducts, oldMembers);
+
                 }
                 if(currentName != null && !currentName.equals(newName)){
                     String removePath = "lists/" + currentName;
+                    FirebaseUtil.updateShare(listOfProducts, oldMembers);
+                    listOfProducts.setListPath(FirebaseUtil.userPath + "/lists/"+listOfProducts.getName());
+                    FirebaseUtil.addList("lists", listOfProducts);
                     listOfProducts.setName(currentName);
-                    FirebaseUtil.removeShare(listOfProducts);
+                    FirebaseUtil.mutableList.setValue(listOfProducts);
+                    FirebaseUtil.removeValue(listOfProducts, oldMembers);
                     FirebaseUtil.removeValue(removePath);
+
+
                 }
+                fragmentMyOpener = new FragmentMyOpener(fragmentManageLists);
+                fragmentMyOpener.close(fragmentManageLists);
             }
         });
     }

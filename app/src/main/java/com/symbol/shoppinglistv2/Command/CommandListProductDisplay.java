@@ -1,5 +1,6 @@
 package com.symbol.shoppinglistv2.Command;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -25,7 +26,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class CommandListProductDisplay implements Command{
-    private final String TAG = "com.symbol.shoppinglistv2.Command.CommandTestCommand";
+    private final String TAG = this.getClass().getSimpleName();
     private FragmentLists fragmentLists;
     private MutableLiveData <ListOfProducts> currentList;
     private AdapterProduct adapterProduct;
@@ -90,23 +91,29 @@ public class CommandListProductDisplay implements Command{
         FirebaseUtil.mutableList.observeForever(new Observer<ListOfProducts>() {
             @Override
             public void onChanged(ListOfProducts listOfProducts) {
-                HashMap<String, Product> products = listOfProducts.getProducts();
-                ArrayList<Product> productArrayList = new ArrayList<>();
-                for (Map.Entry<String, Product> entry:
-                        products.entrySet()) {
-                    Product product = entry.getValue();
-                    productArrayList.add(product);
-                }
-                sortProducts(productArrayList);
-                fragmentLists.rvProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
-                adapterProduct = new AdapterProduct(productArrayList, fragmentLists.fragmentContainer, currentList);
-                ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapterProduct, productArrayList);
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-                itemTouchHelper.attachToRecyclerView(fragmentLists.rvProducts);
-                adapterProduct.setTouchHelper(itemTouchHelper);
-                fragmentLists.rvProducts.setAdapter(adapterProduct);
-                adapterProduct.notifyDataSetChanged();
 
+                if(listOfProducts != null){
+                    HashMap<String, Product> products = listOfProducts.getProducts();
+                    ArrayList<Product> productArrayList = new ArrayList<>();
+                    for (Map.Entry<String, Product> entry:
+                            products.entrySet()) {
+                        Product product = entry.getValue();
+                        productArrayList.add(product);
+                    }
+                    sortProducts(productArrayList);
+                    fragmentLists.rvProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+                    adapterProduct = new AdapterProduct(productArrayList, fragmentLists.fragmentContainer, currentList);
+                    ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapterProduct, productArrayList);
+                    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                    itemTouchHelper.attachToRecyclerView(fragmentLists.rvProducts);
+                    adapterProduct.setTouchHelper(itemTouchHelper);
+                    fragmentLists.rvProducts.setAdapter(adapterProduct);
+                    adapterProduct.notifyDataSetChanged();
+                }else{
+                    adapterProduct = new AdapterProduct();
+                    fragmentLists.rvProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+                    fragmentLists.rvProducts.setAdapter(adapterProduct);
+                }
             }
         });
     }

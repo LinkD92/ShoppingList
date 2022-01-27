@@ -11,7 +11,7 @@ public class ListOfProducts {
     private HashMap<String, SharedMember> sharedWith = new HashMap<>();
     private HashMap<String, Product> products = new HashMap<>();
     private HashMap<String, MyBundle> bundles = new HashMap<>();
-    private String sortType = "name";
+    private String sortType ="name";
     private String listPath;
 
     public ListOfProducts(){
@@ -27,10 +27,10 @@ public class ListOfProducts {
 //        this.products = products;
     }
 
-    public ListOfProducts(String name) {
-        this.name = name;
-        this.listPath = FirebaseUtil.reference.child(name).toString();
-    }
+//    public ListOfProducts(String name) {
+//        this.name = name;
+//        this.listPath = FirebaseUtil.reference.child(name).toString();
+//    }
 
     public ListOfProducts(String name, boolean shared) {
         this.name = name;

@@ -1,5 +1,6 @@
 package com.symbol.shoppinglistv2.Command;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -55,9 +56,11 @@ public class CommandManageLists implements Command{
 
                 PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                 popupMenu.getMenuInflater().inflate(R.menu.list_actions, popupMenu.getMenu());
+                //Log.d(TAG, "trbls: " + FirebaseUtil.mutableList.getValue().getName());
+                //Log.d(TAG, "trbls: " + currentList.getValue().getName());
                 if(FirebaseUtil.mutableList.getValue() != null){
-                    popupMenu.getMenu().getItem(3).setTitle("Sort By: " + currentList.getValue().getSortType());
-                    if(!currentList.getValue().getListPath().contains(FirebaseUtil.userPath)){
+                    popupMenu.getMenu().getItem(3).setTitle("Sort By: " + FirebaseUtil.mutableList.getValue().getSortType());
+                    if(!FirebaseUtil.mutableList.getValue().getListPath().contains(FirebaseUtil.userPath)){
                         popupMenu.getMenu().getItem(1).setEnabled(false);
                         popupMenu.getMenu().getItem(2).setEnabled(false);
                     }
@@ -111,16 +114,18 @@ public class CommandManageLists implements Command{
     }
 
     private void menuItemClickRemoveList(){
-        FirebaseUtil.removeShare(currentList.getValue());
-        FirebaseUtil.removeList(currentList.getValue().getName());
+        //FirebaseUtil.removeShare(currentList.getValue());
+        FirebaseUtil.removeList(currentList.getValue());
+        FirebaseUtil.mutableList.setValue(null);
     }
 
     private void menuItemSortType(String sortType){
 
-        currentList.getValue().setSortType(sortType);
-        FirebaseUtil.mutableList.setValue(FirebaseUtil.mutableList.getValue());
-        FirebaseUtil.globalRef.child(currentList.getValue()
-                .getListPath()).child("sortType").setValue(sortType);
+        if(FirebaseUtil.mutableList.getValue() != null){
+            FirebaseUtil.mutableList.getValue().setSortType(sortType);
+            FirebaseUtil.globalRef.child(FirebaseUtil.mutableList.getValue()
+                    .getListPath()).child("sortType").setValue(sortType);
+        }
     }
 
     private void ibtnListDetailsListener(){

@@ -1,5 +1,6 @@
 package com.symbol.shoppinglistv2.Other;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,8 @@ import java.util.HashMap;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.content.ContentValues.TAG;
 
 public class AdapterSharedMembers extends RecyclerView.Adapter<AdapterSharedMembers.ViewHolder> {
     private ArrayList<SharedMember> sharedMembers;

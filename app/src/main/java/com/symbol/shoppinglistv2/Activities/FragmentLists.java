@@ -36,7 +36,7 @@ public class FragmentLists extends Fragment {
     public View fragmentContainer;
     private ImageButton ibtnListDetails;
     private ImageButton ibtnListOptions;
-    private RecyclerView rvBundles;
+    public RecyclerView rvBundles;
     private MutableLiveData<ListOfProducts> currentList;
     private MutableLiveData<ArrayList<SharedList>> sharedListLoaded;
 
@@ -68,7 +68,7 @@ public class FragmentLists extends Fragment {
         ibtnListOptions = v.findViewById(R.id.ibtnListOptions);
         ibtnListDetails = v.findViewById(R.id.ibtnListDetails);
 
-        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded, spinPrivShared, ibtnListDetails));
+        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded, spinPrivShared, ibtnListDetails, this));
         //executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));

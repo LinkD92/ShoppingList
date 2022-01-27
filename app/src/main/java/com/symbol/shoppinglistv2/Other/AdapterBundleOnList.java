@@ -85,7 +85,13 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
 
             Product product = new Product(prod.getValue());
             product.setAmount(prodAmount);
+            product.setChecked(false);
             FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
+        }
+
+        for (Map.Entry<String, Product> prod:
+                myBundle.getProducts().entrySet()) {
+            prod.getValue().setChecked(false);
         }
 
         FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), myBundle);
@@ -99,38 +105,6 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
         }
     }
 
-    private void checkBoxListener(CheckBox cbCheckedBundle, MyBundle bundle ){
-        cbCheckedBundle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String path = "lists/" + FirebaseUtil.currentList + "/bundles/";
-               // MyBundle bundle = myBundleArrayList.get(getAdapterPosition());
-                if(cbCheckedBundle.isChecked()){
-                    bundle.setChecked((cbCheckedBundle.isChecked()));
-                    for (Map.Entry<String, Product> productEntry :
-                            bundle.getProducts().entrySet()) {
-                        Product product = productEntry.getValue();
-                        String prodPath = "lists/" + FirebaseUtil.currentList + "/products/" + productEntry.getKey() + "/bundleAmount";
-                        int currentAmount = FirebaseUtil.productHashMap.get(product.getName()).getBundleAmount() + product.getAmount();
-                        FirebaseUtil.reference.child(prodPath).setValue(currentAmount);
-                        Log.d(TAG, "onClick: " + FirebaseUtil.productHashMap.size());
-                    }
-                    FirebaseUtil.addBundle(path, bundle);
-                }else{
-                    bundle.setChecked(cbCheckedBundle.isChecked());
-                    for (Map.Entry<String, Product> productEntry :
-                            bundle.getProducts().entrySet()) {
-                        Product product = productEntry.getValue();
-                        String prodPath = "lists/" + FirebaseUtil.currentList + "/products/" + productEntry.getKey() + "/bundleAmount";
-                        int currentAmount = FirebaseUtil.productHashMap.get(product.getName()).getBundleAmount() - product.getAmount();
-                        FirebaseUtil.reference.child(prodPath).setValue(currentAmount);
-                    }
-                    FirebaseUtil.addBundle(path, bundle);
-                }
-
-            }
-        });
-    }
 
     @Override
     public int getItemCount() {

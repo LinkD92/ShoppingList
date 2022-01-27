@@ -15,13 +15,19 @@ import android.widget.TextView;
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
+import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.MyLog;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.MutableLiveData;
@@ -32,12 +38,15 @@ import androidx.recyclerview.widget.RecyclerView;
 public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHolder> implements ItemTouchHelperAdapter {
 
     private final String TAG = this.getClass().getName();
-    private ArrayList<Product> productList;
+    public ArrayList<Product> productList;
     private ItemTouchHelper itemTouchHelper;
     private View container;
     private MutableLiveData<ListOfProducts> mutableList;
 
 
+    public AdapterProduct(){
+
+    };
     public AdapterProduct(ArrayList<Product> productList, View fragmentContainer, MutableLiveData<ListOfProducts> mutableList) {
 
         this.productList = productList;
@@ -60,7 +69,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         Product product = productList.get(position);
 
         viewHolder.tvItemProductName.setText(product.getName());
-        String price = Double.toString(product.getPrice());
+        String price = Double.toString(product.getCustomID());
         viewHolder.tvItemProductPrice.setText(price);
         String amount = Integer.toString(product.getAmount());
         viewHolder.tvCurrentAmountProduct.setText(amount);
@@ -83,6 +92,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         productList.remove(product);
         productList.add(toPos, product);
         notifyItemMoved(fromPos, toPos);
+
     }
 
 
@@ -90,26 +100,62 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ListOfProducts list = FirebaseUtil.mutableList.getValue();
                 product.setChecked(checkBox.isChecked());
+                MyBundle bundle = list.getBundles().get(product.getGroup());
                 if(product.isChecked()){
                     Calendar calendar = Calendar.getInstance();
                     Date date = new Date();
                     product.setLastCheckDate(date.getTime());
-                        if(product.getAvgExpirationDays() != 0){
-                            String path = FirebaseUtil.mutableList.getValue().getListPath();
-                            String test[] = path.split("/");
-                            String logName = FirebaseUtil.mutableList.getValue().getName();
-                            String logProduct = product.getName();
-                            int days = product.getAvgExpirationDays();
-                            calendar.add(Calendar.DAY_OF_YEAR, days);
-                            String expirationDate = calendar.getTime().toString();
-                            MyLog myLog = new MyLog(logName, logProduct, expirationDate);
-                            FirebaseUtil.addLog(test[0], myLog);
+
+                    if(product.getGroup().length() >0){
+
+                        bundle.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+                        FirebaseUtil.addBundle(list, bundle);
+                        if(allChecked(bundle)){
+                            bundle.setChecked(true);
+                            FirebaseUtil.addBundle(list, bundle);
+                        }
+
+                    }
+                    if(product.getAvgExpirationDays() != 0){
+                        String path = list.getListPath();
+                        String test[] = path.split("/");
+                        String logName = list.getName();
+                        String logProduct = product.getName();
+                        int days = product.getAvgExpirationDays();
+                        calendar.add(Calendar.DAY_OF_YEAR, days);
+                        String expirationDate = calendar.getTime().toString();
+                        MyLog myLog = new MyLog(logName, logProduct, expirationDate);
+                        FirebaseUtil.addLog(test[0], myLog);
+                    }
+                }else{
+                    if(product.getGroup().length()>0){
+                        Log.d(TAG, "MyTest: uncheck" + product.getGroup() );
+                        bundle.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+                        FirebaseUtil.addBundle(list, bundle);
+                        if(!allChecked(bundle)){
+                            Log.d(TAG, "MyTest: uncheck - all checked"  );
+                            bundle.setChecked(false);
+                            FirebaseUtil.addBundle(list, bundle);
                         }
                     }
-                    FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+
+                }
+                FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
             }
         });
+    }
+
+    private boolean allChecked(MyBundle bundle){
+        for (Map.Entry<String, Product> prod :
+                bundle.getProducts().entrySet()) {
+            if(!prod.getValue().isChecked()){
+                Log.d(TAG, "MyTest: prod check" + prod.getValue().isChecked());
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -176,8 +222,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
 
         @Override
         public boolean onSingleTapUp(MotionEvent motionEvent) {
-            productList.get(getAdapterPosition()).getName();
-            return false;
+            return true;
         }
 
         @Override
@@ -187,12 +232,17 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
 
         @Override
         public void onLongPress(MotionEvent motionEvent) {
-            itemTouchHelper.startDrag(this);
+            int pos = getAdapterPosition();
+            Product tempProd = productList.get(pos);
+            if(FirebaseUtil.mutableList.getValue().getSortType().equals("customID")
+                    && tempProd.isChecked()==false){
+                itemTouchHelper.startDrag(this);
+            }
         }
 
         @Override
         public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-            return false;
+            return true;
         }
 
         @Override
