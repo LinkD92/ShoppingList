@@ -152,7 +152,11 @@ public class FirebaseUtil {
     }
 
     public static void removeProduct(ListOfProducts listOfProducts, Product product){
-        globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()).removeValue();
+        if(product.getGroup().length() >0){
+            globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()+product.getGroup()).removeValue();
+        }else{
+            globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName()).removeValue();
+        }
     }
 
     public static void addList(String path, ListOfProducts list){
@@ -161,7 +165,6 @@ public class FirebaseUtil {
     }
 
     public static void addList(ListOfProducts list){
-        Log.d(TAG, "trbls: czy to sie wywolalo?");
         globalRef.child(list.getListPath()).setValue(list);
     }
 
@@ -250,7 +253,10 @@ public class FirebaseUtil {
 
 
     public static void removeBundle(String path, MyBundle bundle){
-        FirebaseUtil.reference.child(path + bundle.getName()).removeValue();
+        FirebaseUtil.reference.child(path).child(bundle.getName()).removeValue();
+    }
+    public static void removeBundle(ListOfProducts listOfProducts, MyBundle bundle){
+        globalRef.child(listOfProducts.getListPath()).child("bundles").child(bundle.getName()).removeValue();
     }
 
     public static MyBundle findBundle(String path, final MyCallback myCallback){

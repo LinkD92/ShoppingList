@@ -13,12 +13,12 @@ public class Product {
     private double price;
     private Category category;
     private Date expirationDate;
-    private int amount = 0;
+    private int amount = 1;
     private boolean checked;
     private int barCode = 0;
     private int avgExpirationDays;
     private int customID = 0;
-    private int bundleAmount =0;
+    private int bundleAmount =1;
     private long lastCheckDate =0;
     private String group ="";
 

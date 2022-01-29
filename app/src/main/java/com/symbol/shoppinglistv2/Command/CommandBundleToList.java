@@ -7,12 +7,17 @@ import android.widget.ImageButton;
 
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.MyBundle;
+import com.symbol.shoppinglistv2.Components.MyLog;
+import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Map;
 
 public class CommandBundleToList implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandBundleToList";
@@ -56,12 +61,22 @@ public class CommandBundleToList implements Command{
             @Override
             public void onClick(View view) {
                 String bundleName = searchableSpinner.getSelectedItem().toString();
-                String fullPath = "lists/" + FirebaseUtil.currentList + "/bundles/";
+                //String fullPath = "lists/" + FirebaseUtil.currentList + "/bundles/";
                 String pathFindBundle = "bundles/" + bundleName;
                 FirebaseUtil.findBundle(pathFindBundle, new MyCallback() {
                     @Override
                     public MyBundle findBundle(MyBundle bundle) {
-                        FirebaseUtil.addBundle(fullPath, bundle);
+                        FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), bundle);
+                        for (Map.Entry<String, Product> prod:
+                                bundle.getProducts().entrySet()) {
+                            int prodAmount = bundle.getAmount() * prod.getValue().getAmount();
+                            Product product = new Product(prod.getValue());
+                            product.setAmount(prodAmount);
+                            product.setChecked(bundle.isChecked());
+                            FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
+                        }
+
+
                         myBundle = bundle;
                         Log.d(TAG, "findBundle: " + bundle.getName());
                         return bundle;

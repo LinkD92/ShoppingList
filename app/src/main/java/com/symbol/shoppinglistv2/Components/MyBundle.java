@@ -6,12 +6,13 @@ import java.util.HashMap;
 public class MyBundle{
 
     private String name;
-    private int amount = 0;
+    private int amount = 1;
     private double price =0;
     private ArrayList<Product> bundleProducts;
     private HashMap<String, Product> products;
     private int error = -740056;
     private boolean isChecked = true;
+    private String updateDate ="";
 
     public MyBundle(String name){
         this.name = name;
@@ -84,5 +85,13 @@ public class MyBundle{
 
     public void setChecked(boolean checked) {
         isChecked = checked;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

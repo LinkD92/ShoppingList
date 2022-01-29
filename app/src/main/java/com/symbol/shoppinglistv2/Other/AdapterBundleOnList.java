@@ -2,12 +2,17 @@ package com.symbol.shoppinglistv2.Other;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
+import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
+import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
@@ -42,13 +47,14 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
         MyBundle bundle = myBundleArrayList.get(position);
         holder.tvBundleItemName.setText(bundle.getName());
         Log.d(TAG, "onBindViewHolder: " + bundle.getBundleProducts());
-        String converDouble = String.valueOf(bundle.getPrice());
-        holder.tvBundlePrice.setText(converDouble);
+        String converDouble = String.valueOf(bundle.getPrice()*bundle.getAmount());
+        holder.tvBundlePrice.setText("$ "+ converDouble);
         String converInt = String.valueOf(bundle.getAmount());
         holder.tvCurrentBundleAmount.setText(converInt);
         holder.tvBundleItemName.setTextColor(bundle.getError());
         holder.cbCheckedBundle.setChecked(bundle.isChecked());
         holder.clContainerWholeBundle.setAlpha(setAlpha(bundle.isChecked()));
+        holder.tvBundleDate.setText("Added: "+ bundle.getUpdateDate());
 
         //checkBoxListener(holder.cbCheckedBundle, bundle);
         cbListener(holder.cbCheckedBundle, bundle);
@@ -70,10 +76,21 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
     }
 
     private void cbChecked(MyBundle myBundle){
-        for (Map.Entry<String, Product> product:
+        for (Map.Entry<String, Product> prod:
                 myBundle.getProducts().entrySet()) {
-            FirebaseUtil.removeBundleProduct(FirebaseUtil.mutableList.getValue(), product.getValue());
+            int prodAmount = myBundle.getAmount() * prod.getValue().getAmount();
+
+            Product product = new Product(prod.getValue());
+            product.setAmount(prodAmount);
+            product.setChecked(true);
+            FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
         }
+
+        for (Map.Entry<String, Product> prod:
+                myBundle.getProducts().entrySet()) {
+            prod.getValue().setChecked(true);
+        }
+
         FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), myBundle);
     }
 
@@ -114,8 +131,8 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private ImageButton ibtnIncreaseAmountBundle, ibtnDecreaseAmountBundle;
-        private TextView tvBundleItemName, tvBundlePrice, tvCurrentBundleAmount;
+        private ImageButton ibtnIncreaseAmountBundle, ibtnDecreaseAmountBundle, ibtnBundleSetting;
+        private TextView tvBundleItemName, tvBundlePrice, tvCurrentBundleAmount, tvBundleDate;
         private CheckBox cbCheckedBundle;
         private ConstraintLayout clContainerWholeBundle;
 
@@ -129,6 +146,8 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
             tvCurrentBundleAmount = v.findViewById(R.id.tvCurrentAmountBundle);
             cbCheckedBundle = v.findViewById(R.id.cbCheckedBundle);
             clContainerWholeBundle = v.findViewById(R.id.clContainerWholeBundle);
+            tvBundleDate = v.findViewById(R.id.tvBundleUpdateDate);
+            ibtnBundleSetting = v.findViewById(R.id.ibtnBundleOptions);
             //getBundlePrice();
             onClicklisteners();
 
@@ -137,6 +156,7 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
         private void onClicklisteners(){
             ibtnIncreaseAmountBundle();
             ibtnDecreaseAmountBundle();
+            ibtnOptionsListener();
             //checkBoxListener();
         }
 
@@ -163,7 +183,7 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
                 @Override
                 public void onClick(View view) {
                     MyBundle bundle = myBundleArrayList.get(getAdapterPosition());
-                    if(bundle.getAmount() >0){
+                    if(bundle.getAmount() >1){
                         bundle.setAmount(bundle.getAmount()-1);
                         FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), bundle);
                         for (Map.Entry<String, Product> prod:
@@ -177,6 +197,56 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
                 }
             });
 
+        }
+
+        private void ibtnOptionsListener(){
+            ibtnBundleSetting.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MyBundle myBundle = myBundleArrayList.get(getAdapterPosition());
+                    PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
+                    popupMenu.getMenuInflater().inflate(R.menu.bundle_options, popupMenu.getMenu());
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem menuItem) {
+
+                            switch (menuItem.getItemId()){
+                                case R.id.menuOptionsRemove:
+                                    ListOfProducts list = FirebaseUtil.mutableList.getValue();
+                                    FirebaseUtil.removeBundle(list, myBundle);
+                                    for (Map.Entry<String, Product> prod:
+                                            myBundle.getProducts().entrySet()) {
+                                        FirebaseUtil.removeProduct(list, prod.getValue());
+                                    }
+                                    list.getBundles().remove(myBundle.getName());
+                                    break;
+                                case R.id.menuOptionsEdit:
+                                    String pathFindBundle = "bundles/" + myBundle.getName();
+                                    FirebaseUtil.findBundle(pathFindBundle, new MyCallback() {
+                                        @Override
+                                        public MyBundle findBundle(MyBundle bundle) {
+                                            String fullPath = "lists/" + FirebaseUtil.currentList + "/bundles/";
+                                            FirebaseUtil.addBundle(fullPath, bundle);
+                                            for (Map.Entry<String, Product> prod:
+                                                    bundle.getProducts().entrySet()) {
+                                                int prodAmount = bundle.getAmount() * prod.getValue().getAmount();
+                                                Product product = new Product(prod.getValue());
+                                                product.setAmount(prodAmount);
+                                                product.setChecked(bundle.isChecked());
+                                                FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
+                                            }
+                                            return super.findBundle(bundle);
+                                        }
+                                    });
+
+                                    break;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.show();
+                }
+            });
         }
 
 

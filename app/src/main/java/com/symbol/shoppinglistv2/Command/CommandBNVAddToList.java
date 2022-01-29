@@ -37,10 +37,17 @@ public class CommandBNVAddToList implements Command{
             fragmentMyOpener.open(fragmentBundleToList);
         }
         bottomNavigationView.setSelectedItemId(R.id.bnvAddToListBundle);
+//        if(!FirebaseUtil.mutableList.getValue().getListPath().contains(FirebaseUtil.userPath)){
+//            bottomNavigationView.getMenu().getItem(1).setEnabled(false);
+//        }else{
+//            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
+//            Log.d(TAG, ": trbls yours list" );
+//        }
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 fragmentMyOpener = new FragmentMyOpener(container);
+
 
                 switch (item.getItemId()){
                     case R.id.bnvAddToListProduct:

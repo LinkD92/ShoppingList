@@ -49,63 +49,6 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
                 product.getCategory().getColor());
         customIDSorter(viewHolder);
 
-//        Product prodBefore = null;
-//        Product prodAfter = null;
-//        HashMap<String, Product> productHashMap = FirebaseUtil.mutableList.getValue().getProducts();
-//        if(position >0 && position<productArrayList.size() ) {
-//            Log.d(TAG, "trbls: Picking product: " + product.getName() + "from pos: " + position);
-//            Log.d(TAG, "trbls array size: " + productArrayList.size());
-//            prodBefore = productArrayList.get(position - 1);
-//            int defaultID = 500;
-//            product.setCustomID(prodBefore.getCustomID() + 1);
-//            int currentID = prodBefore.getCustomID()-1;
-//            productHashMap.get(product.getName()).setCustomID(currentID);
-//
-//            for (Map.Entry<String, Product> prod :
-//                    productHashMap.entrySet()) {
-//                int cuID = prod.getValue().getCustomID();
-//                if(cuID < currentID){
-//                    prod.getValue().setCustomID(prod.getValue().getCustomID() -1);
-//                }if(cuID >= currentID){
-//                    prod.getValue().setCustomID(prod.getValue().getCustomID() +1);
-//                }
-//
-//            }
-//        }else if(position == 0){
-//            productHashMap.get(product.getName()).setCustomID(prodAfter.getCustomID()-1);
-//        }
-//        FirebaseUtil.addList(FirebaseUtil.mutableList.getValue());
-
-//            for (int i = position - 1; i > 0; i--) {
-//                Product tempProd = productArrayList.get(i);
-//                if (!tempProd.isChecked()) {
-//                    tempProd.setCustomID(--defaultID);
-//                }
-//            }
-//            defaultID = 500;
-//            for (int i = position + 1; i < productArrayList.size(); i++) {
-//                Product tempProd = productArrayList.get(i);
-//                if (!tempProd.isChecked()) {
-//                    tempProd.setCustomID(++defaultID);
-//                }
-
-
-//            if(prodBefore.getCustomID() <9999){
-//                product.setCustomID(prodBefore.getCustomID()+1);
-//            }else{
-//                product.setCustomID(prodBefore.getCustomID());
-//            }
-//        }else{
-//            product.setCustomID(0);
-//        }
-
-//        HashMap<String, Product> temps = new HashMap<>();
-//        for (Product prod :
-//                productArrayList) {
-//            temps.put(prod.getName() + prod.getGroup(), prod);
-//        }
-//        FirebaseUtil.mutableList.getValue().setProducts(temps);
-//        FirebaseUtil.addList(FirebaseUtil.mutableList.getValue());
     }
 
     private void customIDSorter(RecyclerView.ViewHolder viewHolder){
@@ -114,22 +57,17 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
         Product prodAfter = null;
         Product tempProd = null;
         int position = viewHolder.getAdapterPosition();
-        Log.d(TAG, "trbls POSITION: " + position);
         if(position >0 && position<productArrayList.size()-1){
             prodBefore = productArrayList.get(position-1);
             prodAfter = productArrayList.get(position+1);
             product.setCustomID(prodBefore.getCustomID()+1);
-            Log.d(TAG, "trbls Prod : " + product.getCustomID());
-            Log.d(TAG, "trbls Prod after: " + prodAfter.getCustomID());
             if(prodAfter.getCustomID() <= product.getCustomID()){
-                Log.d(TAG, "trbls CONDITION:  TRUE " );
+
                 int counter = 0;
                 for(int i = position+1; i<productArrayList.size(); i++){
                     counter++;
                     tempProd = productArrayList.get(i);
-                    int test = product.getCustomID()+counter;
-                    Log.d(TAG, "trbls: " + test);
-                    Log.d(TAG, "trbls: " + tempProd.getName());
+
                     if(!tempProd.isChecked()){
                         tempProd.setCustomID(product.getCustomID()+counter);
                     }else{
@@ -148,20 +86,36 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
 
 
 
+
         HashMap<String, Product> temps = new HashMap<>();
         for (Product prod :
                 productArrayList) {
             temps.put(prod.getName() + prod.getGroup(), prod);
+            if(prod.getCustomID() > 99999){
+                temps = arrayCleanUp(productArrayList);
+                break;
+            }
         }
         FirebaseUtil.mutableList.getValue().setProducts(temps);
         FirebaseUtil.addList(FirebaseUtil.mutableList.getValue());
 
     }
 
+    private HashMap<String, Product> arrayCleanUp(ArrayList<Product> products){
+        HashMap<String, Product> fixedHash = new HashMap<>();
+        int counter = 1;
+        for (Product product:
+             products) {
+            product.setCustomID(counter);
+            fixedHash.put(product.getName()+product.getGroup(), product);
+            counter++;
+        }
+        return fixedHash;
+    };
+
     @Override
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
-        //&& FirebaseUtil.mutableList.getValue().getSortType().equals("customID")
         if(actionState == ItemTouchHelper.ACTION_STATE_DRAG ){
             viewHolder.itemView.getContext().getResources();
             viewHolder.itemView.setBackgroundColor(Color.LTGRAY);
