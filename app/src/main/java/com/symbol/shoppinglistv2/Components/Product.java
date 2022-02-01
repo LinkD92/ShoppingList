@@ -1,7 +1,5 @@
 package com.symbol.shoppinglistv2.Components;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,18 +13,18 @@ public class Product {
     private Date expirationDate;
     private int amount = 1;
     private boolean checked;
-    private int barCode = 0;
+    private long barCode = 0;
     private int avgExpirationDays;
     private int customID = 0;
-    private int bundleAmount =1;
-    private long lastCheckDate =0;
-    private String group ="";
+    private int bundleAmount = 1;
+    private long lastCheckDate = 0;
+    private String group = "";
 
 
-
-    public Product (){
+    public Product() {
     }
-    public Product (String name){
+
+    public Product(String name) {
         this.name = name;
     }
 
@@ -36,7 +34,7 @@ public class Product {
     }
 
 
-    public Product (String name, double price, Category category, int barCode, int avgExpirationTime){
+    public Product(String name, double price, Category category, long barCode, int avgExpirationTime) {
         this.name = name;
         this.price = price;
         this.category = category;
@@ -68,7 +66,7 @@ public class Product {
         this.group = copyProduct.group;
     }
 
-    public Map<String, Object> addToMap(){
+    public Map<String, Object> addToMap() {
         HashMap<String, Object> result = new HashMap<>();
         result.put("name", name);
         result.put("price", price);
@@ -125,11 +123,11 @@ public class Product {
         this.checked = checked;
     }
 
-    public int getBarCode() {
+    public long getBarCode() {
         return barCode;
     }
 
-    public void setBarCode(int barCode) {
+    public void setBarCode(long barCode) {
         this.barCode = barCode;
     }
 

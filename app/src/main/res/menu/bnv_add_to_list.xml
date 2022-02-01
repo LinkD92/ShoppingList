@@ -3,12 +3,12 @@
     <item
         android:id="@+id/bnvAddToListProduct"
         android:title="Product"
-        android:icon="@drawable/ic_temp"
+        android:icon="@drawable/icon_product"
         />
     <item
         android:id="@+id/bnvAddToListBundle"
         android:title="Bundle"
-        android:icon="@drawable/ic_temp"
+        android:icon="@drawable/icon_bundle"
         />
 
 </menu>

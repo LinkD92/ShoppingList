@@ -65,7 +65,7 @@ public class FragmentAddProduct extends Fragment {
         ibtnScanBarcode = v.findViewById(R.id.ibtnScanBarcode);
 
         //executeCommand(new CommandProductAutoCompleteList(etFABAddProductName, acList));
-        executeCommand(new CommandAddNewProduct(this, product));
+        executeCommand(new CommandAddNewProduct(this, product, ibtnScanBarcode));
         executeCommand(new CommandCategorySpnAdapter(spnProductCategory, product));
         executeCommand(new CommandEditProduct(product,this));
         return v;
@@ -75,7 +75,9 @@ public class FragmentAddProduct extends Fragment {
 
     @Override
     public void onResume() {
-        etBarcodeValue.setText(mCodeScanner.barcodeVal);
+        if(mCodeScanner.barcodeVal != 0){
+            etBarcodeValue.setText(String.valueOf(mCodeScanner.barcodeVal));
+        }
         super.onResume();
     }
 }

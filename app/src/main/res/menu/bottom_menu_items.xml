@@ -3,17 +3,17 @@
     <item
         android:id="@+id/bnvMenuLists"
         android:title="Lists"
-        android:icon="@drawable/ic_temp"
+        android:icon="@drawable/icon_bnv_list"
         />
     <item
         android:id="@+id/bnvMenuManagement"
         android:title="Management"
-        android:icon="@drawable/ic_temp"
+        android:icon="@drawable/icon_bnv_manage"
         />
     <item
         android:id="@+id/bnvMenuSettings"
         android:title="Settings"
-        android:icon="@drawable/ic_temp"
+        android:icon="@drawable/icon_bnv_settings"
         />
 
 </menu>

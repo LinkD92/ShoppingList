@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/AndroidStudio/Gradle/gradle-6.5/caches/transforms-3/9b55d8e26b93d89e39247ba75ce39810/transformed/appcompat-1.3.1/res/layout/support_simple_spinner_dropdown_item.xml" value="0.35520833333333335" />
         <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/drawable/bnv_selector.xml" value="0.24375" />
+        <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/drawable/ic_temp.xml" value="0.37604166666666666" />
+        <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/drawable/icon_barcode_background.xml" value="0.37604166666666666" />
+        <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/drawable/icon_bundle.xml" value="0.37604166666666666" />
+        <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/drawable/icon_product.xml" value="0.37604166666666666" />
         <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/drawable/text_row_item.xml" value="0.20729166666666668" />
         <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/layout/activity_barcode_scanner.xml" value="0.25" />
         <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/layout/activity_file_explorer.xml" value="0.17604166666666668" />
@@ -51,6 +56,7 @@
         <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/menu/bundle_options.xml" value="0.35989583333333336" />
         <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/menu/list_actions.xml" value="0.20104166666666667" />
         <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/menu/product_options.xml" value="0.35989583333333336" />
+        <entry key="..\:/Studia/PracaInz/Code/Lista/ShoppingListv2/app/src/main/res/mipmap-anydpi-v26/icon_barcode_round.xml" value="0.37604166666666666" />
       </map>
     </option>
   </component>

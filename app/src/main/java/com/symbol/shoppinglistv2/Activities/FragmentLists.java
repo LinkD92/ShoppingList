@@ -34,7 +34,7 @@ public class FragmentLists extends Fragment {
     public RecyclerView rvProducts;
     public FloatingActionButton floatingActionButton;
     public View fragmentContainer;
-    private ImageButton ibtnListDetails;
+    private ImageButton ibtnScannerFeature;
     private ImageButton ibtnListOptions;
     public RecyclerView rvBundles;
     private MutableLiveData<ListOfProducts> currentList;
@@ -66,12 +66,12 @@ public class FragmentLists extends Fragment {
         floatingActionButton = v.findViewById(R.id.fab);
         fragmentContainer = v.findViewById(R.id.clFragmentListsContainer);
         ibtnListOptions = v.findViewById(R.id.ibtnListOptions);
-        ibtnListDetails = v.findViewById(R.id.ibtnListDetails);
+        ibtnScannerFeature = v.findViewById(R.id.ibtnScannerFeature);
 
-        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded, spinPrivShared, ibtnListDetails, this));
+        executeCommand(new CommandMASpinnerAdapter(spinList, sharedListLoaded, spinPrivShared, ibtnScannerFeature, this));
         //executeCommand(new CommandMAProductDisplay(spinList, rvProducts, fragmentContainer, rvBundles));
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
-        executeCommand(new CommandManageLists(ibtnListDetails, ibtnListOptions, fragmentContainer, currentList));
+        executeCommand(new CommandManageLists(ibtnScannerFeature, ibtnListOptions, fragmentContainer, currentList));
         executeCommand(new CommandListProductDisplay(this, currentList, sharedListLoaded));
         executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
         return v;

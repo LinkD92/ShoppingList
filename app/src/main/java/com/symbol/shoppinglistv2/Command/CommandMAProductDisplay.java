@@ -58,7 +58,6 @@ public class CommandMAProductDisplay implements Command {
                 //After editing anything in "list" path of database the selection is going back to
                 // first list
                 FirebaseUtil.spinnerPositionERROR = i;
-                Log.d(TAG, "trbls: oute MAProdDisp " );
                 String buildPath = "/lists/" + FirebaseUtil.currentList  +"/products";
                         FirebaseUtil.readProducts(buildPath, new MyCallback() {
                             @Override

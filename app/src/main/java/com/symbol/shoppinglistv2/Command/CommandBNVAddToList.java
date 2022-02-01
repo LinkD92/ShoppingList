@@ -29,34 +29,27 @@ public class CommandBNVAddToList implements Command{
 
     @Override
     public boolean execute() {
-        Log.d(TAG, "execute select: " + FirebaseUtil.currentSelection);
         fragmentMyOpener = new FragmentMyOpener(container);
         if(FirebaseUtil.currentSelection == R.id.bnvAddToListProduct || FirebaseUtil.currentSelection == 0){
             fragmentMyOpener.open(fragmentAddProduct);
         }else if(FirebaseUtil.currentSelection != 0 && FirebaseUtil.currentSelection == R.id.bnvAddToListBundle){
             fragmentMyOpener.open(fragmentBundleToList);
         }
-        bottomNavigationView.setSelectedItemId(R.id.bnvAddToListBundle);
-//        if(!FirebaseUtil.mutableList.getValue().getListPath().contains(FirebaseUtil.userPath)){
-//            bottomNavigationView.getMenu().getItem(1).setEnabled(false);
-//        }else{
-//            bottomNavigationView.getMenu().getItem(1).setEnabled(true);
-//            Log.d(TAG, ": trbls yours list" );
-//        }
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 fragmentMyOpener = new FragmentMyOpener(container);
-
-
                 switch (item.getItemId()){
                     case R.id.bnvAddToListProduct:
                         fragmentMyOpener.open(fragmentAddProduct);
                         FirebaseUtil.currentSelection = R.id.bnvAddToListProduct;
+                        item.setChecked(true);
                         break;
                     case R.id.bnvAddToListBundle:
                         fragmentMyOpener.open(fragmentBundleToList);
                         FirebaseUtil.currentSelection = R.id.bnvAddToListBundle;
+                        item.setChecked(true);
                         break;
                 }
 

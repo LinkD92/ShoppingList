@@ -46,15 +46,20 @@ public class CommandMABundleDisplay implements Command{
             @Override
             public void onChanged(ListOfProducts listOfProducts) {
                 ArrayList<MyBundle> bundleArrayList = new ArrayList<>();
-                for (Map.Entry<String, MyBundle> myBundle :
-                        listOfProducts.getBundles().entrySet()) {
-                    bundleArrayList.add(myBundle.getValue());
+                try{
+                    for (Map.Entry<String, MyBundle> myBundle :
+                            listOfProducts.getBundles().entrySet()) {
+                        bundleArrayList.add(myBundle.getValue());
+                    }
+                    sortWay(bundleArrayList);
+                    adapterBundleOnList = new AdapterBundleOnList(bundleArrayList);
+                    rvBundlesDisplay.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+                    //new ItemTouchHelper(simpleCallback).attachToRecyclerView(rvBundlesDisplay);
+                    rvBundlesDisplay.setAdapter(adapterBundleOnList);
+                }catch(NullPointerException e){
+                    Log.e(TAG, "onChanged: "+ e.toString());
                 }
-                sortWay(bundleArrayList);
-                adapterBundleOnList = new AdapterBundleOnList(bundleArrayList);
-                rvBundlesDisplay.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
-                //new ItemTouchHelper(simpleCallback).attachToRecyclerView(rvBundlesDisplay);
-                rvBundlesDisplay.setAdapter(adapterBundleOnList);
+
             }
         });
 

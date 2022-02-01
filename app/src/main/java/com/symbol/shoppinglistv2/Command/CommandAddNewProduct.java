@@ -2,12 +2,16 @@ package com.symbol.shoppinglistv2.Command;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.symbol.shoppinglistv2.Activities.ActivityBarcodeScanner;
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.Category;
@@ -15,6 +19,7 @@ import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.MyCallback;
+import com.symbol.shoppinglistv2.Other.mCodeScanner;
 
 //Functionality to add products to the firebase
 public class CommandAddNewProduct implements Command {
@@ -22,21 +27,24 @@ public class CommandAddNewProduct implements Command {
     private final String TAG = "CommandAddNewProduct";
     private FragmentAddProduct fragmentAddProduct;
     private Product productOld;
+    private ImageButton ibtnScanner;
+    public static final boolean SINGLE_SCAN = true;
 
-    public CommandAddNewProduct(FragmentAddProduct fragmentAddProduct, Product productOld){
+    public CommandAddNewProduct(FragmentAddProduct fragmentAddProduct, Product productOld, ImageButton ibtnScanner){
         this.fragmentAddProduct = fragmentAddProduct;
         this.productOld = productOld;
-        Log.d(TAG, "MyTest: " + productOld);
+        this.ibtnScanner = ibtnScanner;
     }
 
     @Override
     public boolean execute() {
+        ibtnScannerListener();
         fragmentAddProduct.btnFABAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d(TAG, "onClick: trbls TEST" );
 //                //creation of Product object with extracted parameters
                 String name = fragmentAddProduct.etFABAddProductName.getText().toString();
-
                 
                 if(name.length() > 0){
                     Product product = extractValues();
@@ -104,7 +112,7 @@ public class CommandAddNewProduct implements Command {
     private Product extractValues(){
         String name = fragmentAddProduct.etFABAddProductName.getText().toString();
         double price;
-        int barcodeVal;
+        long barcodeVal;
         int avgDays;
         if(name.length() > 0){
             if (fragmentAddProduct.etFABAddProductPrice.getText().toString().length() <= 0) {
@@ -118,8 +126,8 @@ public class CommandAddNewProduct implements Command {
             }catch (IndexOutOfBoundsException e){
                 category = (Category) fragmentAddProduct.spnProductCategory.getItemAtPosition(0);
             }
-            if(fragmentAddProduct.etBarcodeValue.getText().toString().length() > 0){
-                barcodeVal = Integer.parseInt(fragmentAddProduct.etBarcodeValue.getText().toString());
+            if(fragmentAddProduct.etBarcodeValue.getText().length() > 1){
+                barcodeVal = Long.parseLong(fragmentAddProduct.etBarcodeValue.getText().toString());
             }else{
                 barcodeVal = 0;
             }
@@ -132,6 +140,22 @@ public class CommandAddNewProduct implements Command {
             return product;
         }
         return null;
+    }
+
+    private static boolean isNumeric(String str){
+        return str != null && str.matches("[0-9.]+");
+    }
+
+    private void ibtnScannerListener(){
+        ibtnScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ActivityMain.appContext, ActivityBarcodeScanner.class);
+                intent.putExtra("singleScan", SINGLE_SCAN);
+                ActivityMain.appContext.startActivity(intent);
+            }
+        });
+
     }
 
 }

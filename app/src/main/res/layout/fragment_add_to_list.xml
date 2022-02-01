@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/backgroundMain"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.FragmentAddToList">
 
@@ -10,10 +11,14 @@
         android:id="@+id/bnvAddToList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/viewBackgroundPrimary"
+        app:itemTextColor="@color/bnv_selector"
+        app:itemIconTint="@color/bnv_selector"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:menu="@menu/bnv_add_to_list"
         />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clAddToListContainer"
         android:layout_width="match_parent"

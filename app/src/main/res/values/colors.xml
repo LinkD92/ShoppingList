@@ -8,4 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FF555555</color>
+    <color name="backgroundMain">#858585</color>
+    <color name="backgroundSecondary">#393939</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textSecondary">#000000</color>
+    <color name="viewBackgroundPrimary">#E3E3E3</color>
+    <color name="viewBackgroundSecondary">#A0A0A0</color>
+    <color name="viewItemPrimary">#000000</color>
+    <color name="textPositive">#00BA15</color>
+    <color name="textNegative">#CC0000</color>
 </resources>

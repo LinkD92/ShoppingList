@@ -23,10 +23,10 @@ public class CommandGetBarcodeValue implements Command{
 
     @Override
     public boolean execute() {
-        if(!mCodeScanner.barcodeVal.equals("0")){
-            int converBarcode = Integer.parseInt(mCodeScanner.barcodeVal);
-            etBarcodeValue.setText(converBarcode);
-        }
+//        if(!mCodeScanner.barcodeVal == 0){
+//            int converBarcode = Integer.parseInt(mCodeScanner.barcodeVal);
+//            etBarcodeValue.setText(converBarcode);
+//        }
         ibtnStartSCanner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

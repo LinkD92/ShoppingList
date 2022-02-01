@@ -30,4 +30,8 @@
                 android:title="Custom Order" />
         </menu>
     </item>
+    <item
+        android:id="@+id/menuListDetails"
+        android:title="List Details"
+        />
 </menu>

@@ -99,6 +99,7 @@ public class ActivityMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getSupportActionBar().hide();
         appContext = this;
         activityMain = this;
         fragmentManager = getSupportFragmentManager();

@@ -12,18 +12,23 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Activities.ActivityFileExplorer"
+            android:screenOrientation="portrait"
             android:exported="true">
 
         </activity>
         <activity
             android:name=".Activities.ActivitySignIn"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Activities.ActivityBarcodeScanner"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".Activities.ActivityMain"
+            android:label="Smart Shopping List"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

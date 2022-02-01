@@ -29,8 +29,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -100,49 +104,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ListOfProducts list = FirebaseUtil.mutableList.getValue();
-                product.setChecked(checkBox.isChecked());
-                MyBundle bundle = list.getBundles().get(product.getGroup());
-                if(product.isChecked()){
-                    Calendar calendar = Calendar.getInstance();
-                    Date date = new Date();
-                    product.setLastCheckDate(date.getTime());
-
-                    if(product.getGroup().length() >0){
-
-                        bundle.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
-                        FirebaseUtil.addBundle(list, bundle);
-                        if(allChecked(bundle)){
-                            bundle.setChecked(true);
-                            FirebaseUtil.addBundle(list, bundle);
-                        }
-
-                    }
-                    if(product.getAvgExpirationDays() != 0){
-                        String path = list.getListPath();
-                        String test[] = path.split("/");
-                        String logName = list.getName();
-                        String logProduct = product.getName();
-                        int days = product.getAvgExpirationDays();
-                        calendar.add(Calendar.DAY_OF_YEAR, days);
-                        String expirationDate = calendar.getTime().toString();
-                        MyLog myLog = new MyLog(logName, logProduct, expirationDate);
-                        FirebaseUtil.addLog(test[0], myLog);
-                    }
-                }else{
-                    if(product.getGroup().length()>0){
-                        Log.d(TAG, "MyTest: uncheck" + product.getGroup() );
-                        bundle.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
-                        FirebaseUtil.addBundle(list, bundle);
-                        if(!allChecked(bundle)){
-                            Log.d(TAG, "MyTest: uncheck - all checked"  );
-                            bundle.setChecked(false);
-                            FirebaseUtil.addBundle(list, bundle);
-                        }
-                    }
-
-                }
-                FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+                onCheckboxClickAction(checkBox, product);
             }
         });
     }
@@ -158,6 +120,52 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         return true;
     }
 
+    private void onCheckboxClickAction(CheckBox checkBox, Product product){
+        ListOfProducts list = FirebaseUtil.mutableList.getValue();
+        product.setChecked(checkBox.isChecked());
+        MyBundle bundle = list.getBundles().get(product.getGroup());
+        if(product.isChecked()){
+            Calendar calendar = Calendar.getInstance();
+            Date date = new Date();
+            product.setLastCheckDate(date.getTime());
+
+            if(product.getGroup().length() >0){
+
+                bundle.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+                FirebaseUtil.addBundle(list, bundle);
+                if(allChecked(bundle)){
+                    bundle.setChecked(true);
+                    FirebaseUtil.addBundle(list, bundle);
+                }
+
+            }
+            if(product.getAvgExpirationDays() != 0){
+                String path = list.getListPath();
+                String test[] = path.split("/");
+                String logName = list.getName();
+                String logProduct = product.getName();
+                int days = product.getAvgExpirationDays();
+                calendar.add(Calendar.DAY_OF_YEAR, days);
+                String expirationDate = calendar.getTime().toString();
+                MyLog myLog = new MyLog(logName, logProduct, expirationDate);
+                FirebaseUtil.addLog(test[0], myLog);
+            }
+        }else{
+            if(product.getGroup().length()>0){
+                Log.d(TAG, "MyTest: uncheck" + product.getGroup() );
+                bundle.getProducts().get(product.getName()).setChecked(checkBox.isChecked());
+                FirebaseUtil.addBundle(list, bundle);
+                if(!allChecked(bundle)){
+                    Log.d(TAG, "MyTest: uncheck - all checked"  );
+                    bundle.setChecked(false);
+                    FirebaseUtil.addBundle(list, bundle);
+                }
+            }
+
+        }
+        FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+    }
+
 
     private float setAlpha(boolean isChecked){
         if(isChecked){
@@ -169,7 +177,12 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
 
     @Override
     public int getItemCount() {
-        return productList.size();
+        try{
+            return productList.size();
+        }catch (NullPointerException e){
+            Log.e(TAG, "getItemCount: " +  e.toString());
+            return 0;
+        }
     }
 
 

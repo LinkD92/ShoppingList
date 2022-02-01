@@ -1,11 +1,13 @@
 package com.symbol.shoppinglistv2.Command;
 
+import android.content.Intent;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 
+import com.symbol.shoppinglistv2.Activities.ActivityBarcodeScanner;
 import com.symbol.shoppinglistv2.Activities.FragmentListSummary;
 import com.symbol.shoppinglistv2.Activities.FragmentManageLists;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
@@ -19,7 +21,7 @@ import androidx.lifecycle.MutableLiveData;
 //Button action for FragmentMyLists
 public class CommandManageLists implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandManageLists";
-    private ImageButton ibtnListDetails;
+    private ImageButton ibtnScannerFeature;
     private ImageButton ibtnListOptions;
     private View container;
 
@@ -29,8 +31,9 @@ public class CommandManageLists implements Command{
     private MutableLiveData<ListOfProducts> currentList;
 
 
-    public CommandManageLists(ImageButton ibtnListDetails, ImageButton ibtnListOptions, View container, MutableLiveData<ListOfProducts> currentList) {
-        this.ibtnListDetails = ibtnListDetails;
+
+    public CommandManageLists(ImageButton ibtnScannerFeature, ImageButton ibtnListOptions, View container, MutableLiveData<ListOfProducts> currentList) {
+        this.ibtnScannerFeature = ibtnScannerFeature;
         this.ibtnListOptions = ibtnListOptions;
         this.container = container;
         this.currentList = currentList;
@@ -39,7 +42,7 @@ public class CommandManageLists implements Command{
     @Override
     public boolean execute() {
         fragmentMyOpener = new FragmentMyOpener(container);
-        ibtnListDetailsListener();
+        openScannerActivity();
         //Method to open new fragment (FragmentAddList) - where list can be added
         // Method to remove currently chosen list - in spinner
         menuItemClickListeners();
@@ -56,13 +59,14 @@ public class CommandManageLists implements Command{
 
                 PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                 popupMenu.getMenuInflater().inflate(R.menu.list_actions, popupMenu.getMenu());
-                //Log.d(TAG, "trbls: " + FirebaseUtil.mutableList.getValue().getName());
-                //Log.d(TAG, "trbls: " + currentList.getValue().getName());
+                Log.d(TAG, "onClick: trbls " + popupMenu.getMenu().getItem(4).getTitle());
                 if(FirebaseUtil.mutableList.getValue() != null){
                     popupMenu.getMenu().getItem(3).setTitle("Sort By: " + FirebaseUtil.mutableList.getValue().getSortType());
                     if(!FirebaseUtil.mutableList.getValue().getListPath().contains(FirebaseUtil.userPath)){
                         popupMenu.getMenu().getItem(1).setEnabled(false);
                         popupMenu.getMenu().getItem(2).setEnabled(false);
+
+
                     }
                 }else{
                     popupMenu.getMenu().getItem(1).setEnabled(false);
@@ -91,6 +95,9 @@ public class CommandManageLists implements Command{
                                 break;
                             case R.id.menuItemSortCustom:
                                 menuItemSortType("customID");
+                                break;
+                            case R.id.menuListDetails:
+                                menuItemListDetails();
                                 break;
                         }
                         return false;
@@ -128,13 +135,18 @@ public class CommandManageLists implements Command{
         }
     }
 
-    private void ibtnListDetailsListener(){
+    private void menuItemListDetails(){
+        fragmentMyOpener.open(fragmentListSummary);
+        fragmentMyOpener.close(fragmentListSummary);
+    }
 
-        ibtnListDetails.setOnClickListener(new View.OnClickListener() {
+    private void openScannerActivity(){
+        ibtnScannerFeature.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentMyOpener.open(fragmentListSummary);
-                fragmentMyOpener.close(fragmentListSummary);
+                Intent intent = new Intent(ActivityMain.appContext, ActivityBarcodeScanner.class);
+                intent.putExtra("singleScan", 0);
+                ActivityMain.appContext.startActivity(intent);
             }
         });
 
