@@ -18,10 +18,12 @@
         </activity>
         <activity
             android:name=".Activities.ActivitySignIn"
+            android:label="Smart Shopping List"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".Activities.ActivityBarcodeScanner"
+            android:label="Smart Shopping List"
             android:screenOrientation="portrait"
             android:exported="true" />
         <activity

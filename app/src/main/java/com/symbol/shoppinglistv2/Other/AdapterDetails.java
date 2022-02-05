@@ -44,9 +44,9 @@ private ArrayList<MyDetail> myDetailArrayList;
 
         holder.tvDetailCategoryName.setText(myDetail.getName());
         String amountConvert = String.valueOf(myDetail.getAmount());
-        holder.tvDetailCategoryAmount.setText(amountConvert);
+        holder.tvDetailCategoryAmount.setText("Products: " + amountConvert);
         String priceConvert = String.valueOf(myDetail.getPrice());
-        holder.tvDetailCategoryPrice.setText(priceConvert);
+        holder.tvDetailCategoryPrice.setText("$" + priceConvert);
     }
 
     @Override

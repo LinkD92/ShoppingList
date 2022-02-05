@@ -13,11 +13,13 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandFragmentSettingsLogic;
 import com.symbol.shoppinglistv2.Command.CommandImportExport;
 import com.symbol.shoppinglistv2.Command.CommandPushNotification;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.R;
 
 
@@ -28,6 +30,7 @@ public class FragmentSettings extends Fragment {
     public View fragmentContainer;
     public SwitchCompat switchCompat;
     public Spinner spnDaysBeforeExpire;
+    public TextView tvLoginCurrentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,9 @@ public class FragmentSettings extends Fragment {
         spnDaysBeforeExpire = v.findViewById(R.id.spnDaysToExpire);
         btnImport = v.findViewById(R.id.btnSettingImportList);
         btnExport = v.findViewById(R.id.btnSettingExportList);
+        tvLoginCurrentUser = v.findViewById(R.id.tvLoginCurrentUser2);
+        tvLoginCurrentUser.setText(FirebaseUtil.user.getEmail());
+
 
         executeCommand(new CommandFragmentSettingsLogic(button, btnSettingsNotificationLog, this));
         executeCommand(new CommandImportExport(btnImport, btnExport));

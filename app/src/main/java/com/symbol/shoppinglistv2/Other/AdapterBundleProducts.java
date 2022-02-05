@@ -12,17 +12,21 @@ import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundleProducts.ViewHolder>{
     private final String TAG = "com.symbol.shoppinglistv2.Other.AdapterBundleProducts";
     private ArrayList<Product> productArrayList;
+    MutableLiveData<HashMap<String, Product>> hashProducts;
 
-    public AdapterBundleProducts(ArrayList<Product> productArrayList) {
+    public AdapterBundleProducts(ArrayList<Product> productArrayList, MutableLiveData<HashMap<String, Product>> hashProducts) {
         this.productArrayList = productArrayList;
+        this.hashProducts = hashProducts;
     }
 
     @NonNull
@@ -40,7 +44,7 @@ public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundlePro
         String amountConvert = String.valueOf(product.getAmount());
         holder.tvAmount.setText(amountConvert);
         ibtnAmountChangeListener(product, holder.ibtnAmountIncrease, holder.ibtnAmoundDecrease);
-
+        btnRemoveListener(holder.btnRemoveProduct, position);
 
     }
 
@@ -56,13 +60,25 @@ public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundlePro
         ibtnDecrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(product.getAmount() > 0){
+                if(product.getAmount() > 1){
                     product.setAmount(product.getAmount() -1);
                     notifyDataSetChanged();
                 }
             }
         });
 
+    }
+
+    private void btnRemoveListener(ImageButton btnRemove, int position){
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Product product = productArrayList.get(position);
+                productArrayList.remove(position);
+                hashProducts.getValue().remove(product.getName());
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -75,7 +91,7 @@ public class AdapterBundleProducts extends RecyclerView.Adapter<AdapterBundlePro
         private ImageButton ibtnAmountIncrease;
         private ImageButton ibtnAmoundDecrease;
         private TextView tvAmount;
-        private Button btnRemoveProduct;
+        private ImageButton btnRemoveProduct;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

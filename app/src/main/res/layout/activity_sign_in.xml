@@ -4,59 +4,162 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/viewBackgroundPrimary"
     tools:context=".Activities.ActivitySignIn">
+
+    <TextView
+        android:id="@+id/tvLoginWelcome"
+        android:text="Welcome"
+        android:textSize="30dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tvLoginInfo"
+        android:text="Please sign in via email address:"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvLoginWelcome"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tvLoginInfoEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email address: "
+        android:layout_margin="8dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName" />
+
+    <Button
+        android:id="@+id/btnDeleteAccount"
+        android:text="Delete Account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/viewBackgroundPrimary"
+        android:backgroundTint="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/tvLoginInfoDelete"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tvLoginInfoPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password: "
+        android:layout_margin="8dp"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextTextPassword"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextPassword" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/googleSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPassword"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/tvLoginInfoOrGoogle"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
 
     <Button
         android:id="@+id/btnASILogout"
         android:text="Logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/viewBackgroundPrimary"
+        android:backgroundTint="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLoginInfoLogout"
         />
 
     <Button
         android:id="@+id/btnASIEmailSignIn"
         android:text="Email Sign In"
+        android:textColor="@color/viewBackgroundPrimary"
+        android:backgroundTint="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/googleSignIn"
-        app:layout_constraintLeft_toLeftOf="@id/googleSignIn"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         />
 
-    <Button
-        android:id="@+id/btnASICreateNewAccount"
+    <TextView
+        android:id="@+id/tvLoginInfoOrGoogle"
+        android:text="via Google account:"
+        android:layout_margin="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create new Account"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnASIEmailSignIn"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnASILogout"/>
+        />
+
+    <TextView
+        android:id="@+id/tvLoginInfoLogout"
+        android:text="alternatively: "
+        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/googleSignIn"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/tvLoginInfoDelete"
+        android:text="or: "
+        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/btnASILogout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
 
     <EditText
         android:id="@+id/editTextTextPassword"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:text="password"
+        android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+        app:layout_constraintRight_toRightOf="@+id/editTextTextPersonName"
+        app:layout_constraintLeft_toLeftOf="@+id/editTextTextPersonName"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/black"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name@test.pl"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="Email address"
+        app:layout_constraintTop_toBottomOf="@+id/tvLoginInfo"
+        app:layout_constraintLeft_toRightOf="@+id/tvLoginInfoEmail"
+        app:layout_constraintRight_toRightOf="parent"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

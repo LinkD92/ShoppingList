@@ -3,13 +3,16 @@ package com.symbol.shoppinglistv2.Command;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
+import com.symbol.shoppinglistv2.Activities.FragmentBundleToList;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.MyLog;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
+import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
@@ -21,20 +24,25 @@ import java.util.Map;
 
 public class CommandBundleToList implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandBundleToList";
-    private ImageButton imageButton;
+    private Button imageButton;
     private SearchableSpinner searchableSpinner;
     private ArrayAdapter adapter;
     private MyBundle myBundle;
+    private Button buttonClose;
+    private FragmentBundleToList fragmentBundleToList;
 
-    public CommandBundleToList(ImageButton imageButton, SearchableSpinner searchableSpinner) {
+    public CommandBundleToList(Button imageButton, SearchableSpinner searchableSpinner, Button buttonClose, FragmentBundleToList fragmentBundleToList) {
         this.imageButton = imageButton;
         this.searchableSpinner = searchableSpinner;
+        this.buttonClose = buttonClose;
+        this.fragmentBundleToList = fragmentBundleToList;
     }
 
     @Override
     public boolean execute() {
         searchableSpinnerAdapter();
         ibtnListener();
+        btnCloseListener();
         return false;
     }
 
@@ -67,21 +75,35 @@ public class CommandBundleToList implements Command{
                     @Override
                     public MyBundle findBundle(MyBundle bundle) {
                         FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), bundle);
-                        for (Map.Entry<String, Product> prod:
-                                bundle.getProducts().entrySet()) {
-                            int prodAmount = bundle.getAmount() * prod.getValue().getAmount();
-                            Product product = new Product(prod.getValue());
-                            product.setAmount(prodAmount);
-                            product.setChecked(bundle.isChecked());
-                            FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
+                        if(bundle.getProducts() != null){
+                            for (Map.Entry<String, Product> prod:
+                                    bundle.getProducts().entrySet()) {
+                                int prodAmount = bundle.getAmount() * prod.getValue().getAmount();
+                                Product product = new Product(prod.getValue());
+                                product.setAmount(prodAmount);
+                                product.setChecked(bundle.isChecked());
+                                FirebaseUtil.addBundleProduct(FirebaseUtil.mutableList.getValue(), product);
+                            }
+
+
+                            myBundle = bundle;
+                            Log.d(TAG, "findBundle: " + bundle.getName());
+
                         }
-
-
-                        myBundle = bundle;
-                        Log.d(TAG, "findBundle: " + bundle.getName());
                         return bundle;
                     }
                 });
+            }
+        });
+    }
+
+    private void btnCloseListener(){
+        buttonClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentMyOpener fragmentMyOpener = new FragmentMyOpener(fragmentBundleToList);
+                fragmentMyOpener.close("test");
+
             }
         });
     }

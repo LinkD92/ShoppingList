@@ -7,9 +7,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,6 +28,7 @@ public class FragmentManagement extends Fragment {
     public ConstraintLayout fragmentContainer;
     public ConstraintLayout fragmentContainerFAB;
     public MutableLiveData tracker = new MutableLiveData();
+    public TextView tvAMCurrentFragment;
 
 
     public FragmentManagement() {
@@ -46,8 +49,10 @@ public class FragmentManagement extends Fragment {
         floatingActionButton = v.findViewById(R.id.fabFragmentMyManage);
         fragmentContainer = v.findViewById(R.id.clFragmentManageContainer);
         fragmentContainerFAB = v.findViewById(R.id.clFragmentManageContainerFAB);
+        tvAMCurrentFragment = v.findViewById(R.id.tvAMCurrentFragment);
 
-        executeCommand(new CommandFMbnvActions(bottomNavigationView, fragmentContainer, tracker));
+        bottomNavigationView.setSelectedItemId(R.id.bnvFragmentManageCategories);
+        executeCommand(new CommandFMbnvActions(bottomNavigationView, fragmentContainer, tracker, tvAMCurrentFragment));
         executeCommand(new CommandManageFAB(floatingActionButton, fragmentContainerFAB, tracker));
 
         return v;
@@ -55,7 +60,9 @@ public class FragmentManagement extends Fragment {
 
     private void executeCommand(Command command){command.execute();}
 
-    public View getFabContainer(){
-        return fragmentContainerFAB;
+    @Override
+    public void onResume() {
+        super.onResume();
     }
+
 }

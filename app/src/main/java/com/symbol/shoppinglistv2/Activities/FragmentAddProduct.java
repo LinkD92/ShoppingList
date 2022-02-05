@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,12 +26,13 @@ public class FragmentAddProduct extends Fragment {
     private final String TAG = "FragmentAddProduct";
     public EditText etFABAddProductName;
     public EditText etFABAddProductPrice;
-    public Button btnFABAddProduct;
+    public Button btnFABAddProduct, btnFabClose;
     public Spinner spnProductCategory;
     public EditText etBarcodeValue;
     public EditText etAvgProductDays;
     public ImageButton ibtnScanBarcode;
     private Product product;
+    public View clFragmentManageContainerFAB;
 
 
     public FragmentAddProduct() {
@@ -63,6 +65,8 @@ public class FragmentAddProduct extends Fragment {
         etBarcodeValue = v.findViewById(R.id.etBarcodeValue);
         etAvgProductDays = v.findViewById(R.id.etAvgProductDays);
         ibtnScanBarcode = v.findViewById(R.id.ibtnScanBarcode);
+        btnFabClose = v.findViewById(R.id.btnFABCloseWindow);
+
 
         //executeCommand(new CommandProductAutoCompleteList(etFABAddProductName, acList));
         executeCommand(new CommandAddNewProduct(this, product, ibtnScanBarcode));

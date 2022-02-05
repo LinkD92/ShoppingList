@@ -113,68 +113,76 @@ public class mCodeScanner implements Command {
     }
 
     private void scannerListener() {
-        for (Map.Entry<String, Product> eprod :
-                FirebaseUtil.mutableList.getValue().getProducts().entrySet()) {
-            boolean findProduct = eprod.getValue().getBarCode() == mCodeScanner.barcodeMultiple.getValue();
-            boolean checkedProduct = eprod.getValue().isChecked() == false;
-            if (findProduct && checkedProduct) {
-                ListOfProducts list = FirebaseUtil.mutableList.getValue();
-                Product product = eprod.getValue();
-                MyBundle bundle = list.getBundles().get(product.getGroup());
-                eprod.getValue().setChecked(true);
-                if (product.isChecked()) {
-                    Calendar calendar = Calendar.getInstance();
-                    Date date = new Date();
-                    product.setLastCheckDate(date.getTime());
-                    if (product.getGroup().length() > 0) {
-                        bundle.getProducts().get(product.getName()).setChecked(true);
-                        FirebaseUtil.addBundle(list, bundle);
-                        if (allChecked(bundle)) {
-                            bundle.setChecked(true);
+        try {
+            for (Map.Entry<String, Product> eprod :
+                    FirebaseUtil.mutableList.getValue().getProducts().entrySet()) {
+                boolean findProduct = eprod.getValue().getBarCode() == mCodeScanner.barcodeMultiple.getValue();
+                boolean checkedProduct = eprod.getValue().isChecked() == false;
+                Log.d(TAG, "scannerListener: trbls find products" + findProduct);
+                Log.d(TAG, "scannerListener: trbls check product " + checkedProduct);
+                if (findProduct && checkedProduct) {
+                    ListOfProducts list = FirebaseUtil.mutableList.getValue();
+                    Product product = eprod.getValue();
+                    MyBundle bundle = list.getBundles().get(product.getGroup());
+                    eprod.getValue().setChecked(true);
+                    if (product.isChecked()) {
+                        Calendar calendar = Calendar.getInstance();
+                        Date date = new Date();
+                        product.setLastCheckDate(date.getTime());
+                        if (product.getGroup().length() > 0) {
+                            bundle.getProducts().get(product.getName()).setChecked(true);
                             FirebaseUtil.addBundle(list, bundle);
+                            if (allChecked(bundle)) {
+                                bundle.setChecked(true);
+                                FirebaseUtil.addBundle(list, bundle);
+                            }
+
+                        }
+                        if (product.getAvgExpirationDays() != 0) {
+                            String path = list.getListPath();
+                            String test[] = path.split("/");
+                            String logName = list.getName();
+                            String logProduct = product.getName();
+                            int days = product.getAvgExpirationDays();
+                            calendar.add(Calendar.DAY_OF_YEAR, days);
+                            String expirationDate = calendar.getTime().toString();
+                            MyLog myLog = new MyLog(logName, logProduct, expirationDate);
+                            FirebaseUtil.addLog(test[0], myLog);
+                        }
+                    } else {
+                        if (product.getGroup().length() > 0) {
+                            Log.d(TAG, "MyTest: uncheck" + product.getGroup());
+                            bundle.getProducts().get(product.getName()).setChecked(true);
+                            FirebaseUtil.addBundle(list, bundle);
+                            if (!allChecked(bundle)) {
+                                Log.d(TAG, "MyTest: uncheck - all checked");
+                                bundle.setChecked(false);
+                                FirebaseUtil.addBundle(list, bundle);
+                            }
                         }
 
                     }
-                    if (product.getAvgExpirationDays() != 0) {
-                        String path = list.getListPath();
-                        String test[] = path.split("/");
-                        String logName = list.getName();
-                        String logProduct = product.getName();
-                        int days = product.getAvgExpirationDays();
-                        calendar.add(Calendar.DAY_OF_YEAR, days);
-                        String expirationDate = calendar.getTime().toString();
-                        MyLog myLog = new MyLog(logName, logProduct, expirationDate);
-                        FirebaseUtil.addLog(test[0], myLog);
-                    }
-                } else {
+
                     if (product.getGroup().length() > 0) {
-                        Log.d(TAG, "MyTest: uncheck" + product.getGroup());
-                        bundle.getProducts().get(product.getName()).setChecked(true);
-                        FirebaseUtil.addBundle(list, bundle);
-                        if (!allChecked(bundle)) {
-                            Log.d(TAG, "MyTest: uncheck - all checked");
-                            bundle.setChecked(false);
-                            FirebaseUtil.addBundle(list, bundle);
-                        }
+                        String outputBundle = "Bundle product name:" + product.getName() + "\nBundle Product amount: " + product.getAmount()
+                                + "\nBundle Product Group : " + product.getGroup();
+                        activityBarcodeScanner.tvProductBundleDetails.setText(outputBundle);
+                    } else {
+                        String textOutput = "Product name: " + product.getName() + "\nProduct amount: " + product.getAmount();
+                        activityBarcodeScanner.tvProductDetails.setText(textOutput);
                     }
-
+                    FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+                } else if(findProduct == false){
+                    String info = "Product not found";
+                    activityBarcodeScanner.tvProductBundleDetails.setText(info);
+                }else{
+                    String info = "Product already scanned";
+                    activityBarcodeScanner.tvProductBundleDetails.setText(info);
                 }
-
-                Log.d(TAG, "scannerListener: trbls " + product.getName());
-                if (product.getGroup().length() > 0) {
-                    String outputBundle = "Bundle product name:" + product.getName() + "\nBundle Product amount: " + product.getAmount()
-                            + "\nBundle Product Group : " + product.getGroup();
-                    activityBarcodeScanner.tvProductBundleDetails.setText(outputBundle);
-                } else {
-                    String textOutput = "Product name: " + product.getName() + "\nProduct amount: " + product.getAmount();
-                    activityBarcodeScanner.tvProductDetails.setText(textOutput);
-                }
-                FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
-            } else {
-                String info = "This product is already scanned";
-                activityBarcodeScanner.tvProductBundleDetails.setText(info);
-
             }
+        } catch (Exception e) {
+            String info = "This product does not exists";
+            activityBarcodeScanner.tvProductBundleDetails.setText(info);
         }
     }
 

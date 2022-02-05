@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.util.Log;
 
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
+import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 
 import java.util.ArrayList;
@@ -91,6 +92,13 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
         for (Product prod :
                 productArrayList) {
             temps.put(prod.getName() + prod.getGroup(), prod);
+            if(prod.getGroup().length() >0){
+                Log.d(TAG, "customIDSorter: trbls " + prod.getGroup());
+                MyBundle bundle = FirebaseUtil.mutableList.getValue().getBundles().get(prod.getGroup());
+                bundle.getProducts().get(prod.getName()).setCustomID(prod.getCustomID());
+                FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), bundle);
+                //FirebaseUtil.updateBundle(prod);
+            }
             if(prod.getCustomID() > 99999){
                 temps = arrayCleanUp(productArrayList);
                 break;
@@ -98,6 +106,7 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
         }
         FirebaseUtil.mutableList.getValue().setProducts(temps);
         FirebaseUtil.addList(FirebaseUtil.mutableList.getValue());
+
 
     }
 

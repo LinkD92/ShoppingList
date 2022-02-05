@@ -3,30 +3,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/backgroundSecondary"
+    android:layout_margin="1dp"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/tvBundleItemName"
         android:layout_width="0dp"
-        android:layout_margin="16dp"
         android:layout_height="wrap_content"
-        android:textSize="16dp"
+        android:textColor="@color/viewBackgroundPrimary"
+        android:textSize="20dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toLeftOf="@id/ibtnEditBundle"
-        app:layout_constraintBottom_toBottomOf="parent"
         />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewContainerDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/ibtnEditBundle"
+        app:layout_constraintTop_toBottomOf="@id/tvBundleItemName"
+        >
+
+        <TextView
+            android:id="@+id/tvBundleUpdateDate"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/viewBackgroundPrimary"
+            android:textSize="16dp"
+            android:gravity="center"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/imgUpdateBundle"
+            />
+
+        <ImageView
+            android:id="@+id/imgUpdateBundle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:src="@drawable/icon_update"
+            app:layout_constraintBottom_toBottomOf="@+id/tvBundleUpdateDate"
+            app:layout_constraintTop_toTopOf="@+id/tvBundleUpdateDate"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tvBundleUpdateDate"
+            app:tint="@color/viewBackgroundPrimary" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <ImageButton
         android:id="@+id/ibtnEditBundle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_temp"
-        android:layout_marginRight="16dp"
+        android:src="@drawable/icon_edit"
+        android:layout_margin="8dp"
+        android:backgroundTint="@color/viewBackgroundPrimary"
+        app:layout_constraintRight_toLeftOf="@+id/ibtnRemoveBundle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="@color/black" />
+
+    <ImageButton
+        android:id="@+id/ibtnRemoveBundle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_remove"
+        android:backgroundTint="@color/viewBackgroundPrimary"
+        android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvBundleItemName"
-        app:layout_constraintBottom_toBottomOf="@id/tvBundleItemName"
-        />
+        app:layout_constraintTop_toTopOf="@id/ibtnEditBundle"
+        app:layout_constraintBottom_toBottomOf="@id/ibtnEditBundle"
+        app:tint="@color/black" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

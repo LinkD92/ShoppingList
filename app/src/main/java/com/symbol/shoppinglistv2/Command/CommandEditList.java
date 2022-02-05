@@ -47,7 +47,6 @@ public class CommandEditList implements Command {
             this.listOfProducts = listOfProducts;
             oldMembers = new HashMap<>(listOfProducts.getSharedWith());
 
-            Log.d(TAG, "trbls old constructor: " + oldMembers.size());
         }
     }
 
@@ -64,6 +63,8 @@ public class CommandEditList implements Command {
         addSharedMemberListener();
         //fill data if current list edited
         fillListData();
+        //close fragment button
+        btnCancelListener();
         return false;
     }
 
@@ -185,6 +186,16 @@ public class CommandEditList implements Command {
             fragmentManageLists.rbSharedList.setChecked(false);
             fragmentManageLists.rbPrivateList.setChecked(true);
         }
+    }
+
+    private void btnCancelListener(){
+        fragmentManageLists.btnEditListCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentMyOpener fragmentMyOpener = new FragmentMyOpener();
+                fragmentMyOpener.close("addList");
+            }
+        });
     }
 
 }

@@ -52,8 +52,8 @@ public class AdapterCategory extends RecyclerView.Adapter<AdapterCategory.ViewHo
                 //opens FragmentAddCategory fragment with category parameter to assign values of
                 // currently selected category to the Views.
                 fragmentCreateCategory = new FragmentCreateCategory(category);
-                fragmentMyOpener.close(fragmentCreateCategory);
-                fragmentMyOpener.replace(fragmentCreateCategory);
+                fragmentMyOpener.replace(fragmentCreateCategory, "addCategory");
+                //fragmentMyOpener.close("addCategory");
             }
         });
         viewHolder.ibtnRemoveCategory.setOnClickListener(new View.OnClickListener() {

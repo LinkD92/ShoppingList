@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -71,22 +72,24 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Product product = productList.get(position);
+        if(product.getGroup().length() > 0){
+            viewHolder.ibtnAddAmountProduct.setVisibility(View.GONE);
+            viewHolder.ibtnReduceAmountProduct.setVisibility(View.GONE);
+            viewHolder.ibtnOptions.setVisibility(View.GONE);
+            viewHolder.ivBundleIcon.setVisibility(View.VISIBLE);
+            viewHolder.tvItemProductGroup.setVisibility(View.VISIBLE);
+        }
 
         viewHolder.tvItemProductName.setText(product.getName());
-        String price = Double.toString(product.getCustomID());
-        viewHolder.tvItemProductPrice.setText(price);
+        double totalPrice = product.getPrice() * product.getAmount();
+        String price = Double.toString(totalPrice);
+        viewHolder.tvItemProductPrice.setText("$ " + price);
         String amount = Integer.toString(product.getAmount());
         viewHolder.tvCurrentAmountProduct.setText(amount);
         viewHolder.cbCheckedProduct.setChecked(product.isChecked());
         viewHolder.clContainerWholeProduct.setBackgroundColor(product.getCategory().getColor());
         viewHolder.clContainerWholeProduct.setAlpha(setAlpha(product.isChecked()));
         viewHolder.tvItemProductGroup.setText(product.getGroup());
-        if(product.getGroup().length() > 0){
-            viewHolder.ibtnAddAmountProduct.setVisibility(View.GONE);
-            viewHolder.ibtnReduceAmountProduct.setVisibility(View.GONE);
-            viewHolder.ibtnOptions.setVisibility(View.GONE);
-            viewHolder.tvItemProductGroup.setVisibility(View.VISIBLE);
-        }
         checkBoxClickListener(viewHolder.cbCheckedProduct, product);
     }
 
@@ -205,6 +208,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         private GestureDetector gestureDetector;
         private FragmentMyOpener fragmentMyOpener;
         private FragmentAddProduct fragmentAddProduct;
+        private ImageView ivBundleIcon;
 
         public ViewHolder(View view) {
             super(view);
@@ -217,8 +221,10 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             ibtnAddAmountProduct = view.findViewById(R.id.ibtnAddAmountProduct);
             ibtnReduceAmountProduct = view.findViewById(R.id.ibtnReduceAmountProduct);
             tvItemProductGroup = view.findViewById(R.id.tvItemProductGroup);
+            ivBundleIcon = view.findViewById(R.id.ivBundleIcon);
             this.gestureDetector = new GestureDetector(view.getContext(), this);
             itemView.setOnTouchListener(this);
+            //manageViews();
             onClicklisteners();
         }
 
@@ -287,7 +293,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                 @Override
                 public void onClick(View view) {
                     Product product = productList.get(getAdapterPosition());
-                    if(product.getAmount() >0){
+                    if(product.getAmount() >1){
                         product.setAmount(product.getAmount()-1);
                         notifyDataSetChanged();
                         FirebaseUtil.addProduct(mutableList.getValue(), product);
@@ -319,7 +325,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                                 case R.id.menuOptionsEdit:
                                     fragmentAddProduct = new FragmentAddProduct(product);
                                     fragmentMyOpener = new FragmentMyOpener(container);
-                                    fragmentMyOpener.open(fragmentAddProduct);
+                                    fragmentMyOpener.open(fragmentAddProduct, "test");
                                     fragmentMyOpener.close(fragmentAddProduct);
                                     break;
                             }
@@ -331,8 +337,17 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             });
         }
 
-
-
+        private void manageViews(){
+            if(productList.get(getAdapterPosition()) != null){
+                Product product = productList.get(getAdapterPosition());
+                if(product.getGroup().length() > 0){
+                    ibtnAddAmountProduct.setVisibility(View.GONE);
+                    ibtnReduceAmountProduct.setVisibility(View.GONE);
+                    ibtnOptions.setVisibility(View.GONE);
+                    tvItemProductGroup.setVisibility(View.VISIBLE);
+                }
+            }
+        }
 
     }
 

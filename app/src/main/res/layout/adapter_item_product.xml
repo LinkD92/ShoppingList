@@ -5,71 +5,67 @@
     android:id="@+id/clContainerWholeProduct"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:padding="10dp"
-    android:layout_margin="2dp"
+    android:layout_margin="1dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:background="#37AEE4"
     android:gravity="center_vertical">
-
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clContainerForDetailsProduct"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintStart_toEndOf="@+id/clContainerForAmountChangeProduct"
-        app:layout_constraintTop_toTopOf="@+id/clContainerForAmountChangeProduct"
         app:layout_constraintBottom_toBottomOf="@+id/clContainerForAmountChangeProduct"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/clContainerForAmountChangeProduct">
 
-        <TextView
-            android:id="@+id/tvItemProductName"
-            android:layout_width="0dp"
+        <CheckBox
+            android:id="@+id/cbCheckedProduct"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/teal_200"
-            android:text="Loading Data"
-            android:textSize="20dp"
-            app:layout_constraintEnd_toStartOf="@+id/tvItemProductGroup"
-            app:layout_constraintStart_toStartOf="parent"
+            android:buttonTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvItemProductGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:text="group"
-            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tvItemProductPrice"
+            app:layout_constraintTop_toBottomOf="@+id/tvItemProductName"
 
-            app:layout_constraintBaseline_toBaselineOf="@+id/tvItemProductName"
-            app:layout_constraintEnd_toStartOf="@+id/cbCheckedProduct"
-            app:layout_constraintStart_toEndOf="@+id/tvItemProductName"
-            tools:visibility="gone" />
+            tools:visibility="visible" />
 
-        <CheckBox
-            android:id="@+id/cbCheckedProduct"
+        <TextView
+            android:id="@+id/tvItemProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            android:text="Loading Data"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toStartOf="@+id/cbCheckedProduct"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvItemProductPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:textSize="10dp"
-            android:text="0"
-            android:background="@color/teal_200"
             android:layout_marginRight="16dp"
-            app:layout_constraintRight_toRightOf="@id/tvItemProductName"
-            app:layout_constraintTop_toBottomOf="@id/tvItemProductName"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="14dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            />
+            app:layout_constraintRight_toLeftOf="@id/cbCheckedProduct"
+            app:layout_constraintTop_toBottomOf="@id/tvItemProductName" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -78,54 +74,93 @@
         android:id="@+id/clContainerForAmountChangeProduct"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ibtnProductOptions"
+        app:layout_constraintLeft_toRightOf="@+id/clContainerBundleIcon"
+        app:layout_constraintRight_toLeftOf="@id/guideline4"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/ibtnReduceAmountProduct"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_temp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_substract"
             app:layout_constraintBottom_toBottomOf="@+id/tvCurrentAmountProduct"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvCurrentAmountProduct" />
+            app:layout_constraintTop_toTopOf="@+id/tvCurrentAmountProduct"
+            app:tint="@color/black" />
 
         <ImageButton
             android:id="@+id/ibtnAddAmountProduct"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_temp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_fab_add"
             app:layout_constraintBottom_toBottomOf="@+id/tvCurrentAmountProduct"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvCurrentAmountProduct" />
+            app:layout_constraintTop_toTopOf="@+id/tvCurrentAmountProduct"
+            app:tint="@color/black" />
 
         <TextView
             android:id="@+id/tvCurrentAmountProduct"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="24dp"
-            android:text="1"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:text="1"
+            android:textColor="@color/black"
+            android:textSize="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ibtnReduceAmountProduct"
             app:layout_constraintEnd_toStartOf="@id/ibtnAddAmountProduct"
+            app:layout_constraintStart_toEndOf="@+id/ibtnReduceAmountProduct"
             app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageButton
-        android:id="@+id/ibtnProductOptions"
-        android:src="@drawable/ic_temp"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainerBundleIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/clContainerForAmountChangeProduct"
         app:layout_constraintBottom_toBottomOf="@+id/clContainerForAmountChangeProduct"
-        />
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/clContainerForAmountChangeProduct">
+
+        <ImageButton
+            android:id="@+id/ibtnProductOptions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:src="@drawable/icon_bnv_settings"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:tint="@color/black" />
+
+        <ImageView
+            android:id="@+id/ivBundleIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@color/viewBackgroundPrimary"
+            android:padding="4dp"
+            android:src="@drawable/icon_bundle"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

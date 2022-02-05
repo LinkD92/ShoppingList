@@ -3,6 +3,7 @@ package com.symbol.shoppinglistv2.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.R;
 
 import static com.symbol.shoppinglistv2.Activities.ActivityMain.TAG;
@@ -35,24 +37,26 @@ public class ActivitySignIn extends AppCompatActivity {
     private SignInButton googleSignIn;
     private Button btnASILogout;
     private Button btnASIEmailSignIn;
-    private Button btnASICreateNewAccount;
+    private Button btnDeleteAccount;
     private FirebaseAuth mAuth;
     private GoogleSignInOptions gso;
 
     private EditText testpw;
     private EditText testlogin;
-
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_sign_in);
         googleSignIn = findViewById(R.id.googleSignIn);
         btnASILogout = findViewById(R.id.btnASILogout);
         btnASIEmailSignIn = findViewById(R.id.btnASIEmailSignIn);
-        btnASICreateNewAccount = findViewById(R.id.btnASICreateNewAccount);
         testpw = findViewById(R.id.editTextTextPassword);
         testlogin = findViewById(R.id.editTextTextPersonName);
+        btnDeleteAccount = findViewById(R.id.btnDeleteAccount);
+
 
         googleSettings();
         buttonListeners();
@@ -73,21 +77,26 @@ public class ActivitySignIn extends AppCompatActivity {
         btnASIEmailSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String pw = testpw.getText().toString();
                 String login = testlogin.getText().toString();
-                signInEmailAndPassword(login,pw);
-                Log.d(TAG, "onClick: Email Sign in");
+
+                if(pw.length() >0 && login.length()>0){
+                    Log.d(TAG, "onClick: Email Sign in trbls ");
+                    signInEmailAndPassword(login,pw);
+                }
             }
         });
 
-        //Create New account
-        btnASICreateNewAccount.setOnClickListener(new View.OnClickListener() {
+        btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String pw = testpw.getText().toString();
-                String login = testlogin.getText().toString();
-                createEmailAndPassword(login, pw);
-                Log.d(TAG, "onClick: Create Account");
+                try {
+                    FirebaseUtil.removeAccount();
+                    removeAccount(mAuth.getCurrentUser());
+                } catch (NullPointerException e) {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -96,12 +105,31 @@ public class ActivitySignIn extends AppCompatActivity {
         btnASILogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mAuth.getCurrentUser().getEmail() != null){
-                    FirebaseAuth.getInstance().signOut();
-                }
+                    try {
+                        Log.d(TAG, "onClick: trbls USER LOGGED OUT" );
+                        Toast.makeText(context, "You have been signed out", Toast.LENGTH_LONG).show();
+                        FirebaseAuth.getInstance().signOut();
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                        Toast.makeText(context, "Something went wrong" + e.toString(), Toast.LENGTH_LONG).show();
+                    }
             }
         });
 
+
+
+
+    }
+
+    private void openListActivity(){
+        try {
+            Log.d(TAG, "onClick: trbls " + mAuth.getCurrentUser().getEmail());
+            Intent intent = new Intent(context, ActivityMain.class);
+            startActivity(intent);
+        } catch (NullPointerException e) {
+            Log.d(TAG, "onClick: trbls  NO USER" + mAuth.toString());
+            e.printStackTrace();
+        }
     }
 
     private void googleSettings(){
@@ -124,25 +152,29 @@ public class ActivitySignIn extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //Log.d(TAG, "onStart: " + currentUser.getUid());
+//
+//        try {
+//            Log.d(TAG, "onStart: trbls " + currentUser.getUid());
+//        } catch (NullPointerException e) {
+//            e.printStackTrace();
+//        }
         //updateUI(currentUser);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
+                Log.d(TAG, "firebaseAuthWithGoogle: trbls" + account.getId());
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Log.w(TAG, "Google sign in failed trbls", e);
             }
         }
     }
@@ -155,12 +187,15 @@ public class ActivitySignIn extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
+                            Log.d(TAG, "signInWithCredential:success trbls");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(ActivitySignIn.this, "Login successful.",
+                                    Toast.LENGTH_SHORT).show();
+                            openListActivity();
                             //updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Log.w(TAG, "signInWithCredential:failure trbls", task.getException());
                             //updateUI(null);
                         }
                     }
@@ -174,7 +209,8 @@ public class ActivitySignIn extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
+                            Toast.makeText(ActivitySignIn.this, "Account creation successful.",
+                                    Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -187,6 +223,7 @@ public class ActivitySignIn extends AppCompatActivity {
     }
 
     private void signInEmailAndPassword(String email, String password){
+        Log.d(TAG, "signInEmailAndPassword: trbls " + email + password);
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -194,16 +231,25 @@ public class ActivitySignIn extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
+                            Toast.makeText(ActivityMain.appContext, "Login successful.", Toast.LENGTH_LONG).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+                            openListActivity();
                         } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(ActivitySignIn.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
+                            createEmailAndPassword(email, password);
                         }
                     }
                 });
+    }
+
+    private void removeAccount(FirebaseUser user){
+        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(context, "Account deleted", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 }
 

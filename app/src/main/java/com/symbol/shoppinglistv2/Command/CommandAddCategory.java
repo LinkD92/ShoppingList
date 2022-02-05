@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.symbol.shoppinglistv2.Activities.FragmentCreateCategory;
 import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
+import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.Other.MyColorPicker;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -25,16 +27,23 @@ public class CommandAddCategory implements Command{
     private int categoryColor;
     private MyColorPicker myColorPicker;
     private Activity activity;
+    private Button btnAddCategoryCancel;
+    private FragmentCreateCategory fragmentCreateCategory;
 
-    public CommandAddCategory(EditText etCategoryName, ConstraintLayout clSquare, Button btnConfirm, Activity activity) {
+    public CommandAddCategory(EditText etCategoryName, ConstraintLayout clSquare, Button btnConfirm,
+                              Activity activity, Button btnAddCategoryCancel, FragmentCreateCategory fragmentCreateCategory) {
         this.etCategoryName = etCategoryName;
         this.clSquare = clSquare;
         this.btnConfirm = btnConfirm;
         this.activity = activity;
+        this.btnAddCategoryCancel = btnAddCategoryCancel;
+        this.fragmentCreateCategory = fragmentCreateCategory;
     }
 
     @Override
     public boolean execute() {
+        FragmentMyOpener fragmentMyOpener = new FragmentMyOpener();
+        btnCancelListener(fragmentMyOpener);
         //old name required to compare if name was changed
         oldName = etCategoryName.getText().toString();
 
@@ -69,8 +78,18 @@ public class CommandAddCategory implements Command{
                 etCategoryName.setText("");
                 //set square color picker to black
                 clSquare.setBackgroundColor(-16777216);
+                fragmentMyOpener.close("addCategory");
             }
         });
         return false;
+    }
+
+    private void btnCancelListener(FragmentMyOpener fragmentMyOpener){
+        btnAddCategoryCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentMyOpener.close("addCategory");
+            }
+        });
     }
 }

@@ -2,11 +2,14 @@ package com.symbol.shoppinglistv2.Command;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Activities.FragmentAddProduct;
 import com.symbol.shoppinglistv2.Activities.FragmentAddToList;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
 import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 
 import androidx.fragment.app.FragmentManager;
@@ -33,8 +36,14 @@ public class CommandAddProductFAB implements Command{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentMyOpener.open(fragmentAddToList);
-                fragmentMyOpener.close(fragmentAddToList);
+                Log.d(TAG, "onClick: trbls " + FirebaseUtil.mutableList.getValue() );
+                if(FirebaseUtil.mutableList.getValue() != null){
+                    fragmentMyOpener.open(fragmentAddToList, "test");
+                    //fragmentMyOpener.close("test");
+                }else{
+                    Toast.makeText(ActivityMain.appContext, "Create list first", Toast.LENGTH_LONG).show();
+
+                }
             }
         });
 

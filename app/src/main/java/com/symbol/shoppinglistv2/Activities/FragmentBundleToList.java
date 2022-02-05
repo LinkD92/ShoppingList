@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.symbol.shoppinglistv2.Command.Command;
@@ -18,7 +19,8 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 public class FragmentBundleToList extends Fragment {
 
     private SearchableSpinner searchableSpinner;
-    private ImageButton imageButton;
+    private Button imageButton;
+    private Button buttonClose, btnAdd;
 
     public FragmentBundleToList() {
         // Required empty public constructor
@@ -36,9 +38,10 @@ public class FragmentBundleToList extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_bundle_to_list, container, false);
         searchableSpinner = v.findViewById(R.id.ssBundleTolist);
-        imageButton = v.findViewById(R.id.ibtnAddBundleToList);
+        imageButton = v.findViewById(R.id.btnAddBundle);
+        buttonClose = v.findViewById(R.id.btnBundleCancel);
 
-        executeCommand(new CommandBundleToList(imageButton, searchableSpinner ));
+        executeCommand(new CommandBundleToList(imageButton, searchableSpinner, buttonClose, this ));
         return v;
     }
 

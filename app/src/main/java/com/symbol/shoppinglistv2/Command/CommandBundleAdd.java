@@ -12,6 +12,7 @@ import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.AdapterBundleProducts;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
+import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.R;
 
@@ -57,6 +58,7 @@ public class CommandBundleAdd implements Command{
         availableProducts();
         productToRecyclerView();
         btnSaveChangesListener();
+        btnCancelListener();
         return false;
     }
 
@@ -83,7 +85,7 @@ public class CommandBundleAdd implements Command{
             for (Map.Entry<String, Product> prodEntry:
                     productHashMap.entrySet()) {
                 products.add(prodEntry.getValue());
-            adapter = new AdapterBundleProducts(products);
+            adapter = new AdapterBundleProducts(products, hashProducts);
             ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 @Override
                 public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -114,16 +116,21 @@ public class CommandBundleAdd implements Command{
             @Override
             public void onClick(View view) {
 
-                String prodName = fragmentAddBundle.ssBundleAddProductName.getSelectedItem().toString();
-                ListOfProducts list = FirebaseUtil.mutableList.getValue();
-                Product product = list.getProducts().get(prodName);
-                hashProducts.getValue().put(product.getName(), product);
-                hashProducts.setValue(hashProducts.getValue());
+                if (fragmentAddBundle.ssBundleAddProductName.getSelectedItem()!=null) {
+                    String prodName = fragmentAddBundle.ssBundleAddProductName.getSelectedItem().toString();
+                    ListOfProducts list = FirebaseUtil.mutableList.getValue();
+                    Product product = list.getProducts().get(prodName);
+                    hashProducts.getValue().put(product.getName(), product);
+                    hashProducts.setValue(hashProducts.getValue());
+                } else {
+                    Toast.makeText(ActivityMain.appContext, "Product is not chosen", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
     private void btnSaveChangesListener(){
+        FragmentMyOpener fragmentMyOpener = new FragmentMyOpener();
         fragmentAddBundle.btnAddBundle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,14 +146,22 @@ public class CommandBundleAdd implements Command{
                         temp.put(pr.getName(), pr);
                         price += pr.getPrice() * pr.getAmount();
                     }
+
                     myBundle.setPrice(price);
                     myBundle.setProducts(temp);
-                    Calendar calendar = Calendar.getInstance();
-                    Date test = calendar.getTime();
-                            String test2 = test.getDate()+ "/"+test.getMonth() + "/" + test.getYear();
-                    myBundle.setUpdateDate(test2);
+                    if(products.size() <= 0){
 
-                    FirebaseUtil.addBundle("bundles/", myBundle);
+
+                        Toast.makeText(ActivityMain.appContext, "Products are missing", Toast.LENGTH_LONG).show();
+                    }else{
+                        Calendar calendar = Calendar.getInstance();
+                        Date test = calendar.getTime();
+                        String test2 = test.getDate()+ "/"+test.getMonth() + "/" + test.getYear();
+                        myBundle.setUpdateDate(test2);
+                        FirebaseUtil.addBundle("bundles/", myBundle);
+                        fragmentMyOpener.close("addBundle");
+                    }
+
 
                 }else{
                     Toast.makeText(ActivityMain.appContext, "Name is empty", Toast.LENGTH_LONG).show();
@@ -162,44 +177,14 @@ public class CommandBundleAdd implements Command{
         }
     }
 
-
-    private void updateBundlesOnLists(MyBundle myBundle){
-        Log.d(TAG, "updateBundlesOnLists: trbls  rl?y");
-        FirebaseUtil.readList(new MyCallback() {
+    private void btnCancelListener(){
+        FragmentMyOpener fragmentMyOpener = new FragmentMyOpener();
+        fragmentAddBundle.btnBundleCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onListCallback(ArrayList<String> listsArrayList) {
-                super.onListCallback(listsArrayList);
-                for (String list :
-                        listsArrayList) {
-                    String path = "lists/" + list;
-                    FirebaseUtil.readFullList(path, new MyCallback() {
-                        @Override
-                        public void readFullList(ListOfProducts listOfProducts) {
-                            super.readFullList(listOfProducts);
-                            Log.d(TAG, "readFullList: trbls " + listOfProducts.getName());
-//                            Log.d(TAG, "readFullList: trbls " + listOfProducts.getName());
-//                            for (Map.Entry<String, MyBundle> bundleEntry:
-//                                    listOfProducts.getBundles().entrySet()) {
-//                                String fullPath = "lists/" + FirebaseUtil.currentList + "/bundles/";
-//                                Log.d(TAG, "readFullList: trbls " + fullPath);
-//                                Log.d(TAG, "readFullList: trbls " + bundleEntry.getValue().getName().equals(myBundle.getName()));
-//                                if(bundleEntry.getValue().getName().equals(myBundle.getName())){
-//                                    Log.d(TAG, "readFullList there is bundle name::  trbls " +myBundle.getName() );
-//                                    for (Map.Entry<String, Product> eprod :
-//                                            myBundle.getProducts().entrySet()) {
-//                                        FirebaseUtil.mutableList.getValue().getProducts().
-//                                                remove(eprod.getValue().getName()+eprod.getValue().getGroup());
-//                                    }
-//                                    FirebaseUtil.addBundle(fullPath, myBundle);
-//                                }
-//                            }
-                        }
-                    });
-
-                }
+            public void onClick(View view) {
+                fragmentMyOpener.close("addBundle");
             }
         });
     }
-
 
 }

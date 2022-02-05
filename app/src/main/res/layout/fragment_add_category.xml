@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/viewBackgroundPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.FragmentCreateCategory">
 
@@ -10,8 +11,11 @@
         android:id="@+id/etCategoryName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="16dp"
         android:hint="CategoryName"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         />
@@ -20,31 +24,54 @@
         android:id="@+id/tvAddCategoryPickColor"
         android:text="Pick a Color"
         android:textSize="30dp"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etCategoryName"
-
+        app:layout_constraintTop_toTopOf="@id/clAddCategoryColorSqure"
+        app:layout_constraintBottom_toBottomOf="@id/clAddCategoryColorSqure"
+        app:layout_constraintRight_toLeftOf="@+id/clAddCategoryColorSqure"
         />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clAddCategoryColorSqure"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         android:background="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/etCategoryName"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toRightOf="@id/tvAddCategoryPickColor"/>
 
     <Button
         android:id="@+id/btnAddCategoryConfirm"
-        android:text="Add Category"
+        android:text="Save"
+        android:textColor="@color/textPositive"
+        android:backgroundTint="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clAddCategoryColorSqure"
+        app:layout_constraintRight_toLeftOf="@+id/btnAddCategoryCancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <Button
+        android:id="@+id/btnAddCategoryCancel"
+        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/textNegative"
+        android:backgroundTint="@color/black"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clAddCategoryColorSqure"/>
+        app:layout_constraintTop_toBottomOf="@+id/clAddCategoryColorSqure"
+        app:layout_constraintLeft_toRightOf="@+id/btnAddCategoryConfirm"
+
+
+        android:text="Cancel" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

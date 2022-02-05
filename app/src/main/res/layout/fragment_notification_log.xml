@@ -3,29 +3,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
+    android:layout_margin="1dp"
+    android:background="@color/viewBackgroundPrimary"
+    app:layout_constraintTop_toTopOf="parent"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.FragmentNotificationLog">
 
     <TextView
         android:id="@+id/tvNotificationLogTitle"
+        android:layout_margin="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Notification Log"
         android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvHeaderList"
+        android:text="List"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintLeft_toLeftOf="@id/rvNotifications"
+        app:layout_constraintBottom_toTopOf="@id/rvNotifications"
+        app:layout_constraintRight_toLeftOf="@+id/tvHeaderProduct"
+        />
+
+    <TextView
+        android:id="@+id/tvHeaderProduct"
+        android:text="Product"
+        android:textSize="16dp"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintLeft_toLeftOf="@id/rvNotifications"
+        app:layout_constraintRight_toRightOf="@id/rvNotifications"
+        app:layout_constraintBottom_toTopOf="@id/rvNotifications"
+        app:layout_constraintTop_toBottomOf="@id/tvNotificationLogTitle"
+        />
+
+    <TextView
+        android:id="@+id/tvHeaderDate"
+        android:text="Expiration date"
+        android:textSize="16dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintLeft_toRightOf="@id/tvHeaderProduct"
+        app:layout_constraintRight_toRightOf="@id/rvNotifications"
+        app:layout_constraintBottom_toTopOf="@id/rvNotifications"
+        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNotifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvNotificationLogTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvHeaderProduct" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

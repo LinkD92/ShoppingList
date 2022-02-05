@@ -22,6 +22,7 @@ public class ActivityBarcodeScanner extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_barcode_scanner);
+        getSupportActionBar().hide();
         super.onCreate(savedInstanceState);
         codeScannerView = findViewById(R.id.scanner_view);
         textView = findViewById(R.id.tv_text_View);

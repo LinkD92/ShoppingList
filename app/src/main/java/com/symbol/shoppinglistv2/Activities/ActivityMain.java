@@ -31,6 +31,7 @@ import com.google.gson.JsonParser;
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandAMbnvActions;
 import com.symbol.shoppinglistv2.Command.CommandImportExportResult;
+import com.symbol.shoppinglistv2.Command.CommandManageLogs;
 import com.symbol.shoppinglistv2.Command.CommandPushNotification;
 import com.symbol.shoppinglistv2.Command.CommandSetPrefs;
 import com.symbol.shoppinglistv2.Command.CommandSignIn;
@@ -130,6 +131,8 @@ public class ActivityMain extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         executeCommand(new CommandSignIn(this));
+        executeCommand(new CommandManageLogs());
+        //executeCommand(new CommandPushNotification(this,service, notificationManager ));
     }
 
     private void executeCommand(Command command){

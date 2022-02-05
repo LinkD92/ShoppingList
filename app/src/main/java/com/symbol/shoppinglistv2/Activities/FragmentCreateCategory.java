@@ -23,7 +23,7 @@ public class FragmentCreateCategory extends FragmentManageCategories {
     private final String TAG = "FragmentAddCategory";
     public  EditText etCategoryName;
     public  ConstraintLayout clSquare;
-    private Button btnConfirm;
+    private Button btnConfirm, btnAddCategoryCancel;
     private Category category;
 
 
@@ -49,9 +49,10 @@ public class FragmentCreateCategory extends FragmentManageCategories {
         etCategoryName = v.findViewById(R.id.etCategoryName);
         clSquare = v.findViewById(R.id.clAddCategoryColorSqure);
         btnConfirm = v.findViewById(R.id.btnAddCategoryConfirm);
+        btnAddCategoryCancel = v.findViewById(R.id.btnAddCategoryCancel);
 
         executeCommand(new CommandEditCategory(etCategoryName, clSquare, category));
-        executeCommand(new CommandAddCategory(etCategoryName, clSquare, btnConfirm, getActivity()));
+        executeCommand(new CommandAddCategory(etCategoryName, clSquare, btnConfirm, getActivity(), btnAddCategoryCancel, this));
 
 
         return v;

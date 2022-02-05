@@ -5,6 +5,7 @@
     android:id="@+id/testLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/viewBackgroundPrimary"
     tools:context=".Activities.ActivityBarcodeScanner">
 
     <TextView
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/scanner_view"
-        android:text="TAP to wake up the scanner"
+        android:text="TAP scanner to wake it up"
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="24dp"
@@ -24,6 +25,8 @@
         android:id="@+id/tvProductDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_text_View"
@@ -33,6 +36,8 @@
         android:id="@+id/tvProductBundleDetails"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvProductDetails"

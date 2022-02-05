@@ -31,7 +31,7 @@ public class FragmentManageLists extends Fragment {
     public EditText etListSharedWith;
     public EditText etListName;
     public RadioGroup rgManageList;
-    public Button btnEditListSaveChanges;
+    public Button btnEditListSaveChanges, btnEditListCancel;
     public RadioButton rbPrivateList;
     public RadioButton rbSharedList;
     public RecyclerView rvSharedWithMembers;
@@ -64,6 +64,7 @@ public class FragmentManageLists extends Fragment {
         rbSharedList = v.findViewById(R.id.rbSharedList);
         btnAddMember = v.findViewById(R.id.btnAddSharedMember);
         rvSharedWithMembers = v.findViewById(R.id.rvSharedMembersContainer);
+        btnEditListCancel = v.findViewById(R.id.btnEditListCancel);
 
         executeCommand(new CommandEditList(this,listOfProducts ));
 

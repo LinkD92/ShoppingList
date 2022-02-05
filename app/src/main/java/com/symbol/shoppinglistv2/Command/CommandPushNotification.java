@@ -44,7 +44,7 @@ public class CommandPushNotification implements Command{
         Calendar calendar = Calendar.getInstance();
         //calendar.set(Calendar.HOUR_OF_DAY, 9);
         calendar.set(Calendar.MINUTE, Calendar.MINUTE);
-        calendar.set(Calendar.SECOND, Calendar.SECOND+ 30);
+        calendar.set(Calendar.SECOND, Calendar.SECOND+ 10);
         ArrayList<MyLog> myLogs = new ArrayList<>();
 
         Intent intent = new Intent(ActivityMain.appContext, MyNotifications.class);

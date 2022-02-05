@@ -110,7 +110,7 @@ public class CommandManageLists implements Command{
 
     private void menuItemClickAddList(){
         fragmentManageLists = new FragmentManageLists();
-        fragmentMyOpener.open(fragmentManageLists);
+        fragmentMyOpener.open(fragmentManageLists, "addList");
         fragmentMyOpener.close(fragmentManageLists);
     }
 

@@ -138,6 +138,16 @@ public class FirebaseUtil {
         reference.child(buildPath).child(product.getName()).setValue(product);
     }
 
+    public static void updateBundle(Product product){
+        Log.d(TAG, "updateBundle: trbls " + globalRef.child(FirebaseUtil.mutableList.getValue().getListPath()).
+                child("bundles").child(product.getGroup()).child("products").
+                child(product.getName()).toString());
+        Log.d(TAG, "updateBundle: trbls " + product.getGroup());
+        globalRef.child(FirebaseUtil.mutableList.getValue().getListPath()).
+                child("bundles").child(product.getGroup()).child("products").
+                child(product.getName()).child("customID").setValue(product.getCustomID());
+    }
+
     public static void removeBundleProduct(String path, Product product){
         String buildPath = "bundles/" + path  + "/products";
         reference.child(buildPath).child(product.getName()).removeValue();
@@ -177,7 +187,12 @@ public class FirebaseUtil {
     }
 
     public static void removeValue(String path){
+        Log.d(TAG, "removeValue: trbls " + reference.child(path));
         reference.child(path).removeValue();
+    }
+
+    public static void removeAccount(){
+        reference.removeValue();
     }
 
     public static void removeValue(ListOfProducts list, HashMap<String,SharedMember> sharedMembers){

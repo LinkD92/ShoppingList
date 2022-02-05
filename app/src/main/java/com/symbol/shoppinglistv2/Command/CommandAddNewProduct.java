@@ -18,8 +18,11 @@ import com.symbol.shoppinglistv2.Components.Category;
 import com.symbol.shoppinglistv2.Components.ListOfProducts;
 import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.Other.FirebaseUtil;
+import com.symbol.shoppinglistv2.Other.FragmentMyOpener;
 import com.symbol.shoppinglistv2.Other.MyCallback;
 import com.symbol.shoppinglistv2.Other.mCodeScanner;
+
+import androidx.fragment.app.Fragment;
 
 //Functionality to add products to the firebase
 public class CommandAddNewProduct implements Command {
@@ -39,10 +42,10 @@ public class CommandAddNewProduct implements Command {
     @Override
     public boolean execute() {
         ibtnScannerListener();
+        btnClose();
         fragmentAddProduct.btnFABAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: trbls TEST" );
 //                //creation of Product object with extracted parameters
                 String name = fragmentAddProduct.etFABAddProductName.getText().toString();
                 
@@ -57,7 +60,9 @@ public class CommandAddNewProduct implements Command {
                             //checking if product already exists
                             if(isTrue == true){
                                 //returning dialog box for user to confirm action
-                                dialogInfo(product);
+
+                                FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+                                //dialogInfo(product);
                             }else{
                                 //add product do database
                                 if(productOld != null){
@@ -70,12 +75,16 @@ public class CommandAddNewProduct implements Command {
                                 }else{
                                     FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
                                 }
+
                                 Toast.makeText(ActivityMain.appContext, "Product has been added", Toast.LENGTH_LONG).show();
                             }
                             return super.onProductExistsCallback(isTrue);
                         }
                     });
+                    FragmentMyOpener fragmentMyOpener = new FragmentMyOpener(fragmentAddProduct);
+                    fragmentMyOpener.close("test");
                 }
+
             }
         });
 
@@ -142,9 +151,6 @@ public class CommandAddNewProduct implements Command {
         return null;
     }
 
-    private static boolean isNumeric(String str){
-        return str != null && str.matches("[0-9.]+");
-    }
 
     private void ibtnScannerListener(){
         ibtnScanner.setOnClickListener(new View.OnClickListener() {
@@ -156,6 +162,16 @@ public class CommandAddNewProduct implements Command {
             }
         });
 
+    }
+
+    private void btnClose(){
+        FragmentMyOpener fragmentMyOpener = new FragmentMyOpener(fragmentAddProduct);
+        fragmentAddProduct.btnFabClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fragmentMyOpener.close("test");
+            }
+        });
     }
 
 }

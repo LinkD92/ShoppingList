@@ -33,10 +33,21 @@ public class FragmentMyOpener {
         this.container = container.getId();
     }
 
+    public FragmentMyOpener() {
+    }
+
     public void open(Fragment fragment) {
         if(!fragment.isVisible()) {
             transaction = fragmentManager.beginTransaction();
             transaction.replace(container, fragment);
+            transaction.attach(fragment).commit();
+        }
+    }
+
+    public void open(Fragment fragment,String tag) {
+        if(!fragment.isVisible()) {
+            transaction = fragmentManager.beginTransaction();
+            transaction.replace(container, fragment, tag);
             transaction.attach(fragment).commit();
         }
     }
@@ -56,6 +67,15 @@ public class FragmentMyOpener {
         }
     }
 
+    public void replace(Fragment fragment, String tag) {
+        if(!fragment.isVisible()) {
+            transaction = fragmentManager.beginTransaction();
+            transaction.replace(container, fragment, tag);
+            transaction.attach(fragment).commit();
+        }
+    }
+
+
     public void createTag(Fragment fragment, String tag){
         fragmentManager.beginTransaction().add(container,fragment, tag).commit();
         Log.d(TAG, "createTag: " + tag);
@@ -73,8 +93,8 @@ public class FragmentMyOpener {
     }
 
     public void close(String tag) {
-        FragmentCreateCategory fragment = (FragmentCreateCategory) fragmentManager.findFragmentByTag(tag);
-        if (fragment.isVisible()) {
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null  && fragment.isVisible()) {
             Log.d(TAG, "close ::: " + fragment.isVisible());
             transaction = fragmentManager.beginTransaction();
             transaction.detach(fragment).commit();

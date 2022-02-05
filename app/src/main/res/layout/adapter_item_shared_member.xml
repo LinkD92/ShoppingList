@@ -2,26 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/backgroundSecondary"
+    android:layout_margin="1dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/tvItemSharedMemeberEmail"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:text="Example"
+        android:textSize="16dp"
+        android:textColor="@color/viewBackgroundPrimary"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/ibtnItemRemoveMember"
         />
+
     <ImageButton
         android:id="@+id/ibtnItemRemoveMember"
-        android:src="@drawable/ic_temp"
+        android:src="@drawable/icon_remove"
         android:layout_width="wrap_content"
+        android:layout_marginRight="8dp"
         android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/tvItemSharedMemeberEmail"
         app:layout_constraintBottom_toBottomOf="@+id/tvItemSharedMemeberEmail"
-        />
+        app:tint="@color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

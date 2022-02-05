@@ -30,6 +30,8 @@ public class CommandManageLogs implements Command{
         this.rvNotifications = rvNotifications;
     }
 
+    public CommandManageLogs(){};
+
     @Override
     public boolean execute() {
 
@@ -52,10 +54,11 @@ public class CommandManageLogs implements Command{
                     }
                 });
                 removeOldLogs(myLogs);
-
-                adapterLogs = new AdapterLogs(myLogs);
-                rvNotifications.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
-                rvNotifications.setAdapter(adapterLogs);
+                if(rvNotifications !=null){
+                    adapterLogs = new AdapterLogs(myLogs);
+                    rvNotifications.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
+                    rvNotifications.setAdapter(adapterLogs);
+                }
             }
         });
         return false;

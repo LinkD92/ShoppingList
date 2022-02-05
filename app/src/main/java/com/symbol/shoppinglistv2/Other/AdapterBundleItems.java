@@ -42,6 +42,7 @@ public class AdapterBundleItems extends RecyclerView.Adapter<AdapterBundleItems.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MyBundle bundle = bundleArrayList.get(position);
         holder.bundleName.setText(bundle.getName());
+        holder.tvBundleUpdate.setText(bundle.getUpdateDate());
 
         holder.ibtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,7 +50,17 @@ public class AdapterBundleItems extends RecyclerView.Adapter<AdapterBundleItems.
                 FirebaseUtil.currentBundle = bundle.getName();
                 fragmentAddBundle = new FragmentAddBundle(bundle);
                 fragmentMyOpener = new FragmentMyOpener(container);
-                fragmentMyOpener.open(fragmentAddBundle);
+                fragmentMyOpener.open(fragmentAddBundle, "addBundle");
+            }
+        });
+
+        holder.ibtnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //MyBundle bundle = bundleArrayList.get(viewHolder.getAdapterPosition());
+                bundleArrayList.remove(holder.getAdapterPosition());
+                String path = "bundles/";
+                FirebaseUtil.removeBundle(path, bundle);
             }
         });
     }
@@ -61,14 +72,17 @@ public class AdapterBundleItems extends RecyclerView.Adapter<AdapterBundleItems.
 
     public class ViewHolder  extends RecyclerView.ViewHolder{
 
-        private TextView bundleName;
-        private ImageButton ibtnEdit;
+        private TextView bundleName, tvBundleUpdate;
+        private ImageButton ibtnEdit, ibtnRemove;
+
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             bundleName = itemView.findViewById(R.id.tvBundleItemName);
             ibtnEdit = itemView.findViewById(R.id.ibtnEditBundle);
+            ibtnRemove = itemView.findViewById(R.id.ibtnRemoveBundle);
+            tvBundleUpdate = itemView.findViewById(R.id.tvBundleUpdateDate);
         }
     }
 }

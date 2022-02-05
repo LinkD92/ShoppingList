@@ -24,7 +24,7 @@ import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 public class FragmentAddBundle extends Fragment {
 
     public EditText etAddBundleName;
-    public Button btnAddBundleSave;
+    public Button btnAddBundleSave , btnBundleCancel;
     public AutoCompleteTextView actvBundleAddProductName;
     public SearchableSpinner ssBundleAddProductName;
     public ImageButton ibtnAddBundleAddPorduct;
@@ -62,6 +62,7 @@ public class FragmentAddBundle extends Fragment {
         ibtnAddBundleAddPorduct = v.findViewById(R.id.ibtnAddBundleAddProduct);
         rvBundleProducts = v.findViewById(R.id.rvBundleProducts);
         btnAddBundle = v.findViewById(R.id.btnAddBundle);
+        btnBundleCancel = v.findViewById(R.id.btnBundleCancel);
         container = v2.findViewById(R.id.clFragmentManageContainerFAB);
 
         executeCommand(new CommandBundleAdd(this, myBundle, container));

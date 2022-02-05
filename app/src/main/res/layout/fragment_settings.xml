@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/backgroundMain"
     tools:context=".Activities.FragmentSettings">
 
 
@@ -11,7 +12,8 @@
         android:id="@+id/clSettingsLoginContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/gray"
+        android:layout_marginBottom="1dp"
+        android:background="@color/viewBackgroundPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -20,20 +22,31 @@
         <TextView
             android:id="@+id/tvLoginCurrentUser"
             android:text="Current account:"
+            android:textSize="16dp"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
+            android:gravity="center"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btnOpenLoginScreen"
             />
 
         <TextView
             android:id="@+id/tvLoginCurrentUser2"
             android:layout_width="wrap_content"
+            android:textColor="@color/black"
             android:text="email@address"
+            android:textSize="16dp"
+            android:gravity="center"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
-            app:layout_constraintLeft_toLeftOf="@+id/tvLoginCurrentUser"
+            android:layout_marginLeft="8dp"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btnOpenLoginScreen"
             app:layout_constraintTop_toBottomOf="@+id/tvLoginCurrentUser"
             app:layout_constraintBottom_toBottomOf="parent"
             />
@@ -43,6 +56,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/viewBackgroundPrimary"
             android:text="Account settings"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tvLoginCurrentUser"
@@ -55,24 +70,30 @@
         android:id="@+id/clSettingsNotificationContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/viewBackgroundPrimary"
         android:layout_marginTop="1dp"
-        android:background="@color/gray"
         app:layout_constraintTop_toBottomOf="@+id/clSettingsLoginContainer"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         >
+
         <TextView
             android:id="@+id/tvSettingsNotifications"
-            android:text="Notifications"
-            android:layout_width="0dp"
-            android:layout_margin="8dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="@id/swSettingsNotifications"
+            android:layout_marginLeft="8dp"
+            android:text="Notifications"
+            android:textSize="16dp"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="@id/swSettingsNotifications"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/swSettingsNotifications"/>
+            app:layout_constraintRight_toLeftOf="@+id/swSettingsNotifications"
+            app:layout_constraintTop_toTopOf="@id/swSettingsNotifications" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/swSettingsNotifications"
+            app:thumbTint="@color/black"
             android:layout_width="wrap_content"
             android:layout_margin="8dp"
             android:layout_height="wrap_content"
@@ -84,7 +105,9 @@
             android:id="@+id/tvDaysBeforeExpire"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="16dp"
             android:layout_marginLeft="8dp"
+            android:textColor="@color/black"
             android:text="Days before expiration"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/spnDaysToExpire"
@@ -94,10 +117,10 @@
         <Spinner
             android:id="@+id/spnDaysToExpire"
             android:layout_width="wrap_content"
-            app:layout_constraintRight_toRightOf="@+id/swSettingsNotifications"
-            app:layout_constraintTop_toBottomOf="@+id/swSettingsNotifications"
             android:layout_margin="8dp"
             android:layout_height="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swSettingsNotifications"
             />
 
         <Button
@@ -105,9 +128,11 @@
             android:text="Notification Log"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_margin="8dp"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/viewBackgroundPrimary"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spnDaysToExpire"
             app:layout_constraintBottom_toBottomOf="parent"
             />
@@ -121,7 +146,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:background="@color/gray"
+        android:background="@color/viewBackgroundPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/clSettingFragmentContainer"
         app:layout_constraintVertical_bias="0.0">
@@ -132,17 +157,25 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:text="Export List"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/viewBackgroundPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btnSettingImportList"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btnSettingImportList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginRight="8dp"
             android:text="Import List"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnSettingExportList" />
+            android:backgroundTint="@color/black"
+            android:textColor="@color/viewBackgroundPrimary"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnSettingExportList"
+            app:layout_constraintLeft_toRightOf="@+id/btnSettingExportList"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -150,7 +183,7 @@
         android:id="@+id/clSettingFragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxHeight="250dp"
+        android:maxHeight="200dp"
         app:layout_constraintTop_toBottomOf="@id/clSettingsNotificationContainer"
         app:layout_constraintLeft_toLeftOf="parent" />
 

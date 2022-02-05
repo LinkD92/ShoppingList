@@ -4,28 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/viewBackgroundPrimary"
     tools:context=".Activities.FragmentBundleToList">
 
     <com.toptoche.searchablespinnerlibrary.SearchableSpinner
         android:id="@+id/ssBundleTolist"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/ibtnAddBundleToList"
-        />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+         />
 
-    <ImageButton
-        android:id="@+id/ibtnAddBundleToList"
+    <Button
+        android:id="@+id/btnAddBundle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_temp"
-        android:layout_marginRight="16dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/black"
+        android:text="Add"
+        android:textColor="@color/textPositive"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/btnBundleCancel"
+        app:layout_constraintTop_toBottomOf="@id/ssBundleTolist"
+        />
+
+    <Button
+        android:id="@+id/btnBundleCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textColor="@color/textNegative"
+        android:backgroundTint="@color/black"
+        android:text="Cancel"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/ssBundleTolist"
-        app:layout_constraintBottom_toBottomOf="@+id/ssBundleTolist"
+        app:layout_constraintTop_toBottomOf="@id/ssBundleTolist"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/btnAddBundle"
         />
 
 
