@@ -14,9 +14,18 @@ import com.symbol.shoppinglistv2.Activities.FragmentSettings;
 import com.symbol.shoppinglistv2.Activities.ActivityMain;
 import com.symbol.shoppinglistv2.Components.MyLog;
 import com.symbol.shoppinglistv2.Components.MyNotifications;
+import com.symbol.shoppinglistv2.Other.AdapterLogs;
+import com.symbol.shoppinglistv2.Other.FirebaseUtil;
+import com.symbol.shoppinglistv2.Other.MyCallback;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class CommandPushNotification implements Command{
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandPushNotification";
@@ -40,15 +49,14 @@ public class CommandPushNotification implements Command{
 
     @Override
     public boolean execute() {
-
         Calendar calendar = Calendar.getInstance();
         //calendar.set(Calendar.HOUR_OF_DAY, 9);
         calendar.set(Calendar.MINUTE, Calendar.MINUTE);
-        calendar.set(Calendar.SECOND, Calendar.SECOND+ 10);
-        ArrayList<MyLog> myLogs = new ArrayList<>();
-
+        calendar.set(Calendar.SECOND, Calendar.SECOND+ 20);
+        ArrayList<MyLog> myLogArray = new ArrayList<>();
+        Log.d(TAG, "TestNote: size 2trbls " + myLogArray.size());
         Intent intent = new Intent(ActivityMain.appContext, MyNotifications.class);
-        intent.putExtra("array", myLogs);
+        intent.putExtra("array", myLogArray);
         intent.putExtra("days", ActivityMain.daysBeforeExpire);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(ActivityMain.appContext, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         if(ActivityMain.notifications){
@@ -72,7 +80,6 @@ public class CommandPushNotification implements Command{
 
 
     }
-
 
 
 }

@@ -26,13 +26,14 @@ public class MyNotifications extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d(TAG, "TestNote: Received Info to begin notification"  );
+        Log.d(TAG, "TestNote: Received Info to begin notification size: " + FirebaseUtil.myLogs.size());
         myLogs = (ArrayList<MyLog>) intent.getExtras().getSerializable("array");
         days = intent.getExtras().getInt("days");
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-        Log.d(TAG, "TestNote: 1"  );
             int productCounter = 0;
             for (MyLog myLog :
-                    myLogs) {
+                    FirebaseUtil.myLogs) {
                 Date tempDate = new Date(Date.parse(myLog.getExpirationDays()));
                 Calendar calendar = Calendar.getInstance();
                 Log.d(TAG, "TestNote: 3"  );
@@ -40,6 +41,7 @@ public class MyNotifications extends BroadcastReceiver {
                 if(tempDate.before(calendar.getTime())){
                     Log.d(TAG, "TestNote: 4"  );
                     productCounter++;
+                    Log.d(TAG, "TestNote Counter: trbls " + productCounter);
                 }
             }
             Log.d(TAG, "TestNote: 5"  );

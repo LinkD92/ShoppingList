@@ -60,7 +60,7 @@ public class CommandAddNewProduct implements Command {
                             //checking if product already exists
                             if(isTrue == true){
                                 //returning dialog box for user to confirm action
-
+                                product.setCustomID(productOld.getCustomID());
                                 FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
                                 //dialogInfo(product);
                             }else{
@@ -68,6 +68,7 @@ public class CommandAddNewProduct implements Command {
                                 if(productOld != null){
                                     String oldName = productOld.getName();
                                     String newName = product.getName();
+                                    product.setCustomID(productOld.getCustomID());
                                     FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
                                     if(!newName.equals(oldName)){
                                         FirebaseUtil.removeProduct(FirebaseUtil.mutableList.getValue(), productOld);

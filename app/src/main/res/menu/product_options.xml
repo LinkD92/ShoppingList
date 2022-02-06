@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/menuOptionsRemove"
-        android:title="Remove Prdouct" />
+        android:title="Remove Product" />
     <item
         android:id="@+id/menuOptionsEdit"
         android:title="Edit Product" />

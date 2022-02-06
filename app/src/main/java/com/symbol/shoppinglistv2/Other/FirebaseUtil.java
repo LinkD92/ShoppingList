@@ -65,6 +65,7 @@ public class FirebaseUtil {
 
     public static ArrayList<Product> currentListProducts;
     public static HashMap<String, Product> productHashMap;
+    public static ArrayList<MyLog> myLogs;
 
     private FirebaseUtil(){
 

@@ -39,6 +39,7 @@ public class CommandManageLogs implements Command{
             @Override
             public void readLog(ArrayList<MyLog> myLogs) {
                 super.readLog(myLogs);
+                FirebaseUtil.myLogs = myLogs;
                 Collections.sort(myLogs, new Comparator<MyLog>() {
                     @Override
                     public int compare(MyLog mylog1, MyLog myLog) {

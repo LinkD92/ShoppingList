@@ -28,8 +28,8 @@ public class CommandEditProduct implements Command {
             fragmentAddProduct.etFABAddProductPrice.setText(priceConvert);
 
             String barcodeConvert = String.valueOf(product.getBarCode());
-            fragmentAddProduct.etBarcodeValue.setText(barcodeConvert);
             mCodeScanner.barcodeVal = product.getBarCode();
+            fragmentAddProduct.etBarcodeValue.setText(barcodeConvert);
 
         }
         return false;

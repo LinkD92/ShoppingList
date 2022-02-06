@@ -31,8 +31,10 @@ public class CommandBNVAddToList implements Command{
     public boolean execute() {
         fragmentMyOpener = new FragmentMyOpener(container);
         if(FirebaseUtil.currentSelection == R.id.bnvAddToListProduct || FirebaseUtil.currentSelection == 0){
+            bottomNavigationView.setSelectedItemId(R.id.bnvAddToListProduct);
             fragmentMyOpener.open(fragmentAddProduct);
         }else if(FirebaseUtil.currentSelection != 0 && FirebaseUtil.currentSelection == R.id.bnvAddToListBundle){
+            bottomNavigationView.setSelectedItemId(R.id.bnvAddToListBundle);
             fragmentMyOpener.open(fragmentBundleToList);
         }
 

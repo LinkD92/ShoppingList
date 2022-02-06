@@ -155,12 +155,13 @@ public class CommandBundleAdd implements Command{
                         Toast.makeText(ActivityMain.appContext, "Products are missing", Toast.LENGTH_LONG).show();
                     }else{
                         Calendar calendar = Calendar.getInstance();
-                        Date test = calendar.getTime();
-                        String test2 = test.getDate()+ "/"+test.getMonth() + "/" + test.getYear();
-                        myBundle.setUpdateDate(test2);
+                        Date date = calendar.getTime();
+                        String stringDate = date.getDate()+ "/"+(date.getMonth() +1) + "/" + (date.getYear()+1900);
+                        myBundle.setUpdateDate(stringDate);
                         FirebaseUtil.addBundle("bundles/", myBundle);
                         fragmentMyOpener.close("addBundle");
                     }
+
 
 
                 }else{
