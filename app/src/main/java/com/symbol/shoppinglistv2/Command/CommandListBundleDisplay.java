@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CommandMABundleDisplay implements Command{
+public class CommandListBundleDisplay implements Command{
 
     private final String TAG = "com.symbol.shoppinglistv2.Command.CommandMABundleDisplay";
     private RecyclerView rvBundlesDisplay;
@@ -34,7 +34,7 @@ public class CommandMABundleDisplay implements Command{
     private Spinner spinner;
     private MutableLiveData<ListOfProducts> currentList;
 
-    public CommandMABundleDisplay(RecyclerView rvBundlesDisplay, Spinner spinner ) {//MutableLiveData<ListOfProducts> currentList
+    public CommandListBundleDisplay(RecyclerView rvBundlesDisplay, Spinner spinner ) {//MutableLiveData<ListOfProducts> currentList
         this.spinner = spinner;
         this.rvBundlesDisplay = rvBundlesDisplay;
         //this.currentList = currentList;

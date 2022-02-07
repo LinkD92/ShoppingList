@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShoppingListv2</string>
+    <string name="app_name">Smart Shopping List</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="server_client_id">170548192878-ffajsd4um4ak9ogmm7jfsg4fege7eotb.apps.googleusercontent.com</string>

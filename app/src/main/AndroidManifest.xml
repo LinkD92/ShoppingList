@@ -4,9 +4,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon_bundle"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon_bundle"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShoppingListv2"
         android:usesCleartextTraffic="true">

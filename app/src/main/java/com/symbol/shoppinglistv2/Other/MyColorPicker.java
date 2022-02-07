@@ -20,15 +20,10 @@ public class MyColorPicker {
     private ConstraintLayout clSquare;
 
 
-    public MyColorPicker (Activity activity){
-        this.activity = activity;
-        //hexaColors();
-    }
 
     public MyColorPicker(Activity activity, ConstraintLayout clSquare) {
         this.activity = activity;
         this.clSquare = clSquare;
-        //hexaColors();
     }
 
     public void start(){
@@ -49,17 +44,4 @@ public class MyColorPicker {
             }
         });
     }
-
-    private ArrayList<String> hexaColors(){
-        colors.add("#4287f5");
-        colors.add("#d9ff00");
-        colors.add("#00db1a");
-        return colors;
-    }
-
-    public int getChosenColor(){
-        Log.d(TAG, "getChosenColor: " + chosenColor);
-        return chosenColor;
-    }
-
 }

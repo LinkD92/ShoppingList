@@ -65,8 +65,6 @@ public class CommandManageLists implements Command{
                     if(!FirebaseUtil.mutableList.getValue().getListPath().contains(FirebaseUtil.userPath)){
                         popupMenu.getMenu().getItem(1).setEnabled(false);
                         popupMenu.getMenu().getItem(2).setEnabled(false);
-
-
                     }
                 }else{
                     popupMenu.getMenu().getItem(1).setEnabled(false);

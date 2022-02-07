@@ -83,7 +83,7 @@ public class CommandAddNewProduct implements Command {
                         }
                     });
                     FragmentMyOpener fragmentMyOpener = new FragmentMyOpener(fragmentAddProduct);
-                    fragmentMyOpener.close("test");
+                    fragmentMyOpener.close("AddToList");
                 }
 
             }
@@ -170,7 +170,7 @@ public class CommandAddNewProduct implements Command {
         fragmentAddProduct.btnFabClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragmentMyOpener.close("test");
+                fragmentMyOpener.close("AddToList");
             }
         });
     }

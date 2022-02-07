@@ -6,7 +6,6 @@ import java.util.Map;
 
 //Product class that contains all necessary information
 public class Product {
-
     private String name;
     private double price;
     private Category category;

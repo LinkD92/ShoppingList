@@ -159,7 +159,6 @@
             android:text="Export List"
             android:backgroundTint="@color/black"
             android:textColor="@color/viewBackgroundPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/btnSettingImportList"
             app:layout_constraintTop_toTopOf="parent" />
@@ -176,6 +175,34 @@
             app:layout_constraintTop_toTopOf="@+id/btnSettingExportList"
             app:layout_constraintLeft_toRightOf="@+id/btnSettingExportList"
             />
+
+        <Button
+            android:id="@+id/btnSettingImportGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="Import Group"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/viewBackgroundPrimary"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btnSettingExportGroup"
+            app:layout_constraintLeft_toRightOf="@+id/btnSettingExportGroup"
+            />
+
+        <Button
+            android:id="@id/btnSettingExportGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="Export Group"
+            android:backgroundTint="@color/black"
+            android:textColor="@color/viewBackgroundPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/btnSettingImportList"
+            app:layout_constraintTop_toBottomOf="@+id/btnSettingExportList"
+            />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

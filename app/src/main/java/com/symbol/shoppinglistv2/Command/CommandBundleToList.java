@@ -102,7 +102,7 @@ public class CommandBundleToList implements Command{
             @Override
             public void onClick(View view) {
                 FragmentMyOpener fragmentMyOpener = new FragmentMyOpener(fragmentBundleToList);
-                fragmentMyOpener.close("test");
+                fragmentMyOpener.close("AddToList");
 
             }
         });

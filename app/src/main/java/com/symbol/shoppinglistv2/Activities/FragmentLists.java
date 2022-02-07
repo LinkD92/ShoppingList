@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.symbol.shoppinglistv2.Command.Command;
 import com.symbol.shoppinglistv2.Command.CommandAddProductFAB;
-import com.symbol.shoppinglistv2.Command.CommandMABundleDisplay;
+import com.symbol.shoppinglistv2.Command.CommandListBundleDisplay;
 import com.symbol.shoppinglistv2.Command.CommandMASpinnerAdapter;
 import com.symbol.shoppinglistv2.Command.CommandManageLists;
 import com.symbol.shoppinglistv2.Command.CommandListProductDisplay;
@@ -73,7 +73,7 @@ public class FragmentLists extends Fragment {
         executeCommand(new CommandAddProductFAB(floatingActionButton, fragmentContainer));
         executeCommand(new CommandManageLists(ibtnScannerFeature, ibtnListOptions, fragmentContainer, currentList));
         executeCommand(new CommandListProductDisplay(this, currentList, sharedListLoaded));
-        executeCommand(new CommandMABundleDisplay(rvBundles, spinList));
+        executeCommand(new CommandListBundleDisplay(rvBundles, spinList));
         return v;
     }
 

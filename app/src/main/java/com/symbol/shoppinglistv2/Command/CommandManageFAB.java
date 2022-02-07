@@ -30,34 +30,19 @@ public class CommandManageFAB implements Command{
 
     @Override
     public boolean execute() {
-        //trackerChangeCloseFragment();
-        //actions of FAB accroding to the opened fragemnt - checked by tracker
         FragmentMyOpener fragmentMyOpener = new FragmentMyOpener(container);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(tracker.getValue().equals("fragmentMyManageCategories")){
                     fragmentMyOpener.replace(fragmentCreateCategory, "addCategory");
-                    //fragmentMyOpener.close("addCategory");
 
                 }else if (tracker.getValue().equals("fragmentMyManageBundles")){
-                    //fragmentMyOpener.close(fragmentAddBundle);
                     fragmentMyOpener.replace(fragmentAddBundle, "addBundle");
                 }
 
             }
         });
         return false;
-    }
-
-    private void trackerChangeCloseFragment(){
-        FragmentMyOpener fragmentMyOpener = new FragmentMyOpener();
-        tracker.observeForever(new Observer() {
-            @Override
-            public void onChanged(Object o) {
-                fragmentMyOpener.close("addBundle");
-                fragmentMyOpener.close("addCategory");
-            }
-        });
     }
 }

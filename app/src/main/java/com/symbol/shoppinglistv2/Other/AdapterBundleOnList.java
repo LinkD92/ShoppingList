@@ -207,6 +207,9 @@ public class AdapterBundleOnList extends RecyclerView.Adapter<AdapterBundleOnLis
                     MyBundle myBundle = myBundleArrayList.get(getAdapterPosition());
                     PopupMenu popupMenu = new PopupMenu(ActivityMain.appContext, view);
                     popupMenu.getMenuInflater().inflate(R.menu.bundle_options, popupMenu.getMenu());
+                    if(!FirebaseUtil.mutableList.getValue().getListPath().contains(FirebaseUtil.user.getUid())){
+                        popupMenu.getMenu().getItem(1).setEnabled(false);
+                    }
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem menuItem) {

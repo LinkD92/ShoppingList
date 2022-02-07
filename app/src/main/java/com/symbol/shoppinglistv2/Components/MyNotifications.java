@@ -27,11 +27,11 @@ public class MyNotifications extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "TestNote: Received Info to begin notification"  );
-        Log.d(TAG, "TestNote: Received Info to begin notification size: " + FirebaseUtil.myLogs.size());
         myLogs = (ArrayList<MyLog>) intent.getExtras().getSerializable("array");
         days = intent.getExtras().getInt("days");
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
             int productCounter = 0;
+        try {
             for (MyLog myLog :
                     FirebaseUtil.myLogs) {
                 Date tempDate = new Date(Date.parse(myLog.getExpirationDays()));
@@ -44,9 +44,12 @@ public class MyNotifications extends BroadcastReceiver {
                     Log.d(TAG, "TestNote Counter: trbls " + productCounter);
                 }
             }
-            Log.d(TAG, "TestNote: 5"  );
+        } catch (NullPointerException e) {
+            productCounter = 0;
+        }
+        Log.d(TAG, "TestNote: 5"  );
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_temp)
+                    .setSmallIcon(R.drawable.icon_bundle)
                     .setContentTitle("Some Products will expire in " + days + " days")
                     .setContentText("Amount of products to expire: " + productCounter)
                     .setAutoCancel(true)
@@ -55,8 +58,6 @@ public class MyNotifications extends BroadcastReceiver {
             Log.d(TAG, "TestNote: 6"  );
             notificationManagerCompat.notify(0, builder.build());
             Log.d(TAG, "TestNote: 7"  );
-
-
     }
 }
 

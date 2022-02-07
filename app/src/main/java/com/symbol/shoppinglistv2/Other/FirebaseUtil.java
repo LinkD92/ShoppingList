@@ -46,6 +46,9 @@ public class FirebaseUtil {
     //Current Bundle selection
     public static MutableLiveData<ListOfProducts> mutableList;
     public static MutableLiveData<Integer> changeDetector = new MutableLiveData<>();
+    public static MutableLiveData<ArrayList<MyBundle>> arrayBundles;
+
+
 
     public static String currentBundle;
     //Current fragment opened;
@@ -121,7 +124,6 @@ public class FirebaseUtil {
             globalRef.child(listOfProducts.getListPath()).child("products").child(product.getName())
                     .setValue(product);
         }
-
     }
 
     public static void addBundleProduct(ListOfProducts listOfProducts, Product product){
@@ -473,7 +475,6 @@ public class FirebaseUtil {
                 if(reference != null) {
                     ListOfProducts list = new ListOfProducts();
                     list = snapshot.getValue(ListOfProducts.class);
-                    Log.d(TAG, "onDataChange: " + list.getName());
 
                             DatabaseReference currentRef = FirebaseDatabase.getInstance(source).getReference()
                 .child("users/").child(listName.getUid()).child("/lists/").child(listName.getName());

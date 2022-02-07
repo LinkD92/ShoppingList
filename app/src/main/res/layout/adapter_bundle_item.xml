@@ -39,7 +39,6 @@
             android:text="Bundle Name"
             android:textSize="16dp"
             android:textColor="@color/viewBackgroundPrimary"
-            android:layout_margin="8dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"

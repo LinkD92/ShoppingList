@@ -37,14 +37,11 @@ public class CommandAddProductFAB implements Command{
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d(TAG, "onClick: trbls " + FirebaseUtil.mutableList.getValue() );
                 if(FirebaseUtil.mutableList.getValue() != null){
-                    fragmentMyOpener.open(fragmentAddToList, "test");
+                    fragmentMyOpener.open(fragmentAddToList, "AddToList");
                     mCodeScanner.barcodeVal = 0;
-                    //fragmentMyOpener.close("test");
                 }else{
                     Toast.makeText(ActivityMain.appContext, "Create list first", Toast.LENGTH_LONG).show();
-
                 }
             }
         });

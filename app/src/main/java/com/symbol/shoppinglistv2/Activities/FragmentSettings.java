@@ -26,7 +26,7 @@ import com.symbol.shoppinglistv2.R;
 public class FragmentSettings extends Fragment {
 
     private final String TAG = "com.symbol.shoppinglistv2.Activities.FragmentSettings";
-    private Button button, btnSettingsNotificationLog, btnImport, btnExport;
+    private Button button, btnSettingsNotificationLog, btnImport, btnExport, btnExportGroup, btnImportGroup;
     public View fragmentContainer;
     public SwitchCompat switchCompat;
     public Spinner spnDaysBeforeExpire;
@@ -50,12 +50,14 @@ public class FragmentSettings extends Fragment {
         spnDaysBeforeExpire = v.findViewById(R.id.spnDaysToExpire);
         btnImport = v.findViewById(R.id.btnSettingImportList);
         btnExport = v.findViewById(R.id.btnSettingExportList);
+        btnImportGroup = v.findViewById(R.id.btnSettingImportGroup);
+        btnExportGroup = v.findViewById(R.id.btnSettingExportGroup);
         tvLoginCurrentUser = v.findViewById(R.id.tvLoginCurrentUser2);
         tvLoginCurrentUser.setText(FirebaseUtil.user.getEmail());
 
 
         executeCommand(new CommandFragmentSettingsLogic(button, btnSettingsNotificationLog, this));
-        executeCommand(new CommandImportExport(btnImport, btnExport));
+        executeCommand(new CommandImportExport(btnImport, btnExport, btnImportGroup, btnExportGroup));
 
         return v;
     }

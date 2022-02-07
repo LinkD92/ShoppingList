@@ -144,14 +144,14 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             }
             if(product.getAvgExpirationDays() != 0){
                 String path = list.getListPath();
-                String test[] = path.split("/");
+                String splitPath[] = path.split("/");
                 String logName = list.getName();
                 String logProduct = product.getName();
                 int days = product.getAvgExpirationDays();
                 calendar.add(Calendar.DAY_OF_YEAR, days);
                 String expirationDate = calendar.getTime().toString();
                 MyLog myLog = new MyLog(logName, logProduct, expirationDate);
-                FirebaseUtil.addLog(test[0], myLog);
+                FirebaseUtil.addLog(splitPath[0], myLog);
             }
         }else{
             if(product.getGroup().length()>0){
@@ -325,7 +325,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                                 case R.id.menuOptionsEdit:
                                     fragmentAddProduct = new FragmentAddProduct(product);
                                     fragmentMyOpener = new FragmentMyOpener(container);
-                                    fragmentMyOpener.open(fragmentAddProduct, "test");
+                                    fragmentMyOpener.open(fragmentAddProduct, "AddToList");
                                     fragmentMyOpener.close(fragmentAddProduct);
                                     break;
                             }

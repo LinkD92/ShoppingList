@@ -152,13 +152,7 @@ public class ActivitySignIn extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-//
-//        try {
-//            Log.d(TAG, "onStart: trbls " + currentUser.getUid());
-//        } catch (NullPointerException e) {
-//            e.printStackTrace();
-//        }
-        //updateUI(currentUser);
+
     }
 
     @Override
