@@ -81,7 +81,7 @@ public class mCodeScanner implements Command {
                             } else {
                                 barcodeMultiple.setValue(parseLong);
                                 codeScanner.stopPreview();
-                                scannerListener();
+                                scannerListener2();
                             }
                         }
                     }
@@ -117,9 +117,9 @@ public class mCodeScanner implements Command {
             for (Map.Entry<String, Product> eprod :
                     FirebaseUtil.mutableList.getValue().getProducts().entrySet()) {
                 boolean findProduct = eprod.getValue().getBarCode() == mCodeScanner.barcodeMultiple.getValue();
-                boolean checkedProduct = eprod.getValue().isChecked() == false;
-                Log.d(TAG, "scannerListener: trbls find products" + findProduct);
-                Log.d(TAG, "scannerListener: trbls check product " + checkedProduct);
+                boolean checkedProduct = eprod.getValue().isChecked();
+                Log.d(TAG, "scannerListener: trbls FIND::: " + findProduct);
+                //Log.d(TAG, "scannerListener: trbls CHECK::: " + mCodeScanner.barcodeMultiple.getValue());
                 if (findProduct && checkedProduct) {
                     ListOfProducts list = FirebaseUtil.mutableList.getValue();
                     Product product = eprod.getValue();
@@ -180,6 +180,82 @@ public class mCodeScanner implements Command {
                     activityBarcodeScanner.tvProductBundleDetails.setText(info);
                 }
             }
+        } catch (Exception e) {
+            String info = "This product does not exists";
+            activityBarcodeScanner.tvProductBundleDetails.setText(info);
+        }
+    }
+
+    private void scannerListener2() {
+        try {
+            ListOfProducts list = FirebaseUtil.mutableList.getValue();
+            String outputBundle = "Bundle product not found";
+            String textOutput = "Product not found";
+            for (Map.Entry<String, Product> eprod :
+                    list.getProducts().entrySet()) {
+
+                boolean findProduct = eprod.getValue().getBarCode() == mCodeScanner.barcodeMultiple.getValue();
+                boolean checkedProduct = eprod.getValue().isChecked();
+                Product product = eprod.getValue();
+                if (findProduct && !(checkedProduct)) {
+                    Log.d(TAG, "scannerListener2: trbls PROD found and was not checked " +  product.getName());
+                    MyBundle bundle = list.getBundles().get(product.getGroup());
+                    eprod.getValue().setChecked(true);
+                    if (product.isChecked()) {
+                        Log.d(TAG, "scannerListener2: trbls PROD new last check date " +  product.getName());
+                        Calendar calendar = Calendar.getInstance();
+                        Date date = new Date();
+                        product.setLastCheckDate(date.getTime());
+                        if (product.getGroup().length() > 0) {
+                            Log.d(TAG, "scannerListener2: trbls PROD check group > 0 " +  product.getName());
+                            bundle.getProducts().get(product.getName()).setChecked(true);
+                            FirebaseUtil.addBundle(list, bundle);
+                            if (allChecked(bundle)) {
+                                bundle.setChecked(true);
+                                FirebaseUtil.addBundle(list, bundle);
+                            }
+
+                        }
+                        if (product.getAvgExpirationDays() != 0) {
+                            String path = list.getListPath();
+                            String test[] = path.split("/");
+                            String logName = list.getName();
+                            String logProduct = product.getName();
+                            int days = product.getAvgExpirationDays();
+                            calendar.add(Calendar.DAY_OF_YEAR, days);
+                            String expirationDate = calendar.getTime().toString();
+                            MyLog myLog = new MyLog(logName, logProduct, expirationDate);
+                            FirebaseUtil.addLog(test[0], myLog);
+                        }
+                    } else {
+                        if (product.getGroup().length() > 0) {
+                            bundle.getProducts().get(product.getName()).setChecked(true);
+                            FirebaseUtil.addBundle(list, bundle);
+                            if (!allChecked(bundle)) {
+                                bundle.setChecked(false);
+                                FirebaseUtil.addBundle(list, bundle);
+                            }
+                        }
+                    }
+                    Log.d(TAG, "scannerListener2: trbls " + (product.getGroup().length() >0) + " " + product.getName());
+                    
+                    if (product.getGroup().length() > 0) {
+                        outputBundle = "Bundle product name:" + product.getName() + "\nBundle Product amount: " + product.getAmount()
+                                + "\nBundle Product Group : " + product.getGroup();
+                    } else {
+                        textOutput = "Product name: " + product.getName() + "\nProduct amount: " + product.getAmount();
+                    }
+                    FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
+                } else if(findProduct && checkedProduct && !(product.getGroup().length() > 0)) {
+                    textOutput = "Product already scanned";
+                }else if(findProduct && checkedProduct && (product.getGroup().length() > 0)){
+                    outputBundle = "Bundle product already scanned";
+                }
+
+            }
+            activityBarcodeScanner.tvProductBundleDetails.setText(outputBundle);
+            activityBarcodeScanner.tvProductDetails.setText(textOutput);
+
         } catch (Exception e) {
             String info = "This product does not exists";
             activityBarcodeScanner.tvProductBundleDetails.setText(info);

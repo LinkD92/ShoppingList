@@ -20,10 +20,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CommandListProductDisplay implements Command{
     private final String TAG = this.getClass().getSimpleName();
@@ -102,13 +104,15 @@ public class CommandListProductDisplay implements Command{
                     }
                     sortProducts(productArrayList);
                     fragmentLists.rvProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
-                    adapterProduct = new AdapterProduct(productArrayList, fragmentLists.fragmentContainer, currentList);
+                    adapterProduct = new AdapterProduct(productArrayList, fragmentLists.fragmentContainer, currentList, fragmentLists.rvProducts);
+                    fragmentLists.rvProducts.getLayoutManager().onRestoreInstanceState(FirebaseUtil.scrollError2);
+                    //fragmentLists.rvProducts.getLayoutManager().scrollToPosition(FirebaseUtil.scrollError);
                     ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapterProduct, productArrayList);
                     ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                     itemTouchHelper.attachToRecyclerView(fragmentLists.rvProducts);
                     adapterProduct.setTouchHelper(itemTouchHelper);
                     fragmentLists.rvProducts.setAdapter(adapterProduct);
-                    adapterProduct.notifyDataSetChanged();
+
                 }else{
                     adapterProduct = new AdapterProduct();
                     fragmentLists.rvProducts.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));

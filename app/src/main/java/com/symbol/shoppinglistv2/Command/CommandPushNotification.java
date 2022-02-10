@@ -54,7 +54,6 @@ public class CommandPushNotification implements Command{
         calendar.set(Calendar.MINUTE, Calendar.MINUTE);
         calendar.set(Calendar.SECOND, Calendar.SECOND+ 20);
         ArrayList<MyLog> myLogArray = new ArrayList<>();
-        Log.d(TAG, "TestNote: size 2trbls " + myLogArray.size());
         Intent intent = new Intent(ActivityMain.appContext, MyNotifications.class);
         intent.putExtra("array", myLogArray);
         intent.putExtra("days", ActivityMain.daysBeforeExpire);

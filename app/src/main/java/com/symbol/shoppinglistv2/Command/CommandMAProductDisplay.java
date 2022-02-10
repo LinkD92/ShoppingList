@@ -81,7 +81,7 @@ public class CommandMAProductDisplay implements Command {
                                         FirebaseUtil.currentListProducts = productArrayList;
                                         BundleDetailsFiller test = new BundleDetailsFiller();
                                         //TU UWAGA - WYWALIC NULLA.
-                                        adapter = new AdapterProduct(productArrayList, container, null);
+                                        adapter = new AdapterProduct(productArrayList, container, null, null);
                                         rvProductDisplay.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
                                         //ItemTouchHelper.Callback callback = new MyItemTouchHelper(adapter, productArrayList);
                                         //ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);

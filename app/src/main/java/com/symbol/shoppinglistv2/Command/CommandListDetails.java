@@ -54,42 +54,10 @@ public class CommandListDetails implements Command{
                     details.put(myDetail.getName(), myDetail);
                 }
             }
-//            myDetail.setName(product.getCategory().getName());
-//            myDetail.setAmount(myDetail.getAmount() + product.getAmount());
-//            details.put(myDetail.getName(), myDetail);
         }
         adapterDetails = new AdapterDetails(details);
         rvListDetails.setLayoutManager(new LinearLayoutManager(ActivityMain.appContext));
         rvListDetails.setAdapter(adapterDetails);
-
-//        String buildPath = "/lists/" + FireBaseUtil.currentList  +"/products";
-//            FireBaseUtil.readProducts(buildPath, new MyCallback() {
-//                @Override
-//                public void onProductCallback(ArrayList<Product> productArrayList) {
-//                    details = new HashMap<>();
-//                    super.onProductCallback(productArrayList);
-//                    for (Product prod :
-//                            productArrayList) {
-//                        String catName =  prod.getCategory().getName();
-//                        int prodAmount = prod.getAmount();
-//                        double prodPrice = prod.getPrice();
-//                        MyDetail myDetail;
-//                        if(details.containsKey(catName)){
-//                            myDetail = details.get(catName);
-//                            myDetail.setAmount(myDetail.getAmount() + 1);
-//                            myDetail.setPrice(myDetail.getPrice() + prodPrice * prodAmount);
-//                            details.put(catName, myDetail);
-//                        }else {
-//                            myDetail = new MyDetail(catName, 1, prodPrice);
-//                            details.put(catName, myDetail);
-//                        }
-//                    }
-//                    detailsAdapter = new DetailsAdapter(details);
-//                    rvListDetails.setLayoutManager(new LinearLayoutManager(MainActivity.appContext));
-//                    rvListDetails.setAdapter(detailsAdapter);
-//
-//                }
-//            });
         return false;
     }
 

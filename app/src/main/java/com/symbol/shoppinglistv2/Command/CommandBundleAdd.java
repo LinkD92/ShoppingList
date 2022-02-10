@@ -167,6 +167,11 @@ public class CommandBundleAdd implements Command{
                 }else{
                     Toast.makeText(ActivityMain.appContext, "Name is empty", Toast.LENGTH_LONG).show();
                 }
+                Log.d(TAG, "onClick: trbls " + FirebaseUtil.mutableList.getValue().getBundles().containsKey(bundleName));
+                if(FirebaseUtil.mutableList.getValue().getBundles().containsKey(bundleName)){
+//                    FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), myBundle);
+//                    FirebaseUtil.mutableList.getValue().getBundles().put(bundleName, myBundle);
+                }
 
             }
         });

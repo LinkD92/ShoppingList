@@ -93,7 +93,6 @@ public class MyItemTouchHelper extends ItemTouchHelper.Callback{
                 productArrayList) {
             temps.put(prod.getName() + prod.getGroup(), prod);
             if(prod.getGroup().length() >0){
-                Log.d(TAG, "customIDSorter: trbls " + prod.getGroup());
                 MyBundle bundle = FirebaseUtil.mutableList.getValue().getBundles().get(prod.getGroup());
                 bundle.getProducts().get(prod.getName()).setCustomID(prod.getCustomID());
                 FirebaseUtil.addBundle(FirebaseUtil.mutableList.getValue(), bundle);

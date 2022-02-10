@@ -43,7 +43,6 @@ public class FragmentManageLists extends Fragment {
     }
     public FragmentManageLists(ListOfProducts listOfProducts){
         this.listOfProducts = listOfProducts;
-        Log.d(TAG, "testList: " + listOfProducts.getName());
     }
 
     @Override

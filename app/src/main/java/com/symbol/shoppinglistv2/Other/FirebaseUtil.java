@@ -1,5 +1,6 @@
 package com.symbol.shoppinglistv2.Other;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 //Class created to manage Firebase access
 public class FirebaseUtil {
@@ -47,6 +49,8 @@ public class FirebaseUtil {
     public static MutableLiveData<ListOfProducts> mutableList;
     public static MutableLiveData<Integer> changeDetector = new MutableLiveData<>();
     public static MutableLiveData<ArrayList<MyBundle>> arrayBundles;
+    public static int scrollError =0;
+    public static Parcelable scrollError2;
 
 
 
@@ -457,7 +461,6 @@ public class FirebaseUtil {
     public static void readFullList(String listName, final MyCallback myCallback){
         if(!listName.contains("(")) {
             DatabaseReference currentRef = FirebaseUtil.reference.child(listName);
-            Log.d(TAG, "PrintPath: " + currentRef);
             currentRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DataSnapshot> task) {

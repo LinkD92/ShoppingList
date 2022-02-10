@@ -55,7 +55,6 @@ public class CommandMASpinnerAdapter implements Command{
             @Override
             public void onListCallback(ArrayList<String> listsArrayList) {
                 listLoaded.setValue(listsArrayList);
-                Log.d(TAG, "onListCallback: " + listLoaded.getValue().size());
                 if (listLoaded.getValue().size() == 0){
                     fragmentLists.rvProducts.setVisibility(View.GONE);
                     fragmentLists.rvBundles.setVisibility(View.GONE);

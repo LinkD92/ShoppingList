@@ -5,6 +5,7 @@ import android.util.Log;
 import com.symbol.shoppinglistv2.Components.MyBundle;
 import com.symbol.shoppinglistv2.Components.Product;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +41,7 @@ public class BundleDetailsFiller {
                                 String key = pro.getKey();
                                 double testPrice = hashProd.get(key).getPrice() * currentProd.getAmount();
                                 totalPrice = totalPrice + testPrice;
+                                DecimalFormat df = new DecimalFormat("##.##");
                                 bund.setPrice(totalPrice);
                             }
                             String bundlePath = "lists/" + FirebaseUtil.currentList + "/bundles/";

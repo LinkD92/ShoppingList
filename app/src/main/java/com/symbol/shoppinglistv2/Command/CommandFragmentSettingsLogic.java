@@ -60,6 +60,11 @@ public class CommandFragmentSettingsLogic implements Command{
             public void onClick(View view) {
                 fragmentMyOpener.open(fragmentNotificationLog);
                 fragmentMyOpener.close(fragmentNotificationLog);
+                if(fragmentSettings.fragmentContainer.getVisibility() == View.VISIBLE){
+                    fragmentSettings.fragmentContainer.setVisibility(View.GONE);
+                }else{
+                    fragmentSettings.fragmentContainer.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

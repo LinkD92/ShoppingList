@@ -115,7 +115,7 @@ public class CommandManageLists implements Command{
     private void menuItemClickEditList(){
         fragmentManageLists = new FragmentManageLists(FirebaseUtil.mutableList.getValue());
         fragmentMyOpener.close(fragmentManageLists);
-        fragmentMyOpener.open(fragmentManageLists);
+        fragmentMyOpener.open(fragmentManageLists, "addList");
     }
 
     private void menuItemClickRemoveList(){

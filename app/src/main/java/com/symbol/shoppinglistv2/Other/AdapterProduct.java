@@ -22,6 +22,7 @@ import com.symbol.shoppinglistv2.Components.Product;
 import com.symbol.shoppinglistv2.R;
 
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -47,16 +48,18 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     private ItemTouchHelper itemTouchHelper;
     private View container;
     private MutableLiveData<ListOfProducts> mutableList;
+    private RecyclerView recyclerView;
 
 
     public AdapterProduct(){
 
     };
-    public AdapterProduct(ArrayList<Product> productList, View fragmentContainer, MutableLiveData<ListOfProducts> mutableList) {
+    public AdapterProduct(ArrayList<Product> productList, View fragmentContainer, MutableLiveData<ListOfProducts> mutableList, RecyclerView recyclerView) {
 
         this.productList = productList;
         this.container = fragmentContainer;
         this.mutableList = mutableList;
+        this.recyclerView = recyclerView;
     }
 
 
@@ -72,7 +75,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         Product product = productList.get(position);
-        if(product.getGroup().length() > 0){
+        if(product.getGroup().length() > 1){
             viewHolder.ibtnAddAmountProduct.setVisibility(View.GONE);
             viewHolder.ibtnReduceAmountProduct.setVisibility(View.GONE);
             viewHolder.ibtnOptions.setVisibility(View.GONE);
@@ -82,7 +85,9 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
 
         viewHolder.tvItemProductName.setText(product.getName());
         double totalPrice = product.getPrice() * product.getAmount();
+        DecimalFormat df = new DecimalFormat("##.##");
         String price = Double.toString(totalPrice);
+        price = df.format(totalPrice);
         viewHolder.tvItemProductPrice.setText("$ " + price);
         String amount = Integer.toString(product.getAmount());
         viewHolder.tvCurrentAmountProduct.setText(amount);
@@ -124,6 +129,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     }
 
     private void onCheckboxClickAction(CheckBox checkBox, Product product){
+        FirebaseUtil.scrollError = 0;
         ListOfProducts list = FirebaseUtil.mutableList.getValue();
         product.setChecked(checkBox.isChecked());
         MyBundle bundle = list.getBundles().get(product.getGroup());
@@ -166,6 +172,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             }
 
         }
+        FirebaseUtil.scrollError2 = recyclerView.getLayoutManager().onSaveInstanceState();
         FirebaseUtil.addProduct(FirebaseUtil.mutableList.getValue(), product);
     }
 
@@ -224,6 +231,9 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
             ivBundleIcon = view.findViewById(R.id.ivBundleIcon);
             this.gestureDetector = new GestureDetector(view.getContext(), this);
             itemView.setOnTouchListener(this);
+
+
+
             //manageViews();
             onClicklisteners();
         }
@@ -282,7 +292,9 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                 public void onClick(View view) {
                     Product product = productList.get(getAdapterPosition());
                     product.setAmount(product.getAmount()+1);
-                    notifyDataSetChanged();
+                    //notifyDataSetChanged();
+                    FirebaseUtil.scrollError = getAdapterPosition();
+                    FirebaseUtil.scrollError2 = recyclerView.getLayoutManager().onSaveInstanceState();
                     FirebaseUtil.addProduct(mutableList.getValue(), product);
                 }
             });
@@ -295,7 +307,9 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
                     Product product = productList.get(getAdapterPosition());
                     if(product.getAmount() >1){
                         product.setAmount(product.getAmount()-1);
-                        notifyDataSetChanged();
+                        //notifyDataSetChanged();
+                        FirebaseUtil.scrollError = getAdapterPosition();
+                        FirebaseUtil.scrollError2 = recyclerView.getLayoutManager().onSaveInstanceState();
                         FirebaseUtil.addProduct(mutableList.getValue(), product);
                     }
                 }

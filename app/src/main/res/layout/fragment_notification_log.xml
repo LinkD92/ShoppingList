@@ -6,9 +6,10 @@
     android:layout_margin="1dp"
     android:background="@color/viewBackgroundPrimary"
     app:layout_constraintTop_toTopOf="parent"
-
+    app:layout_constraintBottom_toBottomOf="parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Activities.FragmentNotificationLog">
+
 
     <TextView
         android:id="@+id/tvNotificationLogTitle"
@@ -29,8 +30,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintLeft_toLeftOf="@id/rvNotifications"
-        app:layout_constraintBottom_toTopOf="@id/rvNotifications"
+        app:layout_constraintLeft_toLeftOf="@id/nsvTest"
+        app:layout_constraintBottom_toTopOf="@id/nsvTest"
         app:layout_constraintRight_toLeftOf="@+id/tvHeaderProduct"
         />
 
@@ -43,9 +44,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintLeft_toLeftOf="@id/rvNotifications"
-        app:layout_constraintRight_toRightOf="@id/rvNotifications"
-        app:layout_constraintBottom_toTopOf="@id/rvNotifications"
+        app:layout_constraintLeft_toLeftOf="@id/nsvTest"
+        app:layout_constraintRight_toRightOf="@id/nsvTest"
+        app:layout_constraintBottom_toTopOf="@id/nsvTest"
         app:layout_constraintTop_toBottomOf="@id/tvNotificationLogTitle"
         />
 
@@ -58,18 +59,27 @@
         android:layout_height="wrap_content"
         app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintLeft_toRightOf="@id/tvHeaderProduct"
-        app:layout_constraintRight_toRightOf="@id/rvNotifications"
-        app:layout_constraintBottom_toTopOf="@id/rvNotifications"
+        app:layout_constraintRight_toRightOf="@id/nsvTest"
+        app:layout_constraintBottom_toTopOf="@id/nsvTest"
         />
 
-
+    <ScrollView
+        android:id="@+id/nsvTest"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeaderProduct"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNotifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="true"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHeaderProduct" />
-
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
