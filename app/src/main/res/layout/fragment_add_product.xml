@@ -12,7 +12,7 @@
         android:id="@+id/etFABAddProductName"
         android:hint="Product name"
         android:inputType="text"
-        android:digits="0123456789 aąbcćdeęfghijklłmnńoóprsśtuwyzźżAĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ"
+        android:digits="0123456789 aąbcćdeęfghijklłmnńoóprsśtuwyzźżqxAĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻQX"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16dp"

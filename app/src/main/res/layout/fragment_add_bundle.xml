@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:digits="0123456789 aąbcćdeęfghijklłmnńoóprsśtuwyzźżAĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ"
+        android:digits="0123456789 aąbcćdeęfghijklłmnńoóprsśtuwyzźżqxAĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻQX"
         android:hint="Bundle Name"
         android:inputType="text"
         android:textSize="16dp"

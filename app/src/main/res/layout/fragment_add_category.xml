@@ -14,7 +14,7 @@
         android:textSize="16dp"
         android:hint="CategoryName"
         android:inputType="text"
-        android:digits="0123456789 aąbcćdeęfghijklłmnńoóprsśtuwyzźżAĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻ"
+        android:digits="0123456789 aąbcćdeęfghijklłmnńoóprsśtuwyzźżqXAĄBCĆDEĘFGHIJKLŁMNŃOÓPRSŚTUWYZŹŻQx"
         android:layout_margin="8dp"
         android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="parent"

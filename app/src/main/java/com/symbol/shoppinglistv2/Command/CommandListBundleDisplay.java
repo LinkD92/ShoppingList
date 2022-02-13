@@ -63,18 +63,6 @@ public class CommandListBundleDisplay implements Command{
             }
         });
 
-//        Log.d(TAG, "MyTest: outer " + spinner.getSelectedItem());
-//        FirebaseUtil.getList(FirebaseUtil.currentList, new MyCallback() {
-//            @Override
-//            public void getList(ListOfProducts listOfProducts) {
-//                super.getList(listOfProducts);
-//
-//                Log.d(TAG, "MyTest: list name" + listOfProducts.getName());
-//            }
-//        });
-
-
-
         return false;
     }
 

@@ -1,6 +1,5 @@
 package com.symbol.shoppinglistv2.Command;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -20,12 +19,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CommandListProductDisplay implements Command{
     private final String TAG = this.getClass().getSimpleName();
@@ -130,10 +127,10 @@ public class CommandListProductDisplay implements Command{
         }else if(currentList.getValue().getSortType().equals("customID")){
             sortCustom(productArrayList);
         }
-        sortWay(productArrayList);
+        sortChecked(productArrayList);
     }
 
-    private void sortWay(ArrayList<Product> productArrayList)
+    private void sortChecked(ArrayList<Product> productArrayList)
     {
         Collections.sort(productArrayList, new Comparator<Product>() {
             @Override
